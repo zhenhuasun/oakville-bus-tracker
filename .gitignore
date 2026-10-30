@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Cloudflare Wrangler local state (never commit; local cache/dev vars)
+.wrangler/
+.dev.vars
+
+# macOS
+.DS_Store
+
+# NOTE: public/ data (timetable.json, places.json, stops.json,
+# pairs.json, shapes/, icons) is committed on purpose: the Worker
+# serves it as static assets ([assets] directory in wrangler.toml)
+# and the Pages workflow publishes it. Do not add public/ here.

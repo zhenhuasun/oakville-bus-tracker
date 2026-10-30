@@ -1,0 +1,105 @@
+{
+  "over_400m": [],
+  "included_with_walking_label": [
+    {
+      "id": "harvest-oak-ps",
+      "name": "Harvest Oak Public School",
+      "board": "HDSB",
+      "research_address": "1235 Wheat Boom Dr, Oakville, ON L6H 7G1",
+      "lat": 43.5033905,
+      "lon": -79.7110151,
+      "nearest_stop": {
+        "id": "393",
+        "name": "Dundas St East + Meadowridge Dr",
+        "code": "3424",
+        "distance_m": 555
+      }
+    },
+    {
+      "id": "joshua-creek-ps",
+      "name": "Joshua Creek Public School",
+      "board": "HDSB",
+      "research_address": "1450 Arrowhead Rd, Oakville, ON L6H 7P9",
+      "lat": 43.4992634,
+      "lon": -79.6975803,
+      "nearest_stop": {
+        "id": "710",
+        "name": "North Ridge Trail + Hall Manor Dr",
+        "code": "3043",
+        "distance_m": 530
+      }
+    },
+    {
+      "id": "new-central-ps",
+      "name": "New Central Public School",
+      "board": "HDSB",
+      "research_address": "133 Balsam Dr, Oakville, ON L6J 3X4",
+      "lat": 43.4539323,
+      "lon": -79.6615481,
+      "nearest_stop": {
+        "id": "1006",
+        "name": "Reynolds St + Randall St",
+        "code": "2285",
+        "distance_m": 703
+      }
+    },
+    {
+      "id": "pilgrim-wood-ps",
+      "name": "Pilgrim Wood Public School",
+      "board": "HDSB",
+      "research_address": "1551 Pilgrims Way, Oakville, ON L6M 2W7",
+      "lat": 43.4347728,
+      "lon": -79.7284793,
+      "nearest_stop": {
+        "id": "652",
+        "name": "Abbeywood Dr + Pilgrims Way",
+        "code": "2726",
+        "distance_m": 402
+      }
+    },
+    {
+      "id": "st-vincent-ces",
+      "name": "St. Vincent Catholic Elementary School",
+      "board": "HCDSB",
+      "research_address": "1280 Braeside Dr, Oakville, ON L6J 2A4",
+      "lat": 43.465538,
+      "lon": -79.656157,
+      "nearest_stop": {
+        "id": "662",
+        "name": "Devon Rd + Cairncroft Rd",
+        "code": "2607",
+        "distance_m": 446
+      }
+    },
+    {
+      "id": "dearcroft-montessori",
+      "name": "Dearcroft Montessori School",
+      "board": "Private",
+      "research_address": "1167 Lakeshore Rd E, Oakville, ON L6J 1L3",
+      "lat": 43.4589503,
+      "lon": -79.654263,
+      "nearest_stop": {
+        "id": "1028",
+        "name": "Devon Rd + Morrison Rd",
+        "code": "2605",
+        "distance_m": 1087
+      }
+    },
+    {
+      "id": "fern-hill-oakville",
+      "name": "Fern Hill School, Oakville Campus",
+      "board": "Private",
+      "research_address": "3300 Ninth Line, Oakville, ON L6H 7A8",
+      "lat": 43.5148056,
+      "lon": -79.7082342,
+      "nearest_stop": {
+        "id": "468",
+        "name": "Dundas St East + 9th Line",
+        "code": "2212",
+        "distance_m": 1117
+      }
+    }
+  ],
+  "unresolved": [],
+  "decision": "User 2026-10-28: all schools included, >400 m schools carry an explicit walking-distance label"
+}

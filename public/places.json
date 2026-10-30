@@ -1,0 +1,4793 @@
+{
+  "meta": {
+    "source": "Verified preset-place research, ~/workspace/oakville-gtfs-check/PRESET-DESTINATIONS.md",
+    "note": "Only places with a name, address, and tool-returned coordinates in the research file, mapped to a GTFS stop. Mapping rule (user decision 2026-10-29): STREET (routed-foot) distance, 400 m threshold; places over 400 m street are KEPT with an explicit street walking-distance note/label, not excluded. South Common, Famijoy/United at 125 Cross Ave, Costco Oakville, and Nations Experience are never included. Cross-boundary places are flagged cross=true.",
+    "excluded": [
+      {
+        "name": "TD Canada Trust",
+        "address": "2059 Cornwall Rd, Oakville, ON L6J 7S2",
+        "reason": "TD flagged branch, status not re-verified"
+      },
+      {
+        "name": "St. Cuthbert's Anglican Church",
+        "address": "1541 Oakhill Dr",
+        "reason": "nearest stop 579 m (>400 m)"
+      },
+      {
+        "name": "Halton Islamic Community Centre (HICC Masjid)",
+        "address": "4269 Regional Rd 25, Oakville L6M 4E9",
+        "reason": "nearest stop 2996 m (>400 m)"
+      },
+      {
+        "name": "Vaishno Devi Temple",
+        "address": "3259 Regional Road 25",
+        "reason": "nearest stop 988 m (>400 m)"
+      },
+      {
+        "name": "Shiva Temple",
+        "address": "3263 Regional Rd 25",
+        "reason": "nearest stop 1021 m (>400 m)"
+      },
+      {
+        "name": "Gairloch Gardens",
+        "address": "1308 Lakeshore Rd E, Oakville, ON",
+        "reason": "Nearest OT stop 1,055 m (route 11, Devon Rd + Cairncroft Rd), over the 400 m mapping rule"
+      },
+      {
+        "name": "Sobeys",
+        "address": "2441 Lakeshore Rd W, Oakville, ON",
+        "reason": "User-confirmed: that address is Farm Boy Bronte, not Sobeys"
+      },
+      {
+        "name": "No Frills",
+        "address": "125 Cross Ave, Oakville, ON",
+        "reason": "That unit is Iqbal Foods Oakville"
+      },
+      {
+        "name": "Desi Mandi",
+        "address": "579 Kerr St (claimed), Oakville, ON",
+        "reason": "Unconfirmed in Oakville; verified Desi Mandi is in Burlington and 579 Kerr St is Organic Garage"
+      },
+      {
+        "name": "Denninger's Foods of the World",
+        "address": "2400 Lakeshore Rd W, Oakville, ON",
+        "reason": "Conflicting open/permanently-closed sources"
+      },
+      {
+        "name": "Food Basics",
+        "address": "3535 Rebecca St, Oakville, ON",
+        "reason": "Appears in one flyer list only; needs a second check against the Shoppers at the same address"
+      },
+      {
+        "name": "Azores Market / Nostalgia Latin Market / Jubilee Fruit Market / Halton African West Indian Superstore",
+        "address": "Oakville, ON",
+        "reason": "Single-source or no verified Oakville address — pending"
+      },
+      {
+        "name": "M&M Food Market",
+        "address": "Oakville, ON",
+        "reason": "Frozen-food specialty, not Major supermarkets; no verified Oakville address in this pass"
+      },
+      {
+        "name": "St. Luke's Community Centre",
+        "address": "3114 Dundas St W, Oakville, ON",
+        "reason": "Anglican — religious, excluded from Town community-centre category"
+      },
+      {
+        "name": "YMCA of Oakville",
+        "address": "410 Rebecca St, Oakville, ON",
+        "reason": "Charity, not a Town of Oakville community centre"
+      },
+      {
+        "name": "Oak Park Neighbourhood Centre",
+        "address": "2200 Sawgrass Dr, Oakville, ON",
+        "reason": "Charity, not a Town of Oakville community centre"
+      },
+      {
+        "name": "OPL Express pickup points",
+        "address": "Queen Elizabeth Park; St. Luke's Community Centre",
+        "reason": "Pickup points, not full OPL branches"
+      },
+      {
+        "name": "Oakville Public Library — Sixteen Mile Branch (old)",
+        "address": "3250 Neyagawa Blvd, Oakville, ON",
+        "reason": "Closed Mar 13, 2026; replaced by 3070 Neyagawa Blvd branch"
+      },
+      {
+        "name": "Golf courses",
+        "address": "Oakville, ON",
+        "reason": "Excluded from Large Parks in Stage 2.1"
+      }
+    ],
+    "stage21_note": "Stage 2.1: category results come from the place category field only, never from substring-matching stop names. Station browsing is the 9 hub stations only. Shopping Centre is 13 entries (SmartCentres Oakville and South Oakville Centre separate; Entertainment Centrum = Centrum, listed once). Community Centre is Town centres only. Library is OPL full branches only. Schools are in search since the 2026-10-28 geocoding pass (74 places; the 7 verified schools >400 m are included with a walking-distance label per user decision 2026-10-28). Large Parks are main-entrance mapped; Gairloch Gardens is excluded (nearest OT stop 1,055 m). Static package still ends 2026-10-31 (ArcGIS zip MD5 unchanged 2026-10-28).",
+    "stage21_followup": "2026-10-28 follow-up: Asian Supermarket and Specialty Grocery merged into one category 'specialtyasian' (Asian & Specialty Grocery). School category was deleted for now at that time (the single Gladys Speers prototype destination was removed; prototype list 10 -> 9), then RESTORED by the 2026-10-28 Nominatim geocoding pass (build_schools.py): all 74 geocoded schools are School places. User decision 2026-10-28: the 7 verified schools >400 m from a stop are INCLUDED with an explicit walking-distance label (longWalk=True, walkFromStop_m = true distance) and must never be dropped by a re-run; 0 unresolved.",
+    "schools_note": "Schools geocoded via OSM Nominatim (see schools-geocoded.json): 74 School places in total (all 74 research schools; 7 with nearest stop >400 m are included with an explicit walking-distance label per user decision 2026-10-28; 0 added by this run), 0 unresolved (not added, never guessed).",
+    "street_rule": "User decision 2026-10-29: mapping rule is STREET (routed-foot) distance, not straight-line. stop.distance_m in places.json is the routed-foot street distance from street-audit.json (230/230 measured, coordinates only). Threshold stays 400 m, but over-400 m street places are NOT excluded: the 24 places with street >400 m and straight <=400 m carry the distance in their note field ('Street walk {m} m from nearest stop'), and the 7 longWalk schools carry it in walkFromStop_m (longWalk label). Longo's 338 Dundas St E was CORRECTED 2026-10-29: its old placeholder coordinates wrongly mapped it to Kerr St stop 870 (2,891 m street); Nominatim-verified coordinates 43.4883376, -79.7175689 (OSM way 27500951) remap it to Trafalgar + Dundas stop 1657, 151 m straight / 336 m street. Re-run order: build_stage21.py -> build_schools.py -> apply_street_rule.py (this script is idempotent)."
+  },
+  "places": [
+    {
+      "id": "bmo-cornwall-chartwell",
+      "name": "BMO Cornwall & Chartwell",
+      "address": "475 Cornwall Rd, Oakville, ON L6J 7S8",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.461838,
+      "lon": -79.674272,
+      "stop": {
+        "id": "114",
+        "name": "Cornwall Rd at the Shops of Oakville South",
+        "code": "3421",
+        "distance_m": 162
+      },
+      "routes": [
+        "4"
+      ]
+    },
+    {
+      "id": "bmo-dundas-third-line",
+      "name": "BMO Dundas & Third Line",
+      "address": "2536 Third Line, Oakville, ON L6M 0G8",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.449752,
+      "lon": -79.760676,
+      "stop": {
+        "id": "569",
+        "name": "Dundas St West + Third Line",
+        "code": "3033",
+        "distance_m": 193
+      },
+      "routes": [
+        "5"
+      ]
+    },
+    {
+      "id": "bmo-dundas-trafalgar",
+      "name": "BMO Dundas & Trafalgar",
+      "address": "320 Dundas St E, Oakville, ON L6H 6Z9",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.487985,
+      "lon": -79.718853,
+      "stop": {
+        "id": "1657",
+        "name": "Trafalgar + Dundas",
+        "code": "2109",
+        "distance_m": 349
+      },
+      "routes": [
+        "1",
+        "37"
+      ]
+    },
+    {
+      "id": "bmo-hopedale-mall",
+      "name": "BMO Hopedale Mall",
+      "address": "1461 Rebecca St, Oakville, ON L6L 1Z8",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.412765,
+      "lon": -79.70447,
+      "stop": {
+        "id": "877",
+        "name": "South Oakville Centre",
+        "code": "3113",
+        "distance_m": 246
+      },
+      "routes": [
+        "3",
+        "14",
+        "15",
+        "83",
+        "14A"
+      ]
+    },
+    {
+      "id": "bmo-oakville-town-centre",
+      "name": "BMO Oakville Town Centre",
+      "address": "240 North Service Rd W, Oakville, ON L6M 2Y5",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.450135,
+      "lon": -79.702418,
+      "stop": {
+        "id": "530",
+        "name": "North Service Rd West east of Dorval Dr",
+        "code": "2748",
+        "distance_m": 149
+      },
+      "routes": [
+        "18"
+      ]
+    },
+    {
+      "id": "cibc-client-advice-centre-advice-only-atm-cash",
+      "name": "CIBC (Client Advice Centre — advice only, ATM cash)",
+      "address": "511 Maple Grove Dr, Unit 5, Oakville, ON L6J 6X8",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.480635,
+      "lon": -79.65515,
+      "stop": {
+        "id": "305",
+        "name": "Cornwall Rd at Maple Grove Village Plaza",
+        "code": "3419",
+        "distance_m": 166
+      },
+      "routes": [
+        "4"
+      ]
+    },
+    {
+      "id": "rbc-cornwall-trafalgar",
+      "name": "RBC Cornwall & Trafalgar",
+      "address": "361 Cornwall Rd, Unit 107, Oakville, ON L6J 7Z5",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.458257,
+      "lon": -79.677369,
+      "stop": {
+        "id": "792",
+        "name": "Cornwall Rd + Allan St",
+        "code": "3070",
+        "distance_m": 101
+      },
+      "routes": [
+        "4"
+      ]
+    },
+    {
+      "id": "rbc-glen-abbey",
+      "name": "RBC Glen Abbey",
+      "address": "220 North Service Rd W, Oakville, ON L6M 2Y3",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.448919,
+      "lon": -79.702582,
+      "stop": {
+        "id": "1557",
+        "name": "Dorval Dr + North Service Rd West",
+        "code": "3182",
+        "distance_m": 311
+      },
+      "routes": [
+        "28",
+        "81S"
+      ]
+    },
+    {
+      "id": "rbc-third-line-dundas",
+      "name": "RBC Third Line & Dundas",
+      "address": "2501 Third Line, Suite A, Oakville, ON L6M 5A9",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.450891,
+      "lon": -79.7596,
+      "stop": {
+        "id": "1078",
+        "name": "Dundas St West + Third Line",
+        "code": "3034",
+        "distance_m": 240
+      },
+      "routes": [
+        "5"
+      ]
+    },
+    {
+      "id": "td-canada-trust",
+      "name": "TD Canada Trust",
+      "address": "282 Lakeshore Rd E, Oakville, ON L6J 5B2",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.447264,
+      "lon": -79.666006,
+      "stop": {
+        "id": "1253",
+        "name": "Church St + Dunn St",
+        "code": "2571",
+        "distance_m": 210
+      },
+      "routes": [
+        "14",
+        "14A"
+      ]
+    },
+    {
+      "id": "td-canada-trust",
+      "name": "TD Canada Trust",
+      "address": "2221 Lakeshore Rd W, Oakville, ON L6L 1H1",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.39954,
+      "lon": -79.706514,
+      "stop": {
+        "id": "1259",
+        "name": "Lakeshore Rd West + East St",
+        "code": "2341",
+        "distance_m": 26
+      },
+      "routes": [
+        "3",
+        "14",
+        "14A"
+      ]
+    },
+    {
+      "id": "td-canada-trust",
+      "name": "TD Canada Trust",
+      "address": "2993 Westoak Trails Blvd, Oakville, ON L6M 5E4",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.428557,
+      "lon": -79.765787,
+      "stop": {
+        "id": "169",
+        "name": "Westoak Trails Blvd east of Bronte Rd",
+        "code": "3081",
+        "distance_m": 113
+      },
+      "routes": [
+        "13",
+        "71",
+        "86A",
+        "86B"
+      ]
+    },
+    {
+      "id": "td-canada-trust",
+      "name": "TD Canada Trust",
+      "address": "1424 Upper Middle Rd W, Oakville, ON L6M 3G3",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.439389,
+      "lon": -79.740088,
+      "stop": {
+        "id": "502",
+        "name": "Upper Middle Rd West at Abbey Plaza",
+        "code": "3335",
+        "distance_m": 139
+      },
+      "routes": [
+        "6",
+        "81A",
+        "81B"
+      ]
+    },
+    {
+      "id": "td-canada-trust",
+      "name": "TD Canada Trust",
+      "address": "1131 Nottinghill Gate, Oakville, ON L6M 1K5",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.440162,
+      "lon": -79.71976,
+      "stop": {
+        "id": "660",
+        "name": "Nottinghill Gate + Pilgrims Way",
+        "code": "2735",
+        "distance_m": 122
+      },
+      "routes": [
+        "18",
+        "81B"
+      ]
+    },
+    {
+      "id": "td-canada-trust",
+      "name": "TD Canada Trust",
+      "address": "231 North Service Rd W, Oakville, ON L6M 3R2",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.450294,
+      "lon": -79.70398,
+      "stop": {
+        "id": "1557",
+        "name": "Dorval Dr + North Service Rd West",
+        "code": "3182",
+        "distance_m": 218
+      },
+      "routes": [
+        "28",
+        "81S"
+      ]
+    },
+    {
+      "id": "td-canada-trust",
+      "name": "TD Canada Trust",
+      "address": "2325 Trafalgar Rd, Oakville, ON L6H 6N9",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.483127,
+      "lon": -79.712433,
+      "stop": {
+        "id": "680",
+        "name": "Trafalgar Rd. + Rosegate Way",
+        "code": "3157",
+        "distance_m": 93
+      },
+      "routes": [
+        "1",
+        "19",
+        "71",
+        "80"
+      ]
+    },
+    {
+      "id": "td-canada-trust",
+      "name": "TD Canada Trust",
+      "address": "1515 Rebecca St, Oakville, ON L6L 5G8",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.412451,
+      "lon": -79.705598,
+      "stop": {
+        "id": "877",
+        "name": "South Oakville Centre",
+        "code": "3113",
+        "distance_m": 58
+      },
+      "routes": [
+        "3",
+        "14",
+        "15",
+        "83",
+        "14A"
+      ]
+    },
+    {
+      "id": "td-dundas-neyagawa",
+      "name": "TD Dundas & Neyagawa",
+      "address": "498 Dundas St W, Oakville, ON L6H 6Y3",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.463534,
+      "lon": -79.742905,
+      "stop": {
+        "id": "960",
+        "name": "Neyagawa Blvd + Riverbank Way",
+        "code": "1014",
+        "distance_m": 110
+      },
+      "routes": [
+        "71"
+      ]
+    },
+    {
+      "id": "td-dundas-prince-michael",
+      "name": "TD Dundas & Prince Michael",
+      "address": "2517 Prince Michael Dr, Oakville, ON L6H 0E9",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.497945,
+      "lon": -79.707908,
+      "stop": {
+        "id": "732",
+        "name": "Dundas St East + Prince Michael Dr",
+        "code": "3425",
+        "distance_m": 194
+      },
+      "routes": [
+        "5"
+      ]
+    },
+    {
+      "id": "td-iroquois-trafalgar",
+      "name": "TD Iroquois & Trafalgar",
+      "address": "321 Iroquois Shore Rd, Oakville, ON L6H 1M3",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.465099,
+      "lon": -79.68682,
+      "stop": {
+        "id": "1213",
+        "name": "Trafalgar Rd + Iroquois Shore Rd",
+        "code": "3143",
+        "distance_m": 157
+      },
+      "routes": [
+        "1",
+        "19",
+        "71"
+      ]
+    },
+    {
+      "id": "td-upper-oakville-shopping-centre",
+      "name": "TD Upper Oakville Shopping Centre",
+      "address": "1011 Upper Middle Rd E, Oakville, ON L6H 4L1",
+      "cat": "bank",
+      "cross": false,
+      "lat": 43.482475,
+      "lon": -79.695955,
+      "stop": {
+        "id": "1289",
+        "name": "8th Line + Granby Dr",
+        "code": "2836",
+        "distance_m": 222
+      },
+      "routes": [
+        "20",
+        "80"
+      ]
+    },
+    {
+      "id": "best-buy",
+      "name": "Best Buy",
+      "address": "2500 Winston Park Dr, Unit A, Oakville, ON L6H 7E5",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.516312,
+      "lon": -79.68601,
+      "stop": {
+        "id": "505",
+        "name": "Bristol Circle + Winston Park Dr",
+        "code": "2989",
+        "distance_m": 150
+      },
+      "routes": [
+        "6",
+        "120"
+      ]
+    },
+    {
+      "id": "canadian-tire",
+      "name": "Canadian Tire",
+      "address": "1100 Kerr St, Oakville, ON L6M 0L4",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.449872,
+      "lon": -79.698799,
+      "stop": {
+        "id": "261",
+        "name": "Kerr St at Canadian Tire",
+        "code": "3230",
+        "distance_m": 121
+      },
+      "routes": [
+        "18"
+      ]
+    },
+    {
+      "id": "canadian-tire",
+      "name": "Canadian Tire",
+      "address": "400 Dundas St E, Oakville, ON L6H 6Z9",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.488667,
+      "lon": -79.715421,
+      "stop": {
+        "id": "520",
+        "name": "Postridge Dr + English Rose Ln",
+        "code": "2291",
+        "distance_m": 131
+      },
+      "routes": [
+        "20"
+      ]
+    },
+    {
+      "id": "canadian-tire",
+      "name": "Canadian Tire",
+      "address": "2510 Hyde Park Gate, Oakville, ON L6H 6M2",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.513487,
+      "lon": -79.68924,
+      "stop": {
+        "id": "236",
+        "name": "Bristol Circle + Hyde Park Gate",
+        "code": "2278",
+        "distance_m": 259
+      },
+      "routes": [
+        "12"
+      ]
+    },
+    {
+      "id": "homesense",
+      "name": "HomeSense",
+      "address": "200 North Service Rd, Oakville, ON",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.44951,
+      "lon": -79.700518,
+      "stop": {
+        "id": "719",
+        "name": "North Service Rd West east of Dorval Dr",
+        "code": "3228",
+        "distance_m": 200
+      },
+      "routes": [
+        "18"
+      ]
+    },
+    {
+      "id": "mark-s",
+      "name": "Mark's",
+      "address": "2501 Hyde Park Gate E, Oakville, ON L6H 6G6",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.515364,
+      "lon": -79.687023,
+      "stop": {
+        "id": "505",
+        "name": "Bristol Circle + Winston Park Dr",
+        "code": "2989",
+        "distance_m": 385
+      },
+      "routes": [
+        "6",
+        "120"
+      ]
+    },
+    {
+      "id": "marshalls",
+      "name": "Marshalls",
+      "address": "310 N Service Rd W, Oakville, ON L6M 2R7",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.446568,
+      "lon": -79.70285,
+      "stop": {
+        "id": "71",
+        "name": "North Service Rd West + Lindsay Dr",
+        "code": "3139",
+        "distance_m": 264
+      },
+      "routes": [
+        "18"
+      ]
+    },
+    {
+      "id": "michaels",
+      "name": "Michaels",
+      "address": "200 N Service Rd W, Dorval Dr, Oakville, ON L6M 2V1",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.44935,
+      "lon": -79.700679,
+      "stop": {
+        "id": "530",
+        "name": "North Service Rd West east of Dorval Dr",
+        "code": "2748",
+        "distance_m": 204
+      },
+      "routes": [
+        "18"
+      ]
+    },
+    {
+      "id": "petsmart",
+      "name": "PetSmart",
+      "address": "240 Leighland Ave, Suite M7, Oakville Place, Oakville, ON L6H 3H6",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.46209,
+      "lon": -79.68694,
+      "stop": {
+        "id": "1050",
+        "name": "Oakville Place",
+        "code": "2941",
+        "distance_m": 266
+      },
+      "routes": [
+        "13",
+        "71",
+        "86"
+      ]
+    },
+    {
+      "id": "sport-chek",
+      "name": "Sport Chek",
+      "address": "240 Leighland Ave (Unit 144), Oakville Place, Oakville, ON L6H 3H6",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.461599,
+      "lon": -79.687072,
+      "stop": {
+        "id": "1050",
+        "name": "Oakville Place",
+        "code": "2941",
+        "distance_m": 178
+      },
+      "routes": [
+        "13",
+        "71",
+        "86"
+      ]
+    },
+    {
+      "id": "sport-chek",
+      "name": "Sport Chek",
+      "address": "2460 Winston Churchill Blvd, Oakville, ON L6H 6J5",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.520523,
+      "lon": -79.681555,
+      "stop": {
+        "id": "718",
+        "name": "Dundas St West + Hampshire Gate",
+        "code": "2585",
+        "distance_m": 488
+      },
+      "routes": [
+        "5",
+        "6"
+      ],
+      "note": "Street walk 488 m from nearest stop"
+    },
+    {
+      "id": "staples",
+      "name": "Staples",
+      "address": "2460 Winston Churchill Blvd, Oakville, ON L6H 6J5",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.520675,
+      "lon": -79.680739,
+      "stop": {
+        "id": "721",
+        "name": "Bristol Circle + Hampshire Gate",
+        "code": "2279",
+        "distance_m": 376
+      },
+      "routes": [
+        "12"
+      ]
+    },
+    {
+      "id": "the-home-depot",
+      "name": "The Home Depot",
+      "address": "99 Cross Ave, Oakville, ON L6J 2W7",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.454848,
+      "lon": -79.68854,
+      "stop": {
+        "id": "789",
+        "name": "Cross Ave + Lyons Lane",
+        "code": "3055",
+        "distance_m": 260
+      },
+      "routes": [
+        "1",
+        "4",
+        "10",
+        "14",
+        "15",
+        "18",
+        "28",
+        "14A"
+      ]
+    },
+    {
+      "id": "the-home-depot",
+      "name": "The Home Depot",
+      "address": "3300 S Service Rd W, Oakville, ON L6L 0B1",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.399526,
+      "lon": -79.749378,
+      "stop": {
+        "id": "264",
+        "name": "RioCan Centre (East)",
+        "code": "2252",
+        "distance_m": 279
+      },
+      "routes": [
+        "14A"
+      ]
+    },
+    {
+      "id": "winners",
+      "name": "Winners",
+      "address": "2460 Winston Churchill Blvd, Oakville, ON L6H 6J5",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.520856,
+      "lon": -79.680298,
+      "stop": {
+        "id": "952",
+        "name": "Winston Churchill Blvd + Dundas St West",
+        "code": "2584",
+        "distance_m": 315
+      },
+      "routes": [
+        "5",
+        "6"
+      ]
+    },
+    {
+      "id": "winners",
+      "name": "Winners",
+      "address": "200 North Service Rd, Oakville, ON L6M 2G2",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.44985,
+      "lon": -79.701015,
+      "stop": {
+        "id": "530",
+        "name": "North Service Rd West east of Dorval Dr",
+        "code": "2748",
+        "distance_m": 145
+      },
+      "routes": [
+        "18"
+      ]
+    },
+    {
+      "id": "winners",
+      "name": "Winners",
+      "address": "3465 Wyecroft Rd, Unit B1, South Oakville Centre, Oakville, ON L6L 0B6",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.398795,
+      "lon": -79.747968,
+      "stop": {
+        "id": "264",
+        "name": "RioCan Centre (East)",
+        "code": "2252",
+        "distance_m": 146
+      },
+      "routes": [
+        "14A"
+      ]
+    },
+    {
+      "id": "winners-homesense-combined",
+      "name": "Winners & HomeSense (combined)",
+      "address": "2431 Trafalgar Rd, Oakville, ON L6H 6K7",
+      "cat": "bigbox",
+      "cross": false,
+      "lat": 43.486359,
+      "lon": -79.715729,
+      "stop": {
+        "id": "431",
+        "name": "Postridge Dr + Dalebrook Dr",
+        "code": "2882",
+        "distance_m": 338
+      },
+      "routes": [
+        "20",
+        "80"
+      ]
+    },
+    {
+      "id": "glen-abbey-cc",
+      "name": "Glen Abbey Community Centre",
+      "address": "1415 Third Line, Oakville, ON L6M 3G2",
+      "cat": "communityCentre",
+      "cross": false,
+      "lat": 43.435585,
+      "lon": -79.739023,
+      "stop": {
+        "id": "564",
+        "name": "Glen Abbey Gate + Third Line",
+        "code": "2456",
+        "distance_m": 156
+      },
+      "routes": [
+        "28",
+        "81A",
+        "81B"
+      ]
+    },
+    {
+      "id": "iroquois-ridge-cc",
+      "name": "Iroquois Ridge Community Centre",
+      "address": "1051 Glenashton Dr, Oakville, ON L6H 6Z4",
+      "cat": "communityCentre",
+      "cross": false,
+      "lat": 43.48803,
+      "lon": -79.700909,
+      "stop": {
+        "id": "570",
+        "name": "Glenashton Dr + Glenora Dr",
+        "code": "3046",
+        "distance_m": 178
+      },
+      "routes": [
+        "20"
+      ]
+    },
+    {
+      "id": "otcc",
+      "name": "Oakville Trafalgar Community Centre",
+      "address": "Reynolds St, Oakville, ON (former hospital site)",
+      "cat": "communityCentre",
+      "cross": false,
+      "lat": 43.4545,
+      "lon": -79.6825,
+      "stop": {
+        "id": "1212",
+        "name": "Oakville GO Station",
+        "code": "3172",
+        "distance_m": 963
+      },
+      "routes": [
+        "1",
+        "4",
+        "10",
+        "11",
+        "13",
+        "14",
+        "15",
+        "18",
+        "19",
+        "20",
+        "26",
+        "28",
+        "80",
+        "83",
+        "120",
+        "14A",
+        "190"
+      ],
+      "note": "Street walk 963 m from nearest stop"
+    },
+    {
+      "id": "qepccc",
+      "name": "Queen Elizabeth Park Community and Cultural Centre",
+      "address": "2302 Bridge Rd, Oakville, ON",
+      "cat": "communityCentre",
+      "cross": false,
+      "lat": 43.404229,
+      "lon": -79.719225,
+      "stop": {
+        "id": "143",
+        "name": "Bridge Rd at Underwood Cr (Q.E. Park Community and Cultural Centre)",
+        "code": "2618",
+        "distance_m": 456
+      },
+      "routes": [
+        "15",
+        "83"
+      ],
+      "note": "Street walk 456 m from nearest stop"
+    },
+    {
+      "id": "river-oaks-cc",
+      "name": "River Oaks Community Centre",
+      "address": "2400 6th Line, Oakville, ON",
+      "cat": "communityCentre",
+      "cross": false,
+      "lat": 43.470875,
+      "lon": -79.723872,
+      "stop": {
+        "id": "707",
+        "name": "Munn's Ave + 6th Line",
+        "code": "2900",
+        "distance_m": 412
+      },
+      "routes": [
+        "19"
+      ],
+      "note": "Street walk 412 m from nearest stop"
+    },
+    {
+      "id": "sixteen-mile-cc",
+      "name": "Sixteen Mile Community Centre",
+      "address": "3070 Neyagawa Blvd, Oakville, ON L6M 4L6",
+      "cat": "communityCentre",
+      "cross": false,
+      "lat": 43.46592,
+      "lon": -79.749336,
+      "stop": {
+        "id": "1650",
+        "name": "Neyagawa + 16 Mile",
+        "code": "2130",
+        "distance_m": 389
+      },
+      "routes": [
+        "37",
+        "37A"
+      ],
+      "note": "Opened Mar 31, 2026, Sixteen Mile Sports Complex"
+    },
+    {
+      "id": "trafalgar-park-cc",
+      "name": "Trafalgar Park Community Centre",
+      "address": "133 Rebecca St, Oakville, ON",
+      "cat": "communityCentre",
+      "cross": false,
+      "lat": 43.439616,
+      "lon": -79.678057,
+      "stop": {
+        "id": "801",
+        "name": "Rebecca St + Brock St",
+        "code": "2538",
+        "distance_m": 114
+      },
+      "routes": [
+        "14",
+        "14A"
+      ]
+    },
+    {
+      "id": "dynacare-laboratory-and-health-services-centre",
+      "name": "Dynacare Laboratory and Health Services Centre",
+      "address": "2525 Old Bronte Rd #180, Oakville, ON L6M 4J2",
+      "cat": "hospitallab",
+      "cross": false,
+      "lat": 43.435615,
+      "lon": -79.775511,
+      "stop": {
+        "id": "1671",
+        "name": "Dundas St West + Bronte Rd",
+        "code": "2103",
+        "distance_m": 199
+      },
+      "routes": [
+        "5"
+      ]
+    },
+    {
+      "id": "dynacare-laboratory-and-health-services-centre",
+      "name": "Dynacare Laboratory and Health Services Centre",
+      "address": "209 Oak Park Blvd #1, Oakville, ON L6H 7S8",
+      "cat": "hospitallab",
+      "cross": false,
+      "lat": 43.48178,
+      "lon": -79.717062,
+      "stop": {
+        "id": "535",
+        "name": "Oak Park Blvd + Sawgrass Dr",
+        "code": "2583",
+        "distance_m": 334
+      },
+      "routes": [
+        "20"
+      ]
+    },
+    {
+      "id": "dynacare-laboratory-and-health-services-centre",
+      "name": "Dynacare Laboratory and Health Services Centre",
+      "address": "2315 Bristol Cir #103, Oakville, ON L6H 6P8",
+      "cat": "hospitallab",
+      "cross": false,
+      "lat": 43.516734,
+      "lon": -79.675112,
+      "stop": {
+        "id": "1002",
+        "name": "Bristol Circle + south of Brighton Rd",
+        "code": "3342",
+        "distance_m": 162
+      },
+      "routes": [
+        "12"
+      ]
+    },
+    {
+      "id": "lifelabs",
+      "name": "LifeLabs",
+      "address": "170 Rebecca St, Oakville, ON L6K 1J6",
+      "cat": "hospitallab",
+      "cross": false,
+      "lat": 43.438783,
+      "lon": -79.677832,
+      "stop": {
+        "id": "605",
+        "name": "Rebecca St. + Brock St.",
+        "code": "2539",
+        "distance_m": 74
+      },
+      "routes": [
+        "14",
+        "83",
+        "14A"
+      ]
+    },
+    {
+      "id": "lifelabs-medical-laboratory-services",
+      "name": "LifeLabs Medical Laboratory Services",
+      "address": "1060 Speers Rd Ste 104, Oakville, ON L6L 2X4",
+      "cat": "hospitallab",
+      "cross": false,
+      "lat": 43.431282,
+      "lon": -79.703981,
+      "stop": {
+        "id": "473",
+        "name": "1060 Speers Rd (Speers Medical)",
+        "code": "2691",
+        "distance_m": 97
+      },
+      "routes": [
+        "4"
+      ]
+    },
+    {
+      "id": "lifelabs-medical-laboratory-services",
+      "name": "LifeLabs Medical Laboratory Services",
+      "address": "575 River Glen Blvd, Oakville, ON L6H 6X6",
+      "cat": "hospitallab",
+      "cross": false,
+      "lat": 43.46116,
+      "lon": -79.737498,
+      "stop": {
+        "id": "421",
+        "name": "River Glen Blvd + Neyagawa Blvd",
+        "code": "1013",
+        "distance_m": 57
+      },
+      "routes": [
+        "71"
+      ]
+    },
+    {
+      "id": "lifelabs-medical-laboratory-services",
+      "name": "LifeLabs Medical Laboratory Services",
+      "address": "1235 Trafalgar Rd B-08, Oakville, ON L6H 3P1",
+      "cat": "hospitallab",
+      "cross": false,
+      "lat": 43.46741,
+      "lon": -79.690249,
+      "stop": {
+        "id": "464",
+        "name": "White Oaks Blvd + Trafalgar Rd",
+        "code": "2763",
+        "distance_m": 83
+      },
+      "routes": [
+        "190"
+      ]
+    },
+    {
+      "id": "lifelabs-medical-laboratory-services",
+      "name": "LifeLabs Medical Laboratory Services",
+      "address": "3075 Hospital Gate Unit 205, Oakville, ON L6M 1M1",
+      "cat": "hospitallab",
+      "cross": false,
+      "lat": 43.449456,
+      "lon": -79.767061,
+      "stop": {
+        "id": "1632",
+        "name": "Hospital Gate + Volunteer Way",
+        "code": "2149",
+        "distance_m": 86
+      },
+      "routes": [
+        "3",
+        "5"
+      ]
+    },
+    {
+      "id": "oakville-trafalgar-memorial-hospital",
+      "name": "Oakville Trafalgar Memorial Hospital",
+      "address": "3001 Hospital Gate, Oakville, ON L6M 0L8",
+      "cat": "hospitallab",
+      "cross": false,
+      "lat": 43.450557,
+      "lon": -79.764683,
+      "stop": {
+        "id": "1397",
+        "name": "OTMH West Entrance",
+        "code": "2245",
+        "distance_m": 3
+      },
+      "routes": [
+        "3",
+        "5"
+      ]
+    },
+    {
+      "id": "opl-central",
+      "name": "Oakville Public Library — Central Branch",
+      "address": "120 Navy St, Oakville, ON L6J 2Z4",
+      "cat": "library",
+      "cross": false,
+      "lat": 43.443754,
+      "lon": -79.671186,
+      "stop": {
+        "id": "1802",
+        "name": "Navy St. + Lakeshore Rd. E",
+        "code": "3461",
+        "distance_m": 216
+      },
+      "routes": [
+        "14",
+        "14A"
+      ]
+    },
+    {
+      "id": "opl-clearview",
+      "name": "Oakville Public Library — Clearview Branch",
+      "address": "2860 Kingsway Dr, Oakville, ON L6J 6R3",
+      "cat": "library",
+      "cross": false,
+      "lat": 43.501384,
+      "lon": -79.661372,
+      "stop": {
+        "id": "908",
+        "name": "Kingsway Dr + Chalfield Dr",
+        "code": "3191",
+        "distance_m": 348
+      },
+      "routes": [
+        "12"
+      ]
+    },
+    {
+      "id": "opl-glen-abbey",
+      "name": "Oakville Public Library — Glen Abbey Branch",
+      "address": "1415 Third Line, Oakville, ON L6M 3G2",
+      "cat": "library",
+      "cross": false,
+      "lat": 43.43573,
+      "lon": -79.739196,
+      "stop": {
+        "id": "564",
+        "name": "Glen Abbey Gate + Third Line",
+        "code": "2456",
+        "distance_m": 177
+      },
+      "routes": [
+        "28",
+        "81A",
+        "81B"
+      ]
+    },
+    {
+      "id": "opl-iroquois-ridge",
+      "name": "Oakville Public Library — Iroquois Ridge Branch",
+      "address": "1051 Glenashton Dr, Oakville, ON L6H 6Z4",
+      "cat": "library",
+      "cross": false,
+      "lat": 43.48803,
+      "lon": -79.700909,
+      "stop": {
+        "id": "570",
+        "name": "Glenashton Dr + Glenora Dr",
+        "code": "3046",
+        "distance_m": 178
+      },
+      "routes": [
+        "20"
+      ]
+    },
+    {
+      "id": "opl-sixteen-mile",
+      "name": "Oakville Public Library — Sixteen Mile Branch",
+      "address": "3070 Neyagawa Blvd, Oakville, ON L6M 4L6",
+      "cat": "library",
+      "cross": false,
+      "lat": 43.46592,
+      "lon": -79.749336,
+      "stop": {
+        "id": "1650",
+        "name": "Neyagawa + 16 Mile",
+        "code": "2130",
+        "distance_m": 389
+      },
+      "routes": [
+        "37",
+        "37A"
+      ]
+    },
+    {
+      "id": "opl-white-oaks",
+      "name": "Oakville Public Library — White Oaks Branch",
+      "address": "1070 McCraney St E, Oakville, ON L6H 2R6",
+      "cat": "library",
+      "cross": false,
+      "lat": 43.463718,
+      "lon": -79.702365,
+      "stop": {
+        "id": "199",
+        "name": "McCraney St East at White Oaks SS",
+        "code": "2963",
+        "distance_m": 115
+      },
+      "routes": [
+        "19",
+        "80"
+      ]
+    },
+    {
+      "id": "opl-woodside",
+      "name": "Oakville Public Library — Woodside Branch",
+      "address": "1274 Rebecca St, Oakville, ON L6L 1Z2",
+      "cat": "library",
+      "cross": false,
+      "lat": 43.417246,
+      "lon": -79.698347,
+      "stop": {
+        "id": "249",
+        "name": "Rebecca St + Woodside Dr",
+        "code": "2654",
+        "distance_m": 48
+      },
+      "routes": [
+        "14",
+        "83",
+        "14A"
+      ]
+    },
+    {
+      "id": "bronte-creek-park",
+      "name": "Bronte Creek Provincial Park",
+      "address": "1219 Burloak Dr, Oakville, ON L6M 4J7",
+      "cat": "park",
+      "cross": false,
+      "lat": 43.39,
+      "lon": -79.752,
+      "stop": {
+        "id": "1524",
+        "name": "Harvester Rd + Syscon Rd",
+        "code": "2170",
+        "distance_m": 209
+      },
+      "routes": [
+        "14",
+        "14A"
+      ],
+      "provincial": true,
+      "note": "Provincial park; day-use fee may apply"
+    },
+    {
+      "id": "bronte-heritage-park",
+      "name": "Bronte Heritage Waterfront Park",
+      "address": "2340 Ontario St, Oakville, ON L6L 6P7",
+      "cat": "park",
+      "cross": false,
+      "lat": 43.418,
+      "lon": -79.724,
+      "stop": {
+        "id": "1278",
+        "name": "Wyecroft Rd + South Service Rd West",
+        "code": "3238",
+        "distance_m": 155
+      },
+      "routes": [
+        "3",
+        "4",
+        "10",
+        "18",
+        "28"
+      ]
+    },
+    {
+      "id": "coronation-park",
+      "name": "Coronation Park",
+      "address": "1426 Lakeshore Rd W, Oakville, ON L6L 1G2",
+      "cat": "park",
+      "cross": false,
+      "lat": 43.4045,
+      "lon": -79.7025,
+      "stop": {
+        "id": "641",
+        "name": "Lakeshore Rd West + Windsor Gate",
+        "code": "2624",
+        "distance_m": 569
+      },
+      "routes": [
+        "14",
+        "14A"
+      ],
+      "note": "Street walk 569 m from nearest stop"
+    },
+    {
+      "id": "lakeside-park",
+      "name": "Lakeside Park",
+      "address": "144 Front St, Oakville, ON L6J 2Y5",
+      "cat": "park",
+      "cross": false,
+      "lat": 43.443,
+      "lon": -79.672,
+      "stop": {
+        "id": "1812",
+        "name": "Lakeshore Rd. W. + Forsythe St.",
+        "code": "3471",
+        "distance_m": 87
+      },
+      "routes": [
+        "14",
+        "14A"
+      ]
+    },
+    {
+      "id": "lions-valley-park",
+      "name": "Lions Valley Park",
+      "address": "1227 Lions Valley Park Rd, Oakville, ON L6H 6W8",
+      "cat": "park",
+      "cross": false,
+      "lat": 43.435,
+      "lon": -79.78,
+      "stop": {
+        "id": "94",
+        "name": "Dundas St West + Valleyridge Dr",
+        "code": "3010",
+        "distance_m": 223
+      },
+      "routes": [
+        "5"
+      ],
+      "slopeNote": true,
+      "note": "Valley trails are steep in places — use caution"
+    },
+    {
+      "id": "north-park",
+      "name": "North Park",
+      "address": "3250 Neyagawa Blvd, Oakville, ON",
+      "cat": "park",
+      "cross": false,
+      "lat": 43.469,
+      "lon": -79.751,
+      "stop": {
+        "id": "1777",
+        "name": "Neyagawa Blvd + North Park Blvd",
+        "code": "3439",
+        "distance_m": 209
+      },
+      "routes": [
+        "37",
+        "37A"
+      ]
+    },
+    {
+      "id": "shell-park",
+      "name": "Shell Park",
+      "address": "3307 Lakeshore Rd W, Oakville, ON",
+      "cat": "park",
+      "cross": false,
+      "lat": 43.3798,
+      "lon": -79.7173,
+      "stop": {
+        "id": "309",
+        "name": "Lakeshore Rd West at Shell Park",
+        "code": "3127",
+        "distance_m": 0
+      },
+      "routes": [
+        "14",
+        "14A"
+      ]
+    },
+    {
+      "id": "cims-guardian-pharmacy",
+      "name": "CIMS Guardian Pharmacy",
+      "address": "1235 Trafalgar Rd, Oakville, ON L6H 3P1",
+      "cat": "pharmacy",
+      "cross": false,
+      "lat": 43.467456,
+      "lon": -79.690396,
+      "stop": {
+        "id": "464",
+        "name": "White Oaks Blvd + Trafalgar Rd",
+        "code": "2763",
+        "distance_m": 139
+      },
+      "routes": [
+        "190"
+      ]
+    },
+    {
+      "id": "i-d-a-ford-drive-pharmacy",
+      "name": "I.D.A Ford Drive Pharmacy",
+      "address": "609 Ford Dr, Unit 7, Oakville, ON L6J 7Z6",
+      "cat": "pharmacy",
+      "cross": false,
+      "lat": 43.489033,
+      "lon": -79.650431,
+      "stop": {
+        "id": "81",
+        "name": "Ford Dr south of Royal Windsor Dr",
+        "code": "2834",
+        "distance_m": 156
+      },
+      "routes": [
+        "4",
+        "11",
+        "84"
+      ]
+    },
+    {
+      "id": "morelli-s-guardian-pharmacy",
+      "name": "Morelli's Guardian Pharmacy",
+      "address": "469 Cornwall Rd, Oakville, ON L6J 7S8",
+      "cat": "pharmacy",
+      "cross": false,
+      "lat": 43.461945,
+      "lon": -79.674983,
+      "stop": {
+        "id": "114",
+        "name": "Cornwall Rd at the Shops of Oakville South",
+        "code": "3421",
+        "distance_m": 156
+      },
+      "routes": [
+        "4"
+      ]
+    },
+    {
+      "id": "rexall",
+      "name": "Rexall",
+      "address": "523 Maple Grove Dr, Oakville, ON L6J 4W3",
+      "cat": "pharmacy",
+      "cross": false,
+      "lat": 43.479611,
+      "lon": -79.657535,
+      "stop": {
+        "id": "934",
+        "name": "Cornwall Rd + Maple Grove Dr",
+        "code": "2489",
+        "distance_m": 165
+      },
+      "routes": [
+        "4"
+      ]
+    },
+    {
+      "id": "rexall",
+      "name": "Rexall",
+      "address": "2441 Lakeshore Rd W, Unit 2 (also listed as Unit 100), Oakville, ON L6L 1H6",
+      "cat": "pharmacy",
+      "cross": false,
+      "lat": 43.395332,
+      "lon": -79.711782,
+      "stop": {
+        "id": "488",
+        "name": "Lakeshore Rd West + Bronte Rd",
+        "code": "2337",
+        "distance_m": 130
+      },
+      "routes": [
+        "14",
+        "14A"
+      ]
+    },
+    {
+      "id": "shoppers-drug-mart",
+      "name": "Shoppers Drug Mart",
+      "address": "240 Leighland Ave, Unit 109A, Oakville, ON L6H 3H6",
+      "cat": "pharmacy",
+      "cross": false,
+      "lat": 43.461632,
+      "lon": -79.686999,
+      "stop": {
+        "id": "1050",
+        "name": "Oakville Place",
+        "code": "2941",
+        "distance_m": 216
+      },
+      "routes": [
+        "13",
+        "71",
+        "86"
+      ]
+    },
+    {
+      "id": "shoppers-drug-mart",
+      "name": "Shoppers Drug Mart",
+      "address": "351 Cornwall Rd, Oakville, ON L6J 7Z5",
+      "cat": "pharmacy",
+      "cross": false,
+      "lat": 43.457625,
+      "lon": -79.677776,
+      "stop": {
+        "id": "714",
+        "name": "Cornwall Rd + Allan St",
+        "code": "3071",
+        "distance_m": 208
+      },
+      "routes": [
+        "4"
+      ]
+    },
+    {
+      "id": "shoppers-drug-mart",
+      "name": "Shoppers Drug Mart",
+      "address": "478 Dundas St W, Oakville, ON L6H 6Y3",
+      "cat": "pharmacy",
+      "cross": false,
+      "lat": 43.463812,
+      "lon": -79.742009,
+      "stop": {
+        "id": "960",
+        "name": "Neyagawa Blvd + Riverbank Way",
+        "code": "1014",
+        "distance_m": 106
+      },
+      "routes": [
+        "71"
+      ]
+    },
+    {
+      "id": "shoppers-drug-mart",
+      "name": "Shoppers Drug Mart",
+      "address": "2525 Prince Michael Dr, Oakville, ON L6H 0E9",
+      "cat": "pharmacy",
+      "cross": false,
+      "lat": 43.498471,
+      "lon": -79.707033,
+      "stop": {
+        "id": "732",
+        "name": "Dundas St East + Prince Michael Dr",
+        "code": "3425",
+        "distance_m": 120
+      },
+      "routes": [
+        "5"
+      ]
+    },
+    {
+      "id": "shoppers-drug-mart",
+      "name": "Shoppers Drug Mart",
+      "address": "1011 Upper Middle Rd E, Unit D5, Oakville, ON L6H 4L3",
+      "cat": "pharmacy",
+      "cross": false,
+      "lat": 43.481937,
+      "lon": -79.694929,
+      "stop": {
+        "id": "855",
+        "name": "Upper Middle Rd East east of 8th Line",
+        "code": "2447",
+        "distance_m": 151
+      },
+      "routes": [
+        "6"
+      ]
+    },
+    {
+      "id": "shoppers-drug-mart",
+      "name": "Shoppers Drug Mart",
+      "address": "2501 Third Line, Building B/B1, Oakville, ON L6M 5A9",
+      "cat": "pharmacy",
+      "cross": false,
+      "lat": 43.449849,
+      "lon": -79.758848,
+      "stop": {
+        "id": "467",
+        "name": "3rd Line north of Pine Glen Rd",
+        "code": "2432",
+        "distance_m": 107
+      },
+      "routes": [
+        "3"
+      ]
+    },
+    {
+      "id": "shoppers-drug-mart",
+      "name": "Shoppers Drug Mart",
+      "address": "550 Kerr St, Oakville, ON L6K 3C7",
+      "cat": "pharmacy",
+      "cross": false,
+      "lat": 43.44665,
+      "lon": -79.688812,
+      "stop": {
+        "id": "736",
+        "name": "Speers Rd west of Kerr St",
+        "code": "2980",
+        "distance_m": 154
+      },
+      "routes": [
+        "4",
+        "28"
+      ]
+    },
+    {
+      "id": "shoppers-drug-mart",
+      "name": "Shoppers Drug Mart",
+      "address": "183 Lakeshore Rd W, Oakville, ON L6K 1E7",
+      "cat": "pharmacy",
+      "cross": false,
+      "lat": 43.437854,
+      "lon": -79.67874,
+      "stop": {
+        "id": "1813",
+        "name": "Lakeshore Rd. W. + Maurice Dr. (WB)",
+        "code": "3472",
+        "distance_m": 229
+      },
+      "routes": [
+        "14",
+        "14A"
+      ]
+    },
+    {
+      "id": "st-marks-pharmacy-ida",
+      "name": "St Marks Pharmacy (IDA)",
+      "address": "586 Argus Rd, Oakville, ON L6J 3J3",
+      "cat": "pharmacy",
+      "cross": false,
+      "lat": 43.457287,
+      "lon": -79.685403,
+      "stop": {
+        "id": "1300",
+        "name": "Cross Ave + Argus Rd",
+        "code": "2564",
+        "distance_m": 225
+      },
+      "routes": [
+        "1",
+        "4",
+        "10",
+        "14",
+        "15",
+        "18",
+        "28",
+        "83",
+        "14A"
+      ]
+    },
+    {
+      "id": "the-medicine-shoppe-pharmacy-209",
+      "name": "The Medicine Shoppe Pharmacy #209",
+      "address": "267 Lakeshore Rd E, Oakville, ON L6J 1H9",
+      "cat": "pharmacy",
+      "cross": false,
+      "lat": 43.447112,
+      "lon": -79.666947,
+      "stop": {
+        "id": "1253",
+        "name": "Church St + Dunn St",
+        "code": "2571",
+        "distance_m": 188
+      },
+      "routes": [
+        "14",
+        "14A"
+      ]
+    },
+    {
+      "id": "upper-middle-ida",
+      "name": "Upper Middle IDA",
+      "address": "1534 Queensbury Cres, Oakville, ON L6H 4G5",
+      "cat": "pharmacy",
+      "cross": false,
+      "lat": 43.469812,
+      "lon": -79.706936,
+      "stop": {
+        "id": "197",
+        "name": "Oakmead Blvd + Upper Middle Rd East",
+        "code": "2879",
+        "distance_m": 108
+      },
+      "routes": [
+        "19"
+      ]
+    },
+    {
+      "id": "al-falah-islamic-centre",
+      "name": "Al Falah Islamic Centre",
+      "address": "391 Burnhamthorpe Rd E",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.503954,
+      "lon": -79.736157,
+      "stop": {
+        "id": "1659",
+        "name": "Trafalgar Rd + Burnhamthorpe Rd East",
+        "code": "2111",
+        "distance_m": 352
+      },
+      "routes": [
+        "1"
+      ]
+    },
+    {
+      "id": "church-of-the-epiphany",
+      "name": "Church of the Epiphany",
+      "address": "141 Bronte Rd",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.394995,
+      "lon": -79.71395,
+      "stop": {
+        "id": "333",
+        "name": "Bronte Rd + Sovereign St",
+        "code": "2972",
+        "distance_m": 94
+      },
+      "routes": [
+        "3"
+      ]
+    },
+    {
+      "id": "church-of-the-incarnation",
+      "name": "Church of the Incarnation",
+      "address": "1240 Old Abbey Ln",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.44775,
+      "lon": -79.713513,
+      "stop": {
+        "id": "1009",
+        "name": "Old Abbey Ln + Dorval Dr",
+        "code": "2482",
+        "distance_m": 156
+      },
+      "routes": [
+        "81S"
+      ]
+    },
+    {
+      "id": "glen-abbey-united-church",
+      "name": "Glen Abbey United Church",
+      "address": "1469 Nottinghill Gate",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.445705,
+      "lon": -79.731825,
+      "stop": {
+        "id": "790",
+        "name": "Loyola Catholic Secondary School",
+        "code": "2393",
+        "distance_m": 285
+      },
+      "routes": [
+        "82",
+        "81A",
+        "81B",
+        "81N",
+        "81S"
+      ]
+    },
+    {
+      "id": "holy-trinity-croatian-catholic-parish",
+      "name": "Holy Trinity Croatian Catholic Parish",
+      "address": "2110 Trafalgar Rd",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.477155,
+      "lon": -79.705906,
+      "stop": {
+        "id": "1296",
+        "name": "River Oaks Blvd East + Namron Gate",
+        "code": "2235",
+        "distance_m": 55
+      },
+      "routes": [
+        "190"
+      ]
+    },
+    {
+      "id": "iskcon-oakville",
+      "name": "ISKCON Oakville",
+      "address": "467 Speers Rd",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.437715,
+      "lon": -79.697745,
+      "stop": {
+        "id": "638",
+        "name": "Speers Rd + 427 Speers Rd",
+        "code": "2696",
+        "distance_m": 155
+      },
+      "routes": [
+        "4"
+      ]
+    },
+    {
+      "id": "jame-masjid-oakville-world-islamic-mission-canada",
+      "name": "Jame Masjid Oakville (World Islamic Mission Canada)",
+      "address": "2478 Ninth Line",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.506283,
+      "lon": -79.695805,
+      "stop": {
+        "id": "363",
+        "name": "Dundas St East + 9th Line",
+        "code": "2211",
+        "distance_m": 314
+      },
+      "routes": [
+        "5"
+      ]
+    },
+    {
+      "id": "knox-presbyterian-church-downtown",
+      "name": "Knox Presbyterian Church, Downtown",
+      "address": "89 Dunn St",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.446365,
+      "lon": -79.666609,
+      "stop": {
+        "id": "518",
+        "name": "Church St. + Dunn St. (EB)",
+        "code": "3119",
+        "distance_m": 161
+      },
+      "routes": [
+        "1",
+        "14",
+        "83",
+        "14A"
+      ]
+    },
+    {
+      "id": "knox-presbyterian-church-sixteen",
+      "name": "Knox Presbyterian Church, Sixteen",
+      "address": "1150 Dundas St W",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.460429,
+      "lon": -79.748941,
+      "stop": {
+        "id": "1176",
+        "name": "Dundas St. West + Lion Valley Park Rd",
+        "code": "2217",
+        "distance_m": 87
+      },
+      "routes": [
+        "5"
+      ]
+    },
+    {
+      "id": "maple-grove-united-church",
+      "name": "Maple Grove United Church",
+      "address": "346 Maple Grove Dr",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.474474,
+      "lon": -79.652442,
+      "stop": {
+        "id": "243",
+        "name": "Devon Rd + Maple Grove Dr",
+        "code": "2311",
+        "distance_m": 236
+      },
+      "routes": [
+        "11",
+        "84"
+      ]
+    },
+    {
+      "id": "masjid-al-hsan-dar-foundation",
+      "name": "Masjid Al-Hsan – Dar Foundation",
+      "address": "485 Morden Rd",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.442362,
+      "lon": -79.694762,
+      "stop": {
+        "id": "555",
+        "name": "Speers Rd + Dorval Dr",
+        "code": "2720",
+        "distance_m": 507
+      },
+      "routes": [
+        "4",
+        "28"
+      ],
+      "note": "Street walk 507 m from nearest stop"
+    },
+    {
+      "id": "munn-s-united-church",
+      "name": "Munn's United Church",
+      "address": "5 Dundas St E",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.479706,
+      "lon": -79.729096,
+      "stop": {
+        "id": "1128",
+        "name": "Dundas St West + 6th Line",
+        "code": "3038",
+        "distance_m": 109
+      },
+      "routes": [
+        "5"
+      ]
+    },
+    {
+      "id": "saint-volodymyr-cultural-centre-uocc-all-saints-of-ukraine-chapel",
+      "name": "Saint Volodymyr Cultural Centre (UOCC) / All Saints of Ukraine Chapel",
+      "address": "1280 Dundas St W",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.45598,
+      "lon": -79.75266,
+      "stop": {
+        "id": "1559",
+        "name": "Dundas St West + Fourth Line",
+        "code": "2152",
+        "distance_m": 239
+      },
+      "routes": [
+        "5"
+      ]
+    },
+    {
+      "id": "sanatan-mandir-of-canada",
+      "name": "Sanatan Mandir of Canada",
+      "address": "1092 Speers Rd",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.430603,
+      "lon": -79.704358,
+      "stop": {
+        "id": "473",
+        "name": "1060 Speers Rd (Speers Medical)",
+        "code": "2691",
+        "distance_m": 174
+      },
+      "routes": [
+        "4"
+      ]
+    },
+    {
+      "id": "st-aidans-anglican-church",
+      "name": "St Aidans Anglican Church",
+      "address": "318 Queen Mary Dr",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.446516,
+      "lon": -79.680093,
+      "stop": {
+        "id": "1142",
+        "name": "Stewart St + Queen Mary Dr",
+        "code": "2555",
+        "distance_m": 84
+      },
+      "routes": [
+        "15"
+      ]
+    },
+    {
+      "id": "st-peter-and-st-paul-coptic-orthodox-church",
+      "name": "St Peter and St Paul Coptic Orthodox Church",
+      "address": "1177 Invicta Dr",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.475821,
+      "lon": -79.67658,
+      "stop": {
+        "id": "348",
+        "name": "1185 North Service Rd East",
+        "code": "3395",
+        "distance_m": 912
+      },
+      "routes": [
+        "120"
+      ],
+      "note": "Street walk 912 m from nearest stop"
+    },
+    {
+      "id": "st-andrew-s-catholic-church",
+      "name": "St. Andrew's Catholic Church",
+      "address": "47 Reynolds St",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.447148,
+      "lon": -79.663375,
+      "stop": {
+        "id": "1800",
+        "name": "Reynolds St. + Church St.",
+        "code": "3459",
+        "distance_m": 340
+      },
+      "routes": [
+        "14",
+        "14A"
+      ]
+    },
+    {
+      "id": "st-james-roman-catholic-church",
+      "name": "St. James Roman Catholic Church",
+      "address": "231 Morden Rd",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.435987,
+      "lon": -79.687161,
+      "stop": {
+        "id": "1304",
+        "name": "Wildwood Dr + Morden Rd",
+        "code": "2674",
+        "distance_m": 259
+      },
+      "routes": [
+        "15"
+      ]
+    },
+    {
+      "id": "st-joseph-s-portuguese-roman-catholic-church",
+      "name": "St. Joseph's Portuguese Roman Catholic Church",
+      "address": "2451 Old Bronte Rd",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.433947,
+      "lon": -79.773321,
+      "stop": {
+        "id": "1636",
+        "name": "Pine Glen Rd + Old Bronte Rd",
+        "code": "2134",
+        "distance_m": 126
+      },
+      "routes": [
+        "86"
+      ]
+    },
+    {
+      "id": "st-joseph-s-ukrainian-catholic-church",
+      "name": "St. Joseph's Ukrainian Catholic Church",
+      "address": "300 River Oaks Blvd E",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.476859,
+      "lon": -79.705434,
+      "stop": {
+        "id": "138",
+        "name": "Trafalgar Rd + River Oaks Blvd",
+        "code": "3156",
+        "distance_m": 55
+      },
+      "routes": [
+        "1",
+        "190"
+      ]
+    },
+    {
+      "id": "st-jude-s-anglican-church",
+      "name": "St. Jude's Anglican Church",
+      "address": "160 William St",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.443578,
+      "lon": -79.667283,
+      "stop": {
+        "id": "1802",
+        "name": "Navy St. + Lakeshore Rd. E",
+        "code": "3461",
+        "distance_m": 321
+      },
+      "routes": [
+        "14",
+        "14A"
+      ]
+    },
+    {
+      "id": "st-luke-s-community-centre-anglican",
+      "name": "St. Luke's Community Centre (Anglican)",
+      "address": "3114 Dundas St W",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.432321,
+      "lon": -79.77954,
+      "stop": {
+        "id": "1062",
+        "name": "Dundas St West + Valleyridge Dr",
+        "code": "3329",
+        "distance_m": 194
+      },
+      "routes": [
+        "5",
+        "34",
+        "82",
+        "81A",
+        "81N",
+        "86A",
+        "86B"
+      ]
+    },
+    {
+      "id": "st-michael-s-roman-catholic-church",
+      "name": "St. Michael's Roman Catholic Church",
+      "address": "181 Sewell Dr",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.463316,
+      "lon": -79.694621,
+      "stop": {
+        "id": "100",
+        "name": "McCraney St + Romain Cr",
+        "code": "2750",
+        "distance_m": 337
+      },
+      "routes": [
+        "19",
+        "71",
+        "80"
+      ]
+    },
+    {
+      "id": "st-simon-s-anglican-church",
+      "name": "St. Simon's Anglican Church",
+      "address": "1450 Litchfield Rd",
+      "cat": "religious",
+      "cross": false,
+      "lat": 43.473637,
+      "lon": -79.698862,
+      "stop": {
+        "id": "1068",
+        "name": "Trafalgar Rd + White Oaks Blvd (North)",
+        "code": "3152",
+        "distance_m": 62
+      },
+      "routes": [
+        "1",
+        "6"
+      ]
+    },
+    {
+      "id": "abbey-lane-ps",
+      "name": "Abbey Lane Public School",
+      "address": "1160 Old Abbey Lane, Oakville, ON L6M 1S4",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4452237,
+      "lon": -79.7117102,
+      "stop": {
+        "id": "1741",
+        "name": "Old Abbey Ln west of Priory Ct",
+        "code": "2088",
+        "distance_m": 134
+      },
+      "routes": [
+        "81B"
+      ]
+    },
+    {
+      "id": "abbey-park-hs",
+      "name": "Abbey Park High School",
+      "address": "1455 Glen Abbey Gate, Oakville, ON L6M 2G5",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4370093,
+      "lon": -79.7365711,
+      "stop": {
+        "id": "451",
+        "name": "Abbey Park High School",
+        "code": "2398",
+        "distance_m": 222
+      },
+      "routes": [
+        "28",
+        "81A",
+        "81B",
+        "81N",
+        "81S"
+      ]
+    },
+    {
+      "id": "appleby-college",
+      "name": "Appleby College",
+      "address": "540 Lakeshore Rd W, Oakville, ON L6K 3P1",
+      "cat": "school",
+      "board": "Private",
+      "cross": false,
+      "lat": 43.4255975,
+      "lon": -79.6858856,
+      "stop": {
+        "id": "892",
+        "name": "Rebecca St. + Patricia Dr.",
+        "code": "2662",
+        "distance_m": 573
+      },
+      "routes": [
+        "14",
+        "83",
+        "14A"
+      ],
+      "note": "Street walk 573 m from nearest stop"
+    },
+    {
+      "id": "brookdale-ps",
+      "name": "Brookdale Public School",
+      "address": "1195 Bridge Rd, Oakville, ON L6L 2C3",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.424622,
+      "lon": -79.7036686,
+      "stop": {
+        "id": "322",
+        "name": "Bridge Rd at Brookdale Public School",
+        "code": "3126",
+        "distance_m": 42
+      },
+      "routes": [
+        "15"
+      ]
+    },
+    {
+      "id": "captain-r-wilson-ps",
+      "name": "Captain R. Wilson Public School",
+      "address": "2145 Grand Oak Trail, Oakville, ON L6M 4S7",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4294188,
+      "lon": -79.7591371,
+      "stop": {
+        "id": "1310",
+        "name": "Grand Oak Trail + Hemford Dr",
+        "code": "3057",
+        "distance_m": 212
+      },
+      "routes": [
+        "82",
+        "81N"
+      ]
+    },
+    {
+      "id": "chisholm-academy",
+      "name": "Chisholm Academy",
+      "address": "1484 Cornwall Rd, Oakville, ON L6J 7W5",
+      "cat": "school",
+      "board": "Private",
+      "cross": false,
+      "lat": 43.4771669,
+      "lon": -79.659545,
+      "stop": {
+        "id": "113",
+        "name": "Cornwall Rd at Chisholm Academy",
+        "code": "2491",
+        "distance_m": 70
+      },
+      "routes": [
+        "4"
+      ]
+    },
+    {
+      "id": "clanmore-montessori",
+      "name": "Clanmore Montessori School",
+      "address": "2463 Lakeshore Rd E, Oakville, ON L6J 1M7",
+      "cat": "school",
+      "board": "Private",
+      "cross": false,
+      "lat": 43.4812731,
+      "lon": -79.6304832,
+      "stop": {
+        "id": "751",
+        "name": "Devon Rd + Lakeshore Rd East",
+        "code": "2922",
+        "distance_m": 328
+      },
+      "routes": [
+        "11",
+        "84"
+      ]
+    },
+    {
+      "id": "dearcroft-montessori",
+      "name": "Dearcroft Montessori School",
+      "address": "1167 Lakeshore Rd E, Oakville, ON L6J 1L3",
+      "cat": "school",
+      "board": "Private",
+      "cross": false,
+      "lat": 43.4589503,
+      "lon": -79.654263,
+      "stop": {
+        "id": "1028",
+        "name": "Devon Rd + Morrison Rd",
+        "code": "2605",
+        "distance_m": 1275
+      },
+      "routes": [
+        "11"
+      ],
+      "longWalk": true,
+      "walkFromStop_m": 1275
+    },
+    {
+      "id": "dr-david-r-williams-ps",
+      "name": "Dr. David R. Williams Public School",
+      "address": "3199 Post Rd, Oakville, ON L6H 7C5",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4873281,
+      "lon": -79.7325125,
+      "stop": {
+        "id": "1825",
+        "name": "Threshing Mill Blvd + Post Rd SW",
+        "code": "3485",
+        "distance_m": 323
+      },
+      "routes": [
+        "80N"
+      ]
+    },
+    {
+      "id": "e-j-james-ps",
+      "name": "E. J. James Public School",
+      "address": "338 Cairncroft Rd, Oakville, ON L6J 4M6",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.467865,
+      "lon": -79.6585823,
+      "stop": {
+        "id": "662",
+        "name": "Devon Rd + Cairncroft Rd",
+        "code": "2607",
+        "distance_m": 270
+      },
+      "routes": [
+        "11"
+      ]
+    },
+    {
+      "id": "eastview-ps",
+      "name": "Eastview Public School",
+      "address": "2266 Hixon St, Oakville, ON L6L 1T4",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4012996,
+      "lon": -79.7095247,
+      "stop": {
+        "id": "44",
+        "name": "Lakeshore Rd West + East St",
+        "code": "2458",
+        "distance_m": 606
+      },
+      "routes": [
+        "14",
+        "14A"
+      ],
+      "note": "Street walk 606 m from nearest stop"
+    },
+    {
+      "id": "eec-sainte-marie",
+      "name": "École élémentaire catholique Sainte-Marie",
+      "address": "336 Maurice Dr, Oakville, ON L6K 2X3",
+      "cat": "school",
+      "board": "MonAvenir",
+      "cross": false,
+      "lat": 43.4423512,
+      "lon": -79.6859537,
+      "stop": {
+        "id": "466",
+        "name": "Stewart St + Maurice Dr",
+        "code": "2536",
+        "distance_m": 43
+      },
+      "routes": [
+        "15"
+      ]
+    },
+    {
+      "id": "ecole-du-chene",
+      "name": "École élémentaire du Chêne",
+      "address": "150 Ridge Dr, Oakville, ON L6H 1B8",
+      "cat": "school",
+      "board": "Viamonde",
+      "cross": false,
+      "lat": 43.4609709,
+      "lon": -79.6928462,
+      "stop": {
+        "id": "87",
+        "name": "Leighland Ave + Robarts Rd",
+        "code": "2942",
+        "distance_m": 767
+      },
+      "routes": [
+        "13"
+      ],
+      "note": "Street walk 767 m from nearest stop"
+    },
+    {
+      "id": "ecole-patricia-picknell",
+      "name": "École élémentaire Patricia-Picknell",
+      "address": "1257 Sedgewick Cres, Oakville, ON L6L 1X6",
+      "cat": "school",
+      "board": "Viamonde",
+      "cross": false,
+      "lat": 43.4167668,
+      "lon": -79.6966886,
+      "stop": {
+        "id": "249",
+        "name": "Rebecca St + Woodside Dr",
+        "code": "2654",
+        "distance_m": 547
+      },
+      "routes": [
+        "14",
+        "83",
+        "14A"
+      ],
+      "note": "Street walk 547 m from nearest stop"
+    },
+    {
+      "id": "esc-sainte-trinite",
+      "name": "École secondaire catholique Sainte-Trinité",
+      "address": "2600 Grand Oak Trail, Oakville, ON L6M 0R4",
+      "cat": "school",
+      "board": "MonAvenir",
+      "cross": false,
+      "lat": 43.436555,
+      "lon": -79.7736451,
+      "stop": {
+        "id": "1631",
+        "name": "Dundas St West + Grand Oak Trail",
+        "code": "2148",
+        "distance_m": 247
+      },
+      "routes": [
+        "5"
+      ]
+    },
+    {
+      "id": "ecole-gaetan-gervais",
+      "name": "École secondaire Gaétan-Gervais",
+      "address": "1075 McCraney St E, Oakville, ON L6H 1H9",
+      "cat": "school",
+      "board": "Viamonde",
+      "cross": false,
+      "lat": 43.4651188,
+      "lon": -79.7033282,
+      "stop": {
+        "id": "349",
+        "name": "White Oaks Secondary School",
+        "code": "2964",
+        "distance_m": 214
+      },
+      "routes": [
+        "19",
+        "71"
+      ]
+    },
+    {
+      "id": "emily-carr-ps",
+      "name": "Emily Carr Public School",
+      "address": "2255 Pine Glen Rd, Oakville, ON L6M 0G5",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.442719,
+      "lon": -79.7638254,
+      "stop": {
+        "id": "141",
+        "name": "Pine Glen Rd + Postmaster Dr",
+        "code": "1035",
+        "distance_m": 140
+      },
+      "routes": [
+        "82",
+        "86",
+        "81N"
+      ]
+    },
+    {
+      "id": "falgarwood-ps",
+      "name": "Falgarwood Public School",
+      "address": "1385 Gainsborough Dr, Oakville, ON L6H 2H7",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4793234,
+      "lon": -79.6835436,
+      "stop": {
+        "id": "263",
+        "name": "Grosvenor St + Grand Blvd",
+        "code": "2775",
+        "distance_m": 226
+      },
+      "routes": [
+        "26"
+      ]
+    },
+    {
+      "id": "fern-hill-oakville",
+      "name": "Fern Hill School, Oakville Campus",
+      "address": "3300 Ninth Line, Oakville, ON L6H 7A8",
+      "cat": "school",
+      "board": "Private",
+      "cross": false,
+      "lat": 43.5148056,
+      "lon": -79.7082342,
+      "stop": {
+        "id": "468",
+        "name": "Dundas St East + 9th Line",
+        "code": "2212",
+        "distance_m": 1225
+      },
+      "routes": [
+        "5"
+      ],
+      "longWalk": true,
+      "walkFromStop_m": 1225
+    },
+    {
+      "id": "forest-trail-ps",
+      "name": "Forest Trail Public School",
+      "address": "1406 Pine Glen Rd, Oakville, ON L6M 4B9",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4506609,
+      "lon": -79.7530114,
+      "stop": {
+        "id": "740",
+        "name": "Pine Glen Rd + Dashwood Dr",
+        "code": "1032",
+        "distance_m": 277
+      },
+      "routes": [
+        "82",
+        "86",
+        "81N"
+      ]
+    },
+    {
+      "id": "garth-webb-ss",
+      "name": "Garth Webb Secondary School",
+      "address": "2820 Westoak Trails Blvd, Oakville, ON L6M 4W2",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4338965,
+      "lon": -79.7542833,
+      "stop": {
+        "id": "1208",
+        "name": "Garth Webb Secondary School",
+        "code": "2443",
+        "distance_m": 285
+      },
+      "routes": [
+        "13",
+        "86",
+        "81A"
+      ]
+    },
+    {
+      "id": "gladys-speers-ps",
+      "name": "Gladys Speers Public School",
+      "address": "2150 Samway Rd, Oakville, ON L6L 2P6",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4098266,
+      "lon": -79.7150189,
+      "stop": {
+        "id": "14",
+        "name": "Bridge Rd + Stanfield Dr",
+        "code": "2619",
+        "distance_m": 309
+      },
+      "routes": [
+        "15",
+        "83"
+      ]
+    },
+    {
+      "id": "harvest-oak-ps",
+      "name": "Harvest Oak Public School",
+      "address": "1235 Wheat Boom Dr, Oakville, ON L6H 7G1",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.5033905,
+      "lon": -79.7110151,
+      "stop": {
+        "id": "393",
+        "name": "Dundas St East + Meadowridge Dr",
+        "code": "3424",
+        "distance_m": 741
+      },
+      "routes": [
+        "5"
+      ],
+      "longWalk": true,
+      "walkFromStop_m": 741
+    },
+    {
+      "id": "heritage-glen-ps",
+      "name": "Heritage Glen Public School",
+      "address": "1641 Heritage Way, Oakville, ON L6M 2Z4",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4315646,
+      "lon": -79.7422351,
+      "stop": {
+        "id": "708",
+        "name": "Heritage Way + Postmaster Dr",
+        "code": "2404",
+        "distance_m": 132
+      },
+      "routes": [
+        "28",
+        "81S"
+      ]
+    },
+    {
+      "id": "holy-family-ces",
+      "name": "Holy Family Catholic Elementary School",
+      "address": "1420 Grosvenor St, Oakville, ON L6H 2X8",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4818529,
+      "lon": -79.6875956,
+      "stop": {
+        "id": "1244",
+        "name": "Grosvenor St + Kimberley Dr",
+        "code": "2776",
+        "distance_m": 46
+      },
+      "routes": [
+        "26"
+      ]
+    },
+    {
+      "id": "holy-trinity-css",
+      "name": "Holy Trinity Catholic Secondary School",
+      "address": "2420 Sixth Line, Oakville, ON L6H 5Z8",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.472781,
+      "lon": -79.725175,
+      "stop": {
+        "id": "1136",
+        "name": "Holy Trinity H. S.",
+        "code": "1051",
+        "distance_m": 167
+      },
+      "routes": [
+        "80",
+        "80N"
+      ]
+    },
+    {
+      "id": "iroquois-ridge-hs",
+      "name": "Iroquois Ridge High School",
+      "address": "1123 Glenashton Dr, Oakville, ON L6H 5M1",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4893703,
+      "lon": -79.6988424,
+      "stop": {
+        "id": "288",
+        "name": "Glenashton Dr at Iroquois Ridge H.S.",
+        "code": "3045",
+        "distance_m": 137
+      },
+      "routes": [
+        "20"
+      ]
+    },
+    {
+      "id": "james-w-hill-ps",
+      "name": "James W. Hill Public School",
+      "address": "2860 Kingsway Dr, Oakville, ON L6J 6R3",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.5011211,
+      "lon": -79.6607432,
+      "stop": {
+        "id": "908",
+        "name": "Kingsway Dr + Chalfield Dr",
+        "code": "3191",
+        "distance_m": 520
+      },
+      "routes": [
+        "12"
+      ],
+      "note": "Street walk 520 m from nearest stop"
+    },
+    {
+      "id": "john-knox-christian",
+      "name": "John Knox Christian School",
+      "address": "2232 Sheridan Garden Dr, Oakville, ON L6J 7T1",
+      "cat": "school",
+      "board": "Private",
+      "cross": false,
+      "lat": 43.4894441,
+      "lon": -79.6566541,
+      "stop": {
+        "id": "85",
+        "name": "Sheridan Garden Dr + Ford Dr",
+        "code": "2290",
+        "distance_m": 309
+      },
+      "routes": [
+        "4",
+        "84"
+      ]
+    },
+    {
+      "id": "joshua-creek-ps",
+      "name": "Joshua Creek Public School",
+      "address": "1450 Arrowhead Rd, Oakville, ON L6H 7P9",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4992634,
+      "lon": -79.6975803,
+      "stop": {
+        "id": "710",
+        "name": "North Ridge Trail + Hall Manor Dr",
+        "code": "3043",
+        "distance_m": 704
+      },
+      "routes": [
+        "20"
+      ],
+      "longWalk": true,
+      "walkFromStop_m": 704
+    },
+    {
+      "id": "kings-christian-collegiate",
+      "name": "King's Christian Collegiate",
+      "address": "528 Burnhamthorpe Rd W, Oakville, ON L6M 4K6",
+      "cat": "school",
+      "board": "Private",
+      "cross": false,
+      "lat": 43.4786164,
+      "lon": -79.7616611,
+      "stop": {
+        "id": "1829",
+        "name": "King's Collegiate",
+        "code": "3489",
+        "distance_m": 596
+      },
+      "routes": [
+        "37A"
+      ],
+      "note": "Street walk 596 m from nearest stop"
+    },
+    {
+      "id": "linbrook-school",
+      "name": "Linbrook School",
+      "address": "1079 Linbrook Rd, Oakville, ON L6J 2L2",
+      "cat": "school",
+      "board": "Private",
+      "cross": false,
+      "lat": 43.4649015,
+      "lon": -79.6685626,
+      "stop": {
+        "id": "690",
+        "name": "Linbrook Rd at Linbrook Public School",
+        "code": "2602",
+        "distance_m": 129
+      },
+      "routes": [
+        "11"
+      ]
+    },
+    {
+      "id": "maclachlan-college",
+      "name": "MacLachlan College",
+      "address": "337 Trafalgar Rd, Oakville, ON L6J 3H3",
+      "cat": "school",
+      "board": "Private",
+      "cross": false,
+      "lat": 43.4526814,
+      "lon": -79.6753581,
+      "stop": {
+        "id": "49",
+        "name": "Reynolds St at Oakville Trafalgar Community Centre",
+        "code": "2308",
+        "distance_m": 430
+      },
+      "routes": [
+        "14",
+        "83",
+        "14A"
+      ],
+      "note": "Street walk 430 m from nearest stop"
+    },
+    {
+      "id": "maple-grove-ps",
+      "name": "Maple Grove Public School",
+      "address": "288 Maple Grove Dr, Oakville, ON L6J 4V5",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4727324,
+      "lon": -79.6513501,
+      "stop": {
+        "id": "889",
+        "name": "Devon Rd at Oakville Trafalgar H.S.",
+        "code": "2786",
+        "distance_m": 405
+      },
+      "routes": [
+        "11",
+        "84"
+      ],
+      "note": "Street walk 405 m from nearest stop"
+    },
+    {
+      "id": "montclair-ps",
+      "name": "Montclair Public School",
+      "address": "1285 Montclair Dr, Oakville, ON L6H 1Z3",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4635818,
+      "lon": -79.6989303,
+      "stop": {
+        "id": "556",
+        "name": "McCraney St + Montclair Dr",
+        "code": "2965",
+        "distance_m": 299
+      },
+      "routes": [
+        "19",
+        "71"
+      ]
+    },
+    {
+      "id": "munns-ps",
+      "name": "Munn's Public School",
+      "address": "1511 Sixth Line, Oakville, ON L6H 1X8",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4660472,
+      "lon": -79.7091849,
+      "stop": {
+        "id": "23",
+        "name": "Sixth Line + Elm Rd.",
+        "code": "2511",
+        "distance_m": 172
+      },
+      "routes": [
+        "19",
+        "71"
+      ]
+    },
+    {
+      "id": "new-central-ps",
+      "name": "New Central Public School",
+      "address": "133 Balsam Dr, Oakville, ON L6J 3X4",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4539323,
+      "lon": -79.6615481,
+      "stop": {
+        "id": "1006",
+        "name": "Reynolds St + Randall St",
+        "code": "2285",
+        "distance_m": 1003
+      },
+      "routes": [
+        "14",
+        "83",
+        "14A"
+      ],
+      "longWalk": true,
+      "walkFromStop_m": 1003
+    },
+    {
+      "id": "oakville-christian-school",
+      "name": "Oakville Christian School",
+      "address": "112 Third Line, Oakville, ON L6L 3Z6",
+      "cat": "school",
+      "board": "Private",
+      "cross": false,
+      "lat": 43.404845,
+      "lon": -79.6987471,
+      "stop": {
+        "id": "1279",
+        "name": "3rd Line + Lakeshore Rd West",
+        "code": "2625",
+        "distance_m": 15
+      },
+      "routes": [
+        "14",
+        "14A"
+      ]
+    },
+    {
+      "id": "oakville-trafalgar-hs",
+      "name": "Oakville Trafalgar High School",
+      "address": "1460 Devon Rd, Oakville, ON L6J 3L6",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4720987,
+      "lon": -79.6535532,
+      "stop": {
+        "id": "889",
+        "name": "Devon Rd at Oakville Trafalgar H.S.",
+        "code": "2786",
+        "distance_m": 353
+      },
+      "routes": [
+        "11",
+        "84"
+      ]
+    },
+    {
+      "id": "oakwood-ps",
+      "name": "Oakwood Public School",
+      "address": "357 Bartos Dr, Oakville, ON L6K 3E5",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4474132,
+      "lon": -79.683574,
+      "stop": {
+        "id": "837",
+        "name": "Queen Mary Dr + Kingswood Rd",
+        "code": "2557",
+        "distance_m": 628
+      },
+      "routes": [
+        "15"
+      ],
+      "note": "Street walk 628 m from nearest stop"
+    },
+    {
+      "id": "oodenawi-ps",
+      "name": "Oodenawi Public School",
+      "address": "385 Sixteen Mile Dr, Oakville, ON L6M 0Z4",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4716983,
+      "lon": -79.7445051,
+      "stop": {
+        "id": "1664",
+        "name": "16 Mile + E/ of Trailside",
+        "code": "2125",
+        "distance_m": 175
+      },
+      "routes": [
+        "37",
+        "37A"
+      ]
+    },
+    {
+      "id": "our-lady-of-peace-ces",
+      "name": "Our Lady of Peace Catholic Elementary School",
+      "address": "391 River Glen Dr, Oakville, ON L6H 5X5",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4662968,
+      "lon": -79.736971,
+      "stop": {
+        "id": "317",
+        "name": "River Glen Blvd at Our Lady of Peace School",
+        "code": "2524",
+        "distance_m": 291
+      },
+      "routes": [
+        "19",
+        "190"
+      ]
+    },
+    {
+      "id": "palermo-ps",
+      "name": "Palermo Public School",
+      "address": "2561 Valleyridge Dr, Oakville, ON L6M 5H4",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4320547,
+      "lon": -79.7760537,
+      "stop": {
+        "id": "696",
+        "name": "Valleyridge Dr + Highvalley Rd",
+        "code": "1041",
+        "distance_m": 120
+      },
+      "routes": [
+        "86"
+      ]
+    },
+    {
+      "id": "pilgrim-wood-ps",
+      "name": "Pilgrim Wood Public School",
+      "address": "1551 Pilgrims Way, Oakville, ON L6M 2W7",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4347728,
+      "lon": -79.7284793,
+      "stop": {
+        "id": "652",
+        "name": "Abbeywood Dr + Pilgrims Way",
+        "code": "2726",
+        "distance_m": 498
+      },
+      "routes": [
+        "18",
+        "81S"
+      ],
+      "longWalk": true,
+      "walkFromStop_m": 498
+    },
+    {
+      "id": "pine-grove-ps",
+      "name": "Pine Grove Public School",
+      "address": "529 Fourth Line, Oakville, ON L6L 5A8",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4310419,
+      "lon": -79.6972075,
+      "stop": {
+        "id": "189",
+        "name": "4th Line + Wildwood Dr",
+        "code": "2680",
+        "distance_m": 128
+      },
+      "routes": [
+        "15"
+      ]
+    },
+    {
+      "id": "posts-corners-ps",
+      "name": "Post's Corners Public School",
+      "address": "2220 Caldwell Dr, Oakville, ON L6H 6B5",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4757365,
+      "lon": -79.7144166,
+      "stop": {
+        "id": "155",
+        "name": "Glenashton Dr + Caldwell Dr",
+        "code": "2826",
+        "distance_m": 246
+      },
+      "routes": [
+        "19",
+        "71",
+        "190"
+      ]
+    },
+    {
+      "id": "river-oaks-ps",
+      "name": "River Oaks Public School",
+      "address": "2173 Munn's Ave, Oakville, ON L6H 3S9",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4651543,
+      "lon": -79.7217507,
+      "stop": {
+        "id": "1013",
+        "name": "River Oaks Blvd West + Munn's Ave",
+        "code": "3346",
+        "distance_m": 471
+      },
+      "routes": [
+        "190"
+      ],
+      "note": "Street walk 471 m from nearest stop"
+    },
+    {
+      "id": "rotherglen-school",
+      "name": "Rotherglen School",
+      "address": "2050 Neyagawa Blvd, Oakville, ON L6H 6R2",
+      "cat": "school",
+      "board": "Private",
+      "cross": false,
+      "lat": 43.4610267,
+      "lon": -79.7223834,
+      "stop": {
+        "id": "594",
+        "name": "Munn's Ave + Neyagawa Blvd",
+        "code": "1010",
+        "distance_m": 475
+      },
+      "routes": [
+        "71"
+      ],
+      "note": "Street walk 475 m from nearest stop"
+    },
+    {
+      "id": "sheridan-ps",
+      "name": "Sheridan Public School",
+      "address": "1555 Lancaster Dr, Oakville, ON L6H 3H4",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4817006,
+      "lon": -79.6899343,
+      "stop": {
+        "id": "637",
+        "name": "Lancaster Dr + Harcroft Ct",
+        "code": "2778",
+        "distance_m": 373
+      },
+      "routes": [
+        "26"
+      ]
+    },
+    {
+      "id": "st-andrew-ces",
+      "name": "St. Andrew Catholic Elementary School",
+      "address": "145 Millbank Dr, Oakville, ON L6H 6G3",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4750164,
+      "lon": -79.7197686,
+      "stop": {
+        "id": "470",
+        "name": "Glenashton Dr + Millbank Dr",
+        "code": "2884",
+        "distance_m": 143
+      },
+      "routes": [
+        "19",
+        "71",
+        "190"
+      ]
+    },
+    {
+      "id": "st-bernadette-ces",
+      "name": "St. Bernadette Catholic Elementary School",
+      "address": "1201 Heritage Way, Oakville, ON L6M 3A4",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4291797,
+      "lon": -79.7379194,
+      "stop": {
+        "id": "757",
+        "name": "Heritage Way + Kings College Dr",
+        "code": "2400",
+        "distance_m": 199
+      },
+      "routes": [
+        "28",
+        "81S"
+      ]
+    },
+    {
+      "id": "st-cecilia-ces",
+      "name": "St. Cecilia Catholic Elementary School",
+      "address": "420 Threshing Mill Blvd, Oakville, ON L6H 0T1",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4873268,
+      "lon": -79.7342326,
+      "stop": {
+        "id": "1825",
+        "name": "Threshing Mill Blvd + Post Rd SW",
+        "code": "3485",
+        "distance_m": 17
+      },
+      "routes": [
+        "80N"
+      ]
+    },
+    {
+      "id": "st-dominic-ces",
+      "name": "St. Dominic Catholic Elementary School",
+      "address": "2405 Rebecca St, Oakville, ON L6L 2B1",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4005453,
+      "lon": -79.7194968,
+      "stop": {
+        "id": "511",
+        "name": "Bridge Rd west of Wyatt St",
+        "code": "2579",
+        "distance_m": 976
+      },
+      "routes": [
+        "15",
+        "83"
+      ],
+      "note": "Street walk 976 m from nearest stop"
+    },
+    {
+      "id": "st-gregory-the-great-ces",
+      "name": "St. Gregory the Great Catholic Elementary School",
+      "address": "138 Sixteen Mile Dr, Oakville, ON L6M 0T7",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4767784,
+      "lon": -79.7354323,
+      "stop": {
+        "id": "1643",
+        "name": "16 Mile + Preserve",
+        "code": "2119",
+        "distance_m": 264
+      },
+      "routes": [
+        "37",
+        "37A"
+      ]
+    },
+    {
+      "id": "st-ignatius-of-loyola-css",
+      "name": "St. Ignatius of Loyola Catholic Secondary School",
+      "address": "1550 Nottinghill Gate, Oakville, ON L6M 1X7",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4440584,
+      "lon": -79.7342553,
+      "stop": {
+        "id": "540",
+        "name": "Upper Middle Rd West + Deer Park Rd",
+        "code": "2642",
+        "distance_m": 740
+      },
+      "routes": [
+        "6",
+        "81A",
+        "81B",
+        "81N"
+      ],
+      "note": "Street walk 740 m from nearest stop"
+    },
+    {
+      "id": "st-joan-of-arc-ces",
+      "name": "St. Joan of Arc Catholic Elementary School",
+      "address": "2912 Westoak Trails Blvd, Oakville, ON L6M 4T7",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4310816,
+      "lon": -79.7589431,
+      "stop": {
+        "id": "1056",
+        "name": "Westoak Trails Blvd + Ashmore Dr",
+        "code": "3004",
+        "distance_m": 298
+      },
+      "routes": [
+        "13",
+        "71",
+        "82",
+        "81N",
+        "86A",
+        "86B"
+      ]
+    },
+    {
+      "id": "st-john-paul-ii-ces",
+      "name": "St. John Paul II Catholic Elementary School",
+      "address": "2130 Kingsridge Dr, Oakville, ON L6M 4Z2",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4424372,
+      "lon": -79.7571569,
+      "stop": {
+        "id": "110",
+        "name": "Postmaster Dr + Kingsridge Dr",
+        "code": "3199",
+        "distance_m": 498
+      },
+      "routes": [
+        "81A"
+      ],
+      "note": "Street walk 498 m from nearest stop"
+    },
+    {
+      "id": "st-luke-ces",
+      "name": "St. Luke Catholic Elementary School",
+      "address": "2750 Kingsway Dr, Oakville, ON L6J 7G5",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4965641,
+      "lon": -79.6618341,
+      "stop": {
+        "id": "184",
+        "name": "Kingsway Dr + Guilford Cr",
+        "code": "3261",
+        "distance_m": 119
+      },
+      "routes": [
+        "12"
+      ]
+    },
+    {
+      "id": "st-marguerite-dyouville-ces",
+      "name": "St. Marguerite d'Youville Catholic Elementary School",
+      "address": "1359 Bayshire Dr, Oakville, ON L6H 6C7",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.494205,
+      "lon": -79.6937659,
+      "stop": {
+        "id": "1670",
+        "name": "North Ridge Trail + Grace Dr",
+        "code": "2104",
+        "distance_m": 202
+      },
+      "routes": [
+        "20"
+      ]
+    },
+    {
+      "id": "st-mary-ces",
+      "name": "St. Mary Catholic Elementary School",
+      "address": "2175 Colonel William Pkwy, Oakville, ON L6M 0B7",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4242554,
+      "lon": -79.7711866,
+      "stop": {
+        "id": "519",
+        "name": "Colonel William Pkwy + Dewsbury Dr",
+        "code": "3325",
+        "distance_m": 263
+      },
+      "routes": [
+        "34",
+        "82",
+        "81A",
+        "81N",
+        "86A",
+        "86B"
+      ]
+    },
+    {
+      "id": "st-matthew-ces",
+      "name": "St. Matthew Catholic Elementary School",
+      "address": "1050 Nottinghill Gate, Oakville, ON L6M 2G3",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4405916,
+      "lon": -79.716136,
+      "stop": {
+        "id": "507",
+        "name": "Nottinghill Gate + Monks Passage",
+        "code": "2737",
+        "distance_m": 24
+      },
+      "routes": [
+        "18",
+        "81S"
+      ]
+    },
+    {
+      "id": "st-michael-ces",
+      "name": "St. Michael Catholic Elementary School",
+      "address": "165 Sewell Dr, Oakville, ON L6H 1E3",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4637125,
+      "lon": -79.6961023,
+      "stop": {
+        "id": "100",
+        "name": "McCraney St + Romain Cr",
+        "code": "2750",
+        "distance_m": 598
+      },
+      "routes": [
+        "19",
+        "71",
+        "80"
+      ],
+      "note": "Street walk 598 m from nearest stop"
+    },
+    {
+      "id": "st-mildreds-lightbourn",
+      "name": "St. Mildred's-Lightbourn School",
+      "address": "1080 Linbrook Rd, Oakville, ON L6J 2L1",
+      "cat": "school",
+      "board": "Private",
+      "cross": false,
+      "lat": 43.4645073,
+      "lon": -79.6676031,
+      "stop": {
+        "id": "690",
+        "name": "Linbrook Rd at Linbrook Public School",
+        "code": "2602",
+        "distance_m": 35
+      },
+      "routes": [
+        "11"
+      ]
+    },
+    {
+      "id": "st-nicholas-ces",
+      "name": "St. Nicholas Catholic Elementary School",
+      "address": "477 Warminster Dr, Oakville, ON L6L 4N4",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4227163,
+      "lon": -79.7031988,
+      "stop": {
+        "id": "80",
+        "name": "Bridge Rd + Warminster Dr",
+        "code": "2646",
+        "distance_m": 267
+      },
+      "routes": [
+        "15"
+      ]
+    },
+    {
+      "id": "st-teresa-of-calcutta-ces",
+      "name": "St. Teresa of Calcutta Catholic Elementary School",
+      "address": "1190 Westview Terrace, Oakville, ON L6M 3N2",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4502739,
+      "lon": -79.7352343,
+      "stop": {
+        "id": "619",
+        "name": "4th Line + Billinger St",
+        "code": "2498",
+        "distance_m": 348
+      },
+      "routes": [
+        "81B",
+        "86A"
+      ]
+    },
+    {
+      "id": "st-thomas-aquinas-css",
+      "name": "St. Thomas Aquinas Catholic Secondary School",
+      "address": "124 Dorval Dr, Oakville, ON L6K 2W1",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.4349693,
+      "lon": -79.6817419,
+      "stop": {
+        "id": "434",
+        "name": "Rebecca St + Weybourne Rd",
+        "code": "2669",
+        "distance_m": 257
+      },
+      "routes": [
+        "14",
+        "14A"
+      ]
+    },
+    {
+      "id": "st-vincent-ces",
+      "name": "St. Vincent Catholic Elementary School",
+      "address": "1280 Braeside Dr, Oakville, ON L6J 2A4",
+      "cat": "school",
+      "board": "HCDSB",
+      "cross": false,
+      "lat": 43.465538,
+      "lon": -79.656157,
+      "stop": {
+        "id": "662",
+        "name": "Devon Rd + Cairncroft Rd",
+        "code": "2607",
+        "distance_m": 560
+      },
+      "routes": [
+        "11"
+      ],
+      "longWalk": true,
+      "walkFromStop_m": 560
+    },
+    {
+      "id": "sunningdale-ps",
+      "name": "Sunningdale Public School",
+      "address": "1434 Oxford Ave, Oakville, ON L6H 1T4",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4586761,
+      "lon": -79.712204,
+      "stop": {
+        "id": "1135",
+        "name": "Oxford Ave + Ringwood Rd",
+        "code": "3100",
+        "distance_m": 116
+      },
+      "routes": [
+        "13",
+        "71"
+      ]
+    },
+    {
+      "id": "t-a-blakelock-hs",
+      "name": "T. A. Blakelock High School",
+      "address": "1160 Rebecca St, Oakville, ON L6L 1Y9",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4194626,
+      "lon": -79.6941342,
+      "stop": {
+        "id": "509",
+        "name": "T.A. Blakelock",
+        "code": "2656",
+        "distance_m": 226
+      },
+      "routes": [
+        "14",
+        "83",
+        "14A"
+      ]
+    },
+    {
+      "id": "w-h-morden-ps",
+      "name": "W. H. Morden Public School",
+      "address": "180 Morden Rd, Oakville, ON L6K 2S3",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4338352,
+      "lon": -79.6865215,
+      "stop": {
+        "id": "334",
+        "name": "Rebecca St + Morden Rd",
+        "code": "2667",
+        "distance_m": 108
+      },
+      "routes": [
+        "14",
+        "14A"
+      ]
+    },
+    {
+      "id": "walden-international",
+      "name": "Walden International School",
+      "address": "2035 Upper Middle Rd E, Oakville, ON L6H 7G6",
+      "cat": "school",
+      "board": "Private",
+      "cross": false,
+      "lat": 43.4964964,
+      "lon": -79.6792021,
+      "stop": {
+        "id": "1240",
+        "name": "Upper Middle Rd East + Ford Dr",
+        "code": "3362",
+        "distance_m": 62
+      },
+      "routes": [
+        "6",
+        "120"
+      ]
+    },
+    {
+      "id": "west-oak-ps",
+      "name": "West Oak Public School",
+      "address": "2071 Fourth Line, Oakville, ON L6M 3K1",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4486797,
+      "lon": -79.7353806,
+      "stop": {
+        "id": "315",
+        "name": "4th Line + Glen Valley Rd",
+        "code": "2499",
+        "distance_m": 344
+      },
+      "routes": [
+        "86"
+      ]
+    },
+    {
+      "id": "white-oaks-ss",
+      "name": "White Oaks Secondary School",
+      "address": "1330 Montclair Dr, Oakville, ON L6H 1Z5",
+      "cat": "school",
+      "board": "HDSB",
+      "cross": false,
+      "lat": 43.4635548,
+      "lon": -79.7017751,
+      "stop": {
+        "id": "1633",
+        "name": "McCraney St East + Montclair Dr",
+        "code": "2136",
+        "distance_m": 253
+      },
+      "routes": [
+        "19",
+        "71",
+        "80"
+      ]
+    },
+    {
+      "id": "wildwood-academy",
+      "name": "Wildwood Academy",
+      "address": "2250 Sheridan Garden Dr, Oakville, ON",
+      "cat": "school",
+      "board": "Private",
+      "cross": false,
+      "lat": 43.4897487,
+      "lon": -79.6553862,
+      "stop": {
+        "id": "85",
+        "name": "Sheridan Garden Dr + Ford Dr",
+        "code": "2290",
+        "distance_m": 343
+      },
+      "routes": [
+        "4",
+        "84"
+      ]
+    },
+    {
+      "id": "abbey-plaza",
+      "name": "Abbey Plaza",
+      "address": "1500 Upper Middle Rd, Oakville, ON L6M 3G3",
+      "cat": "shoppingcentre",
+      "cross": false,
+      "lat": 43.438,
+      "lon": -79.742,
+      "stop": {
+        "id": "1137",
+        "name": "Third Line + Upper Middle Rd West",
+        "code": "2423",
+        "distance_m": 214
+      },
+      "routes": [
+        "3",
+        "81A",
+        "81B"
+      ]
+    },
+    {
+      "id": "dorval-crossing",
+      "name": "Dorval Crossing",
+      "address": "240 North Service Rd W, Oakville, ON L6M 2Y3",
+      "cat": "shoppingcentre",
+      "cross": false,
+      "lat": 43.450314,
+      "lon": -79.701442,
+      "stop": {
+        "id": "530",
+        "name": "North Service Rd West east of Dorval Dr",
+        "code": "2748",
+        "distance_m": 69
+      },
+      "routes": [
+        "18"
+      ]
+    },
+    {
+      "id": "dorval-crossing-west",
+      "name": "Dorval Crossing West",
+      "address": "320 North Service Rd W #270, Oakville, ON L6M 2R7",
+      "cat": "shoppingcentre",
+      "cross": false,
+      "lat": 43.44516,
+      "lon": -79.703905,
+      "stop": {
+        "id": "663",
+        "name": "North Service Rd West + Lindsay Dr",
+        "code": "2745",
+        "distance_m": 120
+      },
+      "routes": [
+        "18"
+      ]
+    },
+    {
+      "id": "maple-grove-village",
+      "name": "Maple Grove Village",
+      "address": "511 Maple Grove Dr, Oakville, ON L6J 7S2",
+      "cat": "shoppingcentre",
+      "cross": false,
+      "lat": 43.480194,
+      "lon": -79.656216,
+      "stop": {
+        "id": "305",
+        "name": "Cornwall Rd at Maple Grove Village Plaza",
+        "code": "3419",
+        "distance_m": 172
+      },
+      "routes": [
+        "4"
+      ]
+    },
+    {
+      "id": "oakville-entertainment-centrum",
+      "name": "Oakville Entertainment Centrum (Oakville Centrum)",
+      "address": "2075 Winston Park Dr, Oakville, ON L6H 6P5",
+      "cat": "shoppingcentre",
+      "cross": false,
+      "lat": 43.511055,
+      "lon": -79.668754,
+      "stop": {
+        "id": "401",
+        "name": "Bristol Circle + London Lane",
+        "code": "2283",
+        "distance_m": 167
+      },
+      "routes": [
+        "12"
+      ]
+    },
+    {
+      "id": "oakville-place",
+      "name": "Oakville Place",
+      "address": "240 Leighland Ave, Oakville, ON L6H 3H6",
+      "cat": "shoppingcentre",
+      "cross": false,
+      "lat": 43.461647,
+      "lon": -79.686891,
+      "stop": {
+        "id": "1050",
+        "name": "Oakville Place",
+        "code": "2941",
+        "distance_m": 197
+      },
+      "routes": [
+        "13",
+        "71",
+        "86"
+      ],
+      "indoor": true
+    },
+    {
+      "id": "oakwoods-centre",
+      "name": "Oakwoods Centre",
+      "address": "1915 Ironoak Wy, Oakville, ON L6H 0N1",
+      "cat": "shoppingcentre",
+      "cross": false,
+      "lat": 43.492591,
+      "lon": -79.680499,
+      "stop": {
+        "id": "326",
+        "name": "Joshuas Creek Dr + Upper Middle Rd East",
+        "code": "3406",
+        "distance_m": 275
+      },
+      "routes": [
+        "120"
+      ]
+    },
+    {
+      "id": "riocan-centre-burloak",
+      "name": "RioCan Centre Burloak",
+      "address": "3527 Wyecroft Rd, Oakville, ON L6L 0B6",
+      "cat": "shoppingcentre",
+      "cross": false,
+      "lat": 43.39793,
+      "lon": -79.749352,
+      "stop": {
+        "id": "264",
+        "name": "RioCan Centre (East)",
+        "code": "2252",
+        "distance_m": 184
+      },
+      "routes": [
+        "14A"
+      ]
+    },
+    {
+      "id": "riocentre",
+      "name": "RioCentre",
+      "address": "478-502 Dundas St W, Oakville, ON L6H 6Y3",
+      "cat": "shoppingcentre",
+      "cross": false,
+      "lat": 43.464538,
+      "lon": -79.743024,
+      "stop": {
+        "id": "318",
+        "name": "Neyagawa Blvd + Dundas St West",
+        "code": "1015",
+        "distance_m": 294
+      },
+      "routes": [
+        "71"
+      ]
+    },
+    {
+      "id": "smartcentres-oakville",
+      "name": "SmartCentres Oakville",
+      "address": "234 Hays Blvd, Oakville, ON L6H 6M4",
+      "cat": "shoppingcentre",
+      "cross": false,
+      "lat": 43.484,
+      "lon": -79.718,
+      "stop": {
+        "id": "945",
+        "name": "Taunton Rd + Hays Blvd",
+        "code": "3226",
+        "distance_m": 30
+      },
+      "routes": [
+        "1",
+        "19",
+        "20",
+        "71"
+      ]
+    },
+    {
+      "id": "smartcentres-south-oakville-centre",
+      "name": "South Oakville Centre",
+      "address": "1515 Rebecca St, Oakville, ON L6L 5G8",
+      "cat": "shoppingcentre",
+      "cross": false,
+      "lat": 43.413431,
+      "lon": -79.70567,
+      "stop": {
+        "id": "877",
+        "name": "South Oakville Centre",
+        "code": "3113",
+        "distance_m": 158
+      },
+      "routes": [
+        "3",
+        "14",
+        "15",
+        "83",
+        "14A"
+      ]
+    },
+    {
+      "id": "trafalgar-village",
+      "name": "Trafalgar Village",
+      "address": "125 Cross Ave, Oakville, ON L6J 2W8",
+      "cat": "shoppingcentre",
+      "cross": false,
+      "lat": 43.455661,
+      "lon": -79.687171,
+      "stop": {
+        "id": "789",
+        "name": "Cross Ave + Lyons Lane",
+        "code": "3055",
+        "distance_m": 250
+      },
+      "routes": [
+        "1",
+        "4",
+        "10",
+        "14",
+        "15",
+        "18",
+        "28",
+        "14A"
+      ]
+    },
+    {
+      "id": "upper-oakville-shopping-centre",
+      "name": "Upper Oakville Shopping Centre",
+      "address": "1011 Upper Middle Rd E, Oakville, ON L6H 4L2",
+      "cat": "shoppingcentre",
+      "cross": false,
+      "lat": 43.483069,
+      "lon": -79.695,
+      "stop": {
+        "id": "1315",
+        "name": "Upper Middle Rd East east of 8th Line",
+        "code": "3158",
+        "distance_m": 152
+      },
+      "routes": [
+        "6"
+      ]
+    },
+    {
+      "id": "bombay-grocers-oakville",
+      "name": "Bombay Grocers Oakville",
+      "address": "2333 Taunton Rd, Oakville, ON L6H 0N5",
+      "cat": "specialtyasian",
+      "cross": false,
+      "lat": 43.482594,
+      "lon": -79.715124,
+      "stop": {
+        "id": "1055",
+        "name": "Oak Park Blvd + Taunton Rd",
+        "code": "3247",
+        "distance_m": 116
+      },
+      "routes": [
+        "1",
+        "19",
+        "20",
+        "71"
+      ]
+    },
+    {
+      "id": "east-indian-supermarket",
+      "name": "East Indian Supermarket",
+      "address": "2427 Trafalgar Rd, Oakville, ON",
+      "cat": "specialtyasian",
+      "cross": false,
+      "lat": 43.48638,
+      "lon": -79.715268,
+      "stop": {
+        "id": "431",
+        "name": "Postridge Dr + Dalebrook Dr",
+        "code": "2882",
+        "distance_m": 190
+      },
+      "routes": [
+        "20",
+        "80"
+      ]
+    },
+    {
+      "id": "galleria-supermarket",
+      "name": "Galleria Supermarket",
+      "address": "2501 Hampshire Gate, Oakville, ON L6H 6C8",
+      "cat": "specialtyasian",
+      "cross": false,
+      "lat": 43.520199,
+      "lon": -79.682219,
+      "stop": {
+        "id": "721",
+        "name": "Bristol Circle + Hampshire Gate",
+        "code": "2279",
+        "distance_m": 208
+      },
+      "routes": [
+        "12"
+      ]
+    },
+    {
+      "id": "iqbal-foods-oakville",
+      "name": "Iqbal Foods Oakville",
+      "address": "125 Cross Ave Unit C2, Oakville, ON L6J 2W8",
+      "cat": "specialtyasian",
+      "cross": false,
+      "lat": 43.455464,
+      "lon": -79.68712,
+      "stop": {
+        "id": "789",
+        "name": "Cross Ave + Lyons Lane",
+        "code": "3055",
+        "distance_m": 233
+      },
+      "routes": [
+        "1",
+        "4",
+        "10",
+        "14",
+        "15",
+        "18",
+        "28",
+        "14A"
+      ]
+    },
+    {
+      "id": "monastery-bakery-delicatessen",
+      "name": "Monastery Bakery & Delicatessen",
+      "address": "1133 Monastery Dr, Oakville, ON L6M 2A3",
+      "cat": "specialtyasian",
+      "cross": false,
+      "lat": 43.4451267,
+      "lon": -79.7276188,
+      "stop": {
+        "id": "211",
+        "name": "Monastery Dr + Greenbriar Dr",
+        "code": "3016",
+        "distance_m": 77
+      },
+      "routes": [
+        "28"
+      ]
+    },
+    {
+      "id": "organic-garage",
+      "name": "Organic Garage",
+      "address": "579 Kerr St, Oakville, ON L6K 3E1",
+      "cat": "specialtyasian",
+      "cross": false,
+      "lat": 43.448,
+      "lon": -79.689,
+      "stop": {
+        "id": "1088",
+        "name": "Kerr St + Shepherd Rd",
+        "code": "2986",
+        "distance_m": 33
+      },
+      "routes": [
+        "10",
+        "18"
+      ]
+    },
+    {
+      "id": "spice-bazaar",
+      "name": "Spice Bazaar",
+      "address": "105 Cross Ave A5, Oakville, ON L6J 2W7",
+      "cat": "specialtyasian",
+      "cross": false,
+      "lat": 43.454131,
+      "lon": -79.687029,
+      "stop": {
+        "id": "789",
+        "name": "Cross Ave + Lyons Lane",
+        "code": "3055",
+        "distance_m": 66
+      },
+      "routes": [
+        "1",
+        "4",
+        "10",
+        "14",
+        "15",
+        "18",
+        "28",
+        "14A"
+      ]
+    },
+    {
+      "id": "t-t-supermarket-erin-mills",
+      "name": "T&T Supermarket Erin Mills",
+      "address": "3060 Ridgeway Dr, Mississauga, ON L5L 0C2",
+      "cat": "specialtyasian",
+      "cross": true,
+      "lat": 43.518063,
+      "lon": -79.689911,
+      "stop": {
+        "id": "1550",
+        "name": "Laird + Ridgeway",
+        "code": "3174",
+        "distance_m": 125
+      },
+      "routes": [
+        "5",
+        "6",
+        "12",
+        "120"
+      ]
+    },
+    {
+      "id": "costco-wholesale-mississauga-south",
+      "name": "Costco Wholesale (Mississauga South)",
+      "address": "3180 Laird Rd, Mississauga, ON L6L 6A5",
+      "cat": "supermarket",
+      "cross": true,
+      "lat": 43.52076,
+      "lon": -79.689209,
+      "stop": {
+        "id": "1787",
+        "name": "Laird Rd At Colonial Dr",
+        "code": "3451",
+        "distance_m": 175
+      },
+      "routes": [
+        "5",
+        "6"
+      ]
+    },
+    {
+      "id": "farm-boy",
+      "name": "Farm Boy",
+      "address": "1907 Ironoak Wy, Oakville, ON L6H 0N1",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.492474,
+      "lon": -79.680179,
+      "stop": {
+        "id": "1655",
+        "name": "Joshuas Creek Dr + Ironoak Way",
+        "code": "2107",
+        "distance_m": 208
+      },
+      "routes": [
+        "120"
+      ]
+    },
+    {
+      "id": "farm-boy-bronte",
+      "name": "Farm Boy Bronte",
+      "address": "2441 Lakeshore Rd W, Oakville, ON L6L 5V5",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.3958128,
+      "lon": -79.7113725,
+      "stop": {
+        "id": "1266",
+        "name": "Lakeshore Rd West + Jones St",
+        "code": "2338",
+        "distance_m": 125
+      },
+      "routes": [
+        "14",
+        "14A"
+      ]
+    },
+    {
+      "id": "farm-boy-walkers-line",
+      "name": "Farm Boy Walkers Line",
+      "address": "3061 Walkers Line, Burlington, ON",
+      "cat": "supermarket",
+      "cross": true,
+      "lat": 43.393405,
+      "lon": -79.8246,
+      "stop": {
+        "id": "1574",
+        "name": "Dundas St + Walkers Line",
+        "code": "2204",
+        "distance_m": 195
+      },
+      "routes": [
+        "5"
+      ]
+    },
+    {
+      "id": "food-basics",
+      "name": "Food Basics",
+      "address": "530 Kerr St, Oakville, ON L6K 3C7",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.44629,
+      "lon": -79.688374,
+      "stop": {
+        "id": "736",
+        "name": "Speers Rd west of Kerr St",
+        "code": "2980",
+        "distance_m": 103
+      },
+      "routes": [
+        "4",
+        "28"
+      ]
+    },
+    {
+      "id": "food-basics-dundas",
+      "name": "Food Basics",
+      "address": "478 Dundas St W, Oakville, ON L6H 6Y3",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.464,
+      "lon": -79.743,
+      "stop": {
+        "id": "960",
+        "name": "Neyagawa Blvd + Riverbank Way",
+        "code": "1014",
+        "distance_m": 151
+      },
+      "routes": [
+        "71"
+      ]
+    },
+    {
+      "id": "food-basics-clarkson-village",
+      "name": "Food Basics Clarkson Village",
+      "address": "1865 Lakeshore Rd W, Mississauga, ON L5J 4P1",
+      "cat": "supermarket",
+      "cross": true,
+      "lat": 43.5153326,
+      "lon": -79.6263684,
+      "stop": {
+        "id": "358",
+        "name": "Clarkson GO Station",
+        "code": "2318",
+        "distance_m": 868
+      },
+      "routes": [
+        "4",
+        "11",
+        "12"
+      ],
+      "note": "Street walk 868 m from nearest stop"
+    },
+    {
+      "id": "fortinos",
+      "name": "Fortinos",
+      "address": "173 Lakeshore Rd W, Oakville, ON L6K 1E7",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.437927,
+      "lon": -79.677323,
+      "stop": {
+        "id": "1810",
+        "name": "Lakeshore Rd. W. + Brock St. (EB)",
+        "code": "3469",
+        "distance_m": 106
+      },
+      "routes": [
+        "14",
+        "14A"
+      ]
+    },
+    {
+      "id": "fortinos-appleby-line",
+      "name": "Fortinos Appleby Line",
+      "address": "2515 Appleby Line, Burlington, ON",
+      "cat": "supermarket",
+      "cross": true,
+      "lat": 43.407351,
+      "lon": -79.805018,
+      "stop": {
+        "id": "1613",
+        "name": "Dundas St + Appleby Line",
+        "code": "2197",
+        "distance_m": 222
+      },
+      "routes": [
+        "5"
+      ]
+    },
+    {
+      "id": "fortinos-oakville-neyagawa",
+      "name": "Fortinos Oakville Neyagawa",
+      "address": "493 Dundas St W, Oakville, ON L6M 1L9",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.467236,
+      "lon": -79.745403,
+      "stop": {
+        "id": "1783",
+        "name": "Sixteen Mile Dr + Gladeside Ave",
+        "code": "3446",
+        "distance_m": 68
+      },
+      "routes": [
+        "37",
+        "37A"
+      ]
+    },
+    {
+      "id": "freshco",
+      "name": "FreshCo",
+      "address": "2501 Third Line, Oakville, ON L6M 5A9",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.449437,
+      "lon": -79.757902,
+      "stop": {
+        "id": "1117",
+        "name": "Pine Glen Rd + 3rd Line",
+        "code": "3411",
+        "distance_m": 89
+      },
+      "routes": [
+        "82",
+        "86",
+        "81N"
+      ]
+    },
+    {
+      "id": "longo-s",
+      "name": "Longo's",
+      "address": "469 Cornwall Rd, Oakville, ON L6J 7S8",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.462009,
+      "lon": -79.67493,
+      "stop": {
+        "id": "114",
+        "name": "Cornwall Rd at the Shops of Oakville South",
+        "code": "3421",
+        "distance_m": 156
+      },
+      "routes": [
+        "4"
+      ]
+    },
+    {
+      "id": "longo-s",
+      "name": "Longo's",
+      "address": "3455 Wyecroft Rd, Oakville, ON L6L 0B6",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.398073,
+      "lon": -79.747096,
+      "stop": {
+        "id": "264",
+        "name": "RioCan Centre (East)",
+        "code": "2252",
+        "distance_m": 112
+      },
+      "routes": [
+        "14A"
+      ]
+    },
+    {
+      "id": "longos-dundas-east",
+      "name": "Longo's",
+      "address": "338 Dundas St E, Oakville, ON L6H 6Z9",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.4883376,
+      "lon": -79.7175689,
+      "stop": {
+        "id": "1657",
+        "name": "Trafalgar + Dundas",
+        "code": "2109",
+        "distance_m": 336
+      },
+      "routes": [
+        "1",
+        "37"
+      ],
+      "note": ""
+    },
+    {
+      "id": "longo-s-walkers-line",
+      "name": "Longo's Walkers Line",
+      "address": "2900 Walkers Line, Burlington, ON",
+      "cat": "supermarket",
+      "cross": true,
+      "lat": 43.390238,
+      "lon": -79.822681,
+      "stop": {
+        "id": "1617",
+        "name": "Dundas St + Walkers Line",
+        "code": "2205",
+        "distance_m": 253
+      },
+      "routes": [
+        "5"
+      ]
+    },
+    {
+      "id": "metro",
+      "name": "Metro",
+      "address": "1521 Rebecca St, Oakville, ON L6L 1Z8",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.412131,
+      "lon": -79.707403,
+      "stop": {
+        "id": "481",
+        "name": "Third Line north of Rebecca St",
+        "code": "3116",
+        "distance_m": 174
+      },
+      "routes": [
+        "3"
+      ]
+    },
+    {
+      "id": "metro",
+      "name": "Metro",
+      "address": "1011 Upper Middle Rd E, Oakville, ON L6H 4L4",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.483487,
+      "lon": -79.694896,
+      "stop": {
+        "id": "1315",
+        "name": "Upper Middle Rd East east of 8th Line",
+        "code": "3158",
+        "distance_m": 183
+      },
+      "routes": [
+        "6"
+      ]
+    },
+    {
+      "id": "metro",
+      "name": "Metro",
+      "address": "280 North Service Rd W #1A, Oakville, ON L6M 3E6",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.447307,
+      "lon": -79.705502,
+      "stop": {
+        "id": "999",
+        "name": "North Service Rd West west of Dorval Dr",
+        "code": "2747",
+        "distance_m": 170
+      },
+      "routes": [
+        "18"
+      ]
+    },
+    {
+      "id": "metro-clarkson-crossings",
+      "name": "Metro Clarkson Crossings",
+      "address": "920 Southdown Rd, Mississauga, ON L5J 2Y4",
+      "cat": "supermarket",
+      "cross": true,
+      "lat": 43.50944,
+      "lon": -79.62892,
+      "stop": {
+        "id": "692",
+        "name": "Royal Windsor Dr + 2165 Royal Windsor Dr",
+        "code": "3279",
+        "distance_m": 473
+      },
+      "routes": [
+        "4",
+        "11",
+        "12"
+      ],
+      "note": "Street walk 473 m from nearest stop"
+    },
+    {
+      "id": "oleg-s-no-frills",
+      "name": "Oleg's No Frills",
+      "address": "1395 Abbeywood Dr, Oakville, ON L6M 3B2",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.431694,
+      "lon": -79.726328,
+      "stop": {
+        "id": "794",
+        "name": "Abbeywood Dr + Pilgrims Way",
+        "code": "2725",
+        "distance_m": 128
+      },
+      "routes": [
+        "18",
+        "81B"
+      ]
+    },
+    {
+      "id": "real-canadian-superstore",
+      "name": "Real Canadian Superstore",
+      "address": "201 Oak Walk Dr, Oakville, ON L6H 6M3",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.475,
+      "lon": -79.715,
+      "stop": {
+        "id": "155",
+        "name": "Glenashton Dr + Caldwell Dr",
+        "code": "2826",
+        "distance_m": 514
+      },
+      "routes": [
+        "19",
+        "71",
+        "190"
+      ],
+      "note": "Street walk 514 m from nearest stop"
+    },
+    {
+      "id": "sobeys-glen-abbey",
+      "name": "Sobeys Glen Abbey",
+      "address": "1500 Upper Middle Rd W, Oakville, ON L6M 3G3",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.437968,
+      "lon": -79.741177,
+      "stop": {
+        "id": "1137",
+        "name": "Third Line + Upper Middle Rd West",
+        "code": "2423",
+        "distance_m": 241
+      },
+      "routes": [
+        "3",
+        "81A",
+        "81B"
+      ]
+    },
+    {
+      "id": "sobeys-maple-grove",
+      "name": "Sobeys Maple Grove",
+      "address": "511 Maple Grove Dr, Oakville, ON L6J 4W3",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.480363,
+      "lon": -79.65577,
+      "stop": {
+        "id": "305",
+        "name": "Cornwall Rd at Maple Grove Village Plaza",
+        "code": "3419",
+        "distance_m": 155
+      },
+      "routes": [
+        "4"
+      ]
+    },
+    {
+      "id": "walmart-supercentre",
+      "name": "Walmart Supercentre",
+      "address": "234 Hays Blvd, Oakville, ON L6H 6M4",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.483385,
+      "lon": -79.718278,
+      "stop": {
+        "id": "750",
+        "name": "Taunton Rd + Hays Blvd",
+        "code": "3223",
+        "distance_m": 102
+      },
+      "routes": [
+        "1",
+        "19",
+        "20",
+        "80"
+      ]
+    },
+    {
+      "id": "walmart-supercentre",
+      "name": "Walmart Supercentre",
+      "address": "1455 Rebecca St, Oakville, ON L6L 1Z8",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.413795,
+      "lon": -79.705538,
+      "stop": {
+        "id": "877",
+        "name": "South Oakville Centre",
+        "code": "3113",
+        "distance_m": 199
+      },
+      "routes": [
+        "3",
+        "14",
+        "15",
+        "83",
+        "14A"
+      ]
+    },
+    {
+      "id": "whole-foods-oakville",
+      "name": "Whole Foods Market",
+      "address": "301 Cornwall Rd, Oakville, ON L6J 7Z5",
+      "cat": "supermarket",
+      "cross": false,
+      "lat": 43.456585,
+      "lon": -79.679243,
+      "stop": {
+        "id": "450",
+        "name": "Cornwall Rd + Reynolds St",
+        "code": "3072",
+        "distance_m": 138
+      },
+      "routes": [
+        "4"
+      ]
+    }
+  ],
+  "stations": [
+    {
+      "id": "oakville-go",
+      "name": "Oakville GO",
+      "stop": {
+        "id": "1212",
+        "name": "Oakville GO Station",
+        "code": "3172",
+        "distance_m": 0
+      },
+      "routes": [
+        "1",
+        "4",
+        "10",
+        "11",
+        "13",
+        "14",
+        "15",
+        "18",
+        "19",
+        "20",
+        "26",
+        "28",
+        "80",
+        "83",
+        "120",
+        "14A",
+        "190"
+      ],
+      "cross": false,
+      "note": ""
+    },
+    {
+      "id": "uptown-core",
+      "name": "Uptown Core Terminal",
+      "stop": {
+        "id": "1293",
+        "name": "Uptown Core Terminal",
+        "code": "3233",
+        "distance_m": 0
+      },
+      "routes": [
+        "1",
+        "5",
+        "19",
+        "20",
+        "37",
+        "71",
+        "37A"
+      ],
+      "cross": false,
+      "note": ""
+    },
+    {
+      "id": "clarkson-go",
+      "name": "Clarkson GO",
+      "stop": {
+        "id": "358",
+        "name": "Clarkson GO Station",
+        "code": "2318",
+        "distance_m": 0
+      },
+      "routes": [
+        "4",
+        "11",
+        "12"
+      ],
+      "cross": true,
+      "note": "Cross-boundary"
+    },
+    {
+      "id": "bronte-go",
+      "name": "Bronte GO",
+      "stop": {
+        "id": "645",
+        "name": "Bronte GO Station",
+        "code": "2421",
+        "distance_m": 0
+      },
+      "routes": [
+        "3",
+        "4",
+        "6",
+        "10",
+        "13",
+        "18",
+        "28",
+        "34"
+      ],
+      "cross": false,
+      "note": ""
+    },
+    {
+      "id": "appleby-go",
+      "name": "Appleby GO",
+      "stop": {
+        "id": "1543",
+        "name": "Appleby GO station",
+        "code": "2189",
+        "distance_m": 0
+      },
+      "routes": [
+        "14",
+        "14A"
+      ],
+      "cross": true,
+      "note": "Cross-boundary"
+    },
+    {
+      "id": "trafalgar-407",
+      "name": "Trafalgar Rd + Highway 407 GO Carpool",
+      "stop": {
+        "id": "1665",
+        "name": "Trafalgar Rd + Highway 407 GO Carpool",
+        "code": "2129",
+        "distance_m": 0
+      },
+      "routes": [
+        "1"
+      ],
+      "cross": false,
+      "note": "North Oakville, route 1 — NOT the Dundas + 407 lot"
+    },
+    {
+      "id": "dundas-407",
+      "name": "Dundas St. @ Hwy. 407 Park & Ride",
+      "stop": {
+        "id": "1575",
+        "name": "Dundas St + Highway 407 GO Carpool",
+        "code": "2206",
+        "distance_m": 0
+      },
+      "routes": [
+        "5"
+      ],
+      "cross": true,
+      "note": "West Burlington, route 5 — NOT the Trafalgar + 407 lot"
+    },
+    {
+      "id": "laird-ridgeway",
+      "name": "Laird Rd + Ridgeway Dr",
+      "stop": {
+        "id": "1550",
+        "name": "Laird + Ridgeway",
+        "code": "3174",
+        "distance_m": 0
+      },
+      "routes": [
+        "5",
+        "6",
+        "12",
+        "120"
+      ],
+      "cross": false,
+      "note": ""
+    },
+    {
+      "id": "sheridan-college",
+      "name": "Sheridan College",
+      "stop": {
+        "id": "905",
+        "name": "Sheridan College",
+        "code": "3236",
+        "distance_m": 0
+      },
+      "routes": [
+        "1",
+        "6"
+      ],
+      "cross": false,
+      "note": ""
+    }
+  ]
+}

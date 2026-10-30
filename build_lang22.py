@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Build the 22-language expansion (2026-10-29, user decisions).
+"""Not runnable as-is: the /tmp/allpacks.json intermediate is gone;
+see HANDOFF.md 'Known issues' before attempting to regenerate.
+
+Build the 22-language expansion (2026-10-29, user decisions).
 
 Adds tl, hr, fa (RTL), sr (Latin), de, ro, zh-Hant to public/index.html
 as one consolidated block (all 147 t() keys each), plus CAT_LABEL (13),

@@ -41,5 +41,8 @@ Portable overrides: `OAKVILLE_GTFS_STATIC`, `OAKVILLE_RESEARCH_MD`
 One-off apply/patch scripts live in archive/scripts/, not here.
 build_lang22.py stays at the repo root (P3, see audit Finding 2):
 its /tmp/allpacks.json input is gone, so it cannot rerun as-is.
+- Regeneration is blocked on the missing intermediate, not on code:
+  do not attempt without reconstructing /tmp/allpacks.json
+  (see HANDOFF.md 'Known issues').
 Python dependencies: standard library only, except build_lang22.py
 (needs zhconv).

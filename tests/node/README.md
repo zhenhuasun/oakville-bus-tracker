@@ -1,3 +1,5 @@
+(File layout described here is the target state; files arrive in Commits 2/4/5.)
+
 # tests/node/ — offline Node regression gates
 
 Each file is standalone: node tests/node/<file>.mjs. They run the

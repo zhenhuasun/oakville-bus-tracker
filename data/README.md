@@ -1,3 +1,5 @@
+(File layout described here is the target state; files arrive in Commits 2/4/5.)
+
 # data/ — canonical non-served data
 
 Files here are inputs to the pipeline, not web assets. Served data

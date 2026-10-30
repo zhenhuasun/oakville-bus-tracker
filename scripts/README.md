@@ -6,6 +6,9 @@ repo root from its own location (ROOT = parent of scripts/), so
 --out defaults always land in public/ regardless of the caller's
 working directory.
 
+Portable overrides: `OAKVILLE_GTFS_STATIC`, `OAKVILLE_RESEARCH_MD`
+(CLI flag wins over env var wins over absolute default).
+
 - derive_pairs.py — ArcGIS zip (or --zip) -> public/pairs.json.
   Holds the _merged trip-id join logic (see README.md, Join rules).
 - derive_timetable.py — ArcGIS zip (or --zip) -> public/timetable.json
@@ -15,12 +18,13 @@ working directory.
   the workspace (NOT the repo); --zip unpacks to a temp dir instead.
 - derive_shapes.py — static shapes.txt + public/timetable.json ->
   public/shapes/<route>.json. Its --static default is still the
-  absolute ~/workspace/oakville-gtfs-check/static (TODO: same
-  repo-relative cleanup as the derive_places SRC note above).
+  absolute ~/workspace/oakville-gtfs-check/static. Override with
+  --static or OAKVILLE_GTFS_STATIC.
 - derive_places.py — preset research -> public/places.json. Reads
   the research doc at ~/workspace/oakville-gtfs-check/PRESET-
-  DESTINATIONS.md (absolute path; the same text is mirrored at
-  research/PRESET-DESTINATIONS.md in this repo).
+  DESTINATIONS.md (absolute default; the same text is mirrored at
+  research/PRESET-DESTINATIONS.md in this repo). Override with
+  --src or OAKVILLE_RESEARCH_MD.
 - build_schools.py — data/generated/schools-geocoded.json +
   data/schools-pending-decision.json -> merge into public/places.json.
 - build_stage21.py — Stage-21 preset additions -> public/places.json

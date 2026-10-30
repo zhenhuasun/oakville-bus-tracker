@@ -40,8 +40,9 @@ from collections import defaultdict
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--static", default=os.path.expanduser(
-        "~/workspace/oakville-gtfs-check/static"))
+    ap.add_argument("--static", default=os.environ.get("OAKVILLE_GTFS_STATIC") or os.path.expanduser(
+        "~/workspace/oakville-gtfs-check/static"),
+        help="GTFS static dir (env OAKVILLE_GTFS_STATIC; default ~/workspace/oakville-gtfs-check/static)")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
     here = os.path.dirname(os.path.abspath(__file__))

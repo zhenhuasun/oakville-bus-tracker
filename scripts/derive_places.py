@@ -153,11 +153,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--stops", default=os.path.join(ROOT, "public", "stops.json"))
     ap.add_argument("--out", default=os.path.join(ROOT, "public", "places.json"))
+    ap.add_argument("--src", default=None,
+        help="Preset research doc (env OAKVILLE_RESEARCH_MD; default ~/workspace/oakville-gtfs-check/PRESET-DESTINATIONS.md)")
     args = ap.parse_args()
+    src = args.src or os.environ.get("OAKVILLE_RESEARCH_MD") or SRC
 
     stops_data = json.load(open(args.stops, encoding="utf-8"))
     stops = stops_data["stops"]
-    text = open(SRC, encoding="utf-8").read().splitlines()
+    text = open(src, encoding="utf-8").read().splitlines()
 
     section = None
     skip = False

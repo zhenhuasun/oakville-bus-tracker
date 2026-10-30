@@ -1,0 +1,12 @@
+# Oakville newcomer bus tracker — Cloudflare Worker.
+# No secrets or API keys: the Oakville GTFS-Realtime feeds are public and
+# need no authentication. Deploy with: wrangler deploy
+# (needs a Cloudflare API token + account ID supplied by the user at
+# deploy time; nothing is stored in this repo).
+name = "oakville-bus-tracker"
+main = "worker.js"
+compatibility_date = "2026-10-27"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"

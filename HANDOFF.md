@@ -134,3 +134,79 @@ committing it is optional — it only makes future CI runs take the
   section 3b), final visual confirmation left to the human.
 - No changes to `public/` and no test-logic changes anywhere in this
   pass; only path resolution, docs, and the new `HANDOFF.md`.
+
+## 7. Remote-vs-local drift report (verified 2026-10-30)
+
+Method: direct remote reads compared by sha256 for the 6 byte-comparison
+rows; direct remote reads for 4 stale spot checks (†); full 20-commit
+`main` history reviewed — every commit is an addition (assistant pushes,
+your `pages.yml` workflow commit, your icon uploads, initial commit) and
+no deletion commit exists, so everything pushed initially is still on
+the remote. Result: no surprises. The only remote-only files are the 51
+stale root paths (section 2) plus `pages.yml`; the only file absent on
+both sides is `test.yml` (section 3a).
+
+| file | on local | on remote | notes |
+|---|---|---|---|
+| test_boardclarity.mjs | absent | present | stale; §2 |
+| test_boarding.mjs | absent | present | stale; §2 |
+| test_branchmerge.mjs | absent | present | stale; §2 |
+| test_busicon.mjs | absent | present | stale; §2 |
+| test_catwalk.mjs | absent | present | stale; §2 |
+| test_google13.mjs | absent | present | stale; §2 |
+| test_header.mjs | absent | present | stale; §2 |
+| test_homefix.mjs | absent | present | stale; §2 |
+| test_languages.mjs | absent | present | stale; §2 |
+| test_languages22.mjs | absent | present | stale; §2 |
+| test_leglive.mjs | absent | present | stale; §2 |
+| test_mapstyle.mjs | absent | present | stale; §2 |
+| test_osmwalk.mjs | absent | present | stale; §2 |
+| test_p0.mjs | absent | present | stale; §2 |
+| test_p0b.mjs | absent | present | stale; §2 |
+| test_pwa.mjs | absent | present | stale; §2 |
+| test_saveui.mjs | absent | present | stale; §2 |
+| test_schools.mjs | absent | present | stale; §2 |
+| test_searchtime.mjs | absent | present | stale; §2 |
+| test_sort.mjs | absent | present | stale; §2 |
+| test_stage1.mjs | absent | present | stale; §2 |
+| test_stage2.mjs | absent | present | stale; §2 |
+| test_stage2_1.mjs | absent | present | stale; §2 |
+| test_stage3.mjs | absent | present | stale; §2 |
+| test_stationlist.mjs | absent | present | stale; §2 |
+| test_streetrule.mjs | absent | present | stale; §2 |
+| test_strip7col.mjs | absent | present | stale; §2 |
+| test_stripalign.mjs | absent | present | stale; §2 |
+| test_stripbranches.mjs | absent | present | stale; §2 |
+| test_timepicker.mjs | absent | present | stale; §2 |
+| test_uibatch.mjs | absent | present | stale; §2 |
+| test_weather.mjs | absent | present | stale; §2 † |
+| test_rt.mjs | absent | present | stale; §2 |
+| test_phase13only.mjs | absent | present | stale; §2 |
+| apply_lang22.py | absent | present | stale; §2 |
+| apply_street_rule.py | absent | present | stale; §2 |
+| build_schools.py | absent | present | stale; §2 |
+| build_stage21.py | absent | present | stale; §2 |
+| derive_pairs.py | absent | present | stale; §2 † |
+| derive_places.py | absent | present | stale; §2 |
+| derive_shapes.py | absent | present | stale; §2 |
+| derive_stops.py | absent | present | stale; §2 |
+| derive_timetable.py | absent | present | stale; §2 |
+| geocode_schools.py | absent | present | stale; §2 |
+| measure_street.py | absent | present | stale; §2 |
+| patch_stage2.py | absent | present | stale; §2 |
+| schools_list.py | absent | present | stale; §2 |
+| schools-geocoded.json | absent | present | stale; §2 † |
+| schools-pending-decision.json | absent | present | stale; §2 |
+| street-audit.json | absent | present | stale; §2 |
+| stage2_block.txt | absent | present | stale; §2 † |
+| package.json | present | present | byte-identical (sha 59e6140ed06fdd0c) |
+| README.md | present | present | byte-identical (sha e16da07cbf1c857f) |
+| .gitignore | present | present | byte-identical (sha 3037927ad0e42d89) |
+| .github/workflows/pages.yml | absent (no local .github/) | present | no root .py/.mjs refs (remote read); §3b |
+| .github/workflows/test.yml | absent | absent | to be created by human (§3a) |
+| tests/node/test_schools.mjs | present | present | byte-identical (sha c67d7a49e8982206) |
+| tests/node/test_stage3.mjs | present | present | byte-identical, Commit B version (sha 790cc3fffe407f04) |
+| scripts/check_stale_root.mjs | present | present | byte-identical (sha e6eb0cb6ddf75cc1) |
+
+† = spot-verified by direct remote read; all other stale rows follow
+from the push history (pushed initially, never deleted).

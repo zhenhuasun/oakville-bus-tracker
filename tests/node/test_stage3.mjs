@@ -117,8 +117,14 @@ if (dmap) {
     dmap.legs.length === directOpt.legs.length &&
     dmap.legs.every(l => directOpt.legs.some(x => x.route === l.route)));
   // Raw GTFS cross-check when the on-disk static package is present.
-  const rawPath = path.join(dir, "..", "..", "..", "oakville-gtfs-check", "static", "shapes.txt");
-  if (fs.existsSync(rawPath)) {
+  // Portable: OAKVILLE_GTFS_STATIC overrides the workspace-relative default.
+  // Resolution: env dir first (if its shapes.txt exists), then the relative
+  // path, else SKIP with a clear message (suite still passes — CI stays green).
+  const gtfsCandidates = [];
+  if (process.env.OAKVILLE_GTFS_STATIC) gtfsCandidates.push(path.join(process.env.OAKVILLE_GTFS_STATIC, "shapes.txt"));
+  gtfsCandidates.push(path.join(dir, "..", "..", "..", "oakville-gtfs-check", "static", "shapes.txt"));
+  const rawPath = gtfsCandidates.find((q) => fs.existsSync(q));
+  if (rawPath) {
     const raw = {};
     for (const line of fs.readFileSync(rawPath, "utf8").split("\n").slice(1)) {
       if (!line.trim()) continue;
@@ -130,7 +136,7 @@ if (dmap) {
       JSON.stringify(rawPts) === JSON.stringify(sf.shapes[sid]),
       "raw=" + rawPts.length + " file=" + sf.shapes[sid].length);
   } else {
-    console.log("SKIP raw GTFS shapes cross-check (static package not on disk)");
+    console.log("SKIP raw GTFS shapes cross-check (no shapes.txt at " + gtfsCandidates.join(" or ") + "; set OAKVILLE_GTFS_STATIC to a GTFS static dir to enable it — suite still passes)");
   }
 }
 

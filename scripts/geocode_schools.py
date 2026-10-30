@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Geocode the 74 Oakville schools via OSM Nominatim, 1 request/second.
 
-Writes ~/workspace/oakville-bus-site/schools-geocoded.json with, per school:
+Writes data/generated/schools-geocoded.json (relative to repo root) with, per school:
 name, board, research address/postal, lat, lon, geocoder display name,
 query used, and verification status. Nothing is guessed: a result is
 accepted only if it is inside Oakville (lat 43.35-43.52, lon -79.85--79.65),

@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "test": "node --test tests/node/test_*.mjs",
-    "test:live": "node --test tests/node/live/test_*.mjs"
-  }
+    "test:live": "node --test tests/node/live/test_*.mjs",
+    "check": "node scripts/check_stale_root.mjs"
+  },
+  "type": "module"
 }

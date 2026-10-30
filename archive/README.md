@@ -7,5 +7,6 @@ re-run without reading its README first: inputs may be gone
 - tests/ — superseded or dormant verification harnesses.
 - scripts/ — one-off apply/patch scripts whose changes are already
   in public/index.html or public/places.json.
-- stage2_block.txt — standalone Stage-2 code fragment (arrives here
-  in Commit 5; archived, never deleted).
+- stage2_block.txt — standalone Stage-2 code fragment, now at
+  archive/stage2_block.txt (moved here in Commit 5; archived, never
+  deleted). The only standalone copy of the original Stage-2 JS.

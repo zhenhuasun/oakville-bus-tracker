@@ -14,7 +14,9 @@ working directory.
   --static-dir defaults to ../oakville-gtfs-check/static relative to
   the workspace (NOT the repo); --zip unpacks to a temp dir instead.
 - derive_shapes.py — static shapes.txt + public/timetable.json ->
-  public/shapes/<route>.json.
+  public/shapes/<route>.json. Its --static default is still the
+  absolute ~/workspace/oakville-gtfs-check/static (TODO: same
+  repo-relative cleanup as the derive_places SRC note above).
 - derive_places.py — preset research -> public/places.json. Reads
   the research doc at ~/workspace/oakville-gtfs-check/PRESET-
   DESTINATIONS.md (absolute path; the same text is mirrored at

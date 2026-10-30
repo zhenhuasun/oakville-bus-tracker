@@ -1,0 +1,1614 @@
+{
+ "results": [
+  {
+   "id": "bmo-cornwall-chartwell",
+   "name": "BMO Cornwall & Chartwell",
+   "cat": "bank",
+   "straight_m": 33,
+   "street_m": 162
+  },
+  {
+   "id": "bmo-dundas-third-line",
+   "name": "BMO Dundas & Third Line",
+   "cat": "bank",
+   "straight_m": 71,
+   "street_m": 193
+  },
+  {
+   "id": "bmo-dundas-trafalgar",
+   "name": "BMO Dundas & Trafalgar",
+   "cat": "bank",
+   "straight_m": 40,
+   "street_m": 349
+  },
+  {
+   "id": "bmo-hopedale-mall",
+   "name": "BMO Hopedale Mall",
+   "cat": "bank",
+   "straight_m": 91,
+   "street_m": 246
+  },
+  {
+   "id": "bmo-oakville-town-centre",
+   "name": "BMO Oakville Town Centre",
+   "cat": "bank",
+   "straight_m": 64,
+   "street_m": 149
+  },
+  {
+   "id": "cibc-client-advice-centre-advice-only-atm-cash",
+   "name": "CIBC (Client Advice Centre — advice only, ATM cash)",
+   "cat": "bank",
+   "straight_m": 106,
+   "street_m": 166
+  },
+  {
+   "id": "rbc-cornwall-trafalgar",
+   "name": "RBC Cornwall & Trafalgar",
+   "cat": "bank",
+   "straight_m": 32,
+   "street_m": 101
+  },
+  {
+   "id": "rbc-glen-abbey",
+   "name": "RBC Glen Abbey",
+   "cat": "bank",
+   "straight_m": 185,
+   "street_m": 311
+  },
+  {
+   "id": "rbc-third-line-dundas",
+   "name": "RBC Third Line & Dundas",
+   "cat": "bank",
+   "straight_m": 70,
+   "street_m": 240
+  },
+  {
+   "id": "td-canada-trust",
+   "name": "TD Canada Trust",
+   "cat": "bank",
+   "straight_m": 150,
+   "street_m": 210
+  },
+  {
+   "id": "td-canada-trust",
+   "name": "TD Canada Trust",
+   "cat": "bank",
+   "straight_m": 30,
+   "street_m": 26
+  },
+  {
+   "id": "td-canada-trust",
+   "name": "TD Canada Trust",
+   "cat": "bank",
+   "straight_m": 62,
+   "street_m": 113
+  },
+  {
+   "id": "td-canada-trust",
+   "name": "TD Canada Trust",
+   "cat": "bank",
+   "straight_m": 92,
+   "street_m": 139
+  },
+  {
+   "id": "td-canada-trust",
+   "name": "TD Canada Trust",
+   "cat": "bank",
+   "straight_m": 111,
+   "street_m": 122
+  },
+  {
+   "id": "td-canada-trust",
+   "name": "TD Canada Trust",
+   "cat": "bank",
+   "straight_m": 128,
+   "street_m": 218
+  },
+  {
+   "id": "td-canada-trust",
+   "name": "TD Canada Trust",
+   "cat": "bank",
+   "straight_m": 73,
+   "street_m": 93
+  },
+  {
+   "id": "td-canada-trust",
+   "name": "TD Canada Trust",
+   "cat": "bank",
+   "straight_m": 58,
+   "street_m": 58
+  },
+  {
+   "id": "td-dundas-neyagawa",
+   "name": "TD Dundas & Neyagawa",
+   "cat": "bank",
+   "straight_m": 69,
+   "street_m": 110
+  },
+  {
+   "id": "td-dundas-prince-michael",
+   "name": "TD Dundas & Prince Michael",
+   "cat": "bank",
+   "straight_m": 29,
+   "street_m": 194
+  },
+  {
+   "id": "td-iroquois-trafalgar",
+   "name": "TD Iroquois & Trafalgar",
+   "cat": "bank",
+   "straight_m": 58,
+   "street_m": 157
+  },
+  {
+   "id": "td-upper-oakville-shopping-centre",
+   "name": "TD Upper Oakville Shopping Centre",
+   "cat": "bank",
+   "straight_m": 112,
+   "street_m": 222
+  },
+  {
+   "id": "best-buy",
+   "name": "Best Buy",
+   "cat": "bigbox",
+   "straight_m": 53,
+   "street_m": 150
+  },
+  {
+   "id": "canadian-tire",
+   "name": "Canadian Tire",
+   "cat": "bigbox",
+   "straight_m": 126,
+   "street_m": 121
+  },
+  {
+   "id": "canadian-tire",
+   "name": "Canadian Tire",
+   "cat": "bigbox",
+   "straight_m": 126,
+   "street_m": 131
+  },
+  {
+   "id": "canadian-tire",
+   "name": "Canadian Tire",
+   "cat": "bigbox",
+   "straight_m": 86,
+   "street_m": 259
+  },
+  {
+   "id": "homesense",
+   "name": "HomeSense",
+   "cat": "bigbox",
+   "straight_m": 157,
+   "street_m": 200
+  },
+  {
+   "id": "mark-s",
+   "name": "Mark's",
+   "cat": "bigbox",
+   "straight_m": 119,
+   "street_m": 385
+  },
+  {
+   "id": "marshalls",
+   "name": "Marshalls",
+   "cat": "bigbox",
+   "straight_m": 227,
+   "street_m": 264
+  },
+  {
+   "id": "michaels",
+   "name": "Michaels",
+   "cat": "bigbox",
+   "straight_m": 167,
+   "street_m": 204
+  },
+  {
+   "id": "petsmart",
+   "name": "PetSmart",
+   "cat": "bigbox",
+   "straight_m": 158,
+   "street_m": 266
+  },
+  {
+   "id": "sport-chek",
+   "name": "Sport Chek",
+   "cat": "bigbox",
+   "straight_m": 154,
+   "street_m": 178
+  },
+  {
+   "id": "sport-chek",
+   "name": "Sport Chek",
+   "cat": "bigbox",
+   "straight_m": 221,
+   "street_m": 488
+  },
+  {
+   "id": "staples",
+   "name": "Staples",
+   "cat": "bigbox",
+   "straight_m": 266,
+   "street_m": 376
+  },
+  {
+   "id": "the-home-depot",
+   "name": "The Home Depot",
+   "cat": "bigbox",
+   "straight_m": 182,
+   "street_m": 260
+  },
+  {
+   "id": "the-home-depot",
+   "name": "The Home Depot",
+   "cat": "bigbox",
+   "straight_m": 228,
+   "street_m": 279
+  },
+  {
+   "id": "winners",
+   "name": "Winners",
+   "cat": "bigbox",
+   "straight_m": 266,
+   "street_m": 315
+  },
+  {
+   "id": "winners",
+   "name": "Winners",
+   "cat": "bigbox",
+   "straight_m": 107,
+   "street_m": 145
+  },
+  {
+   "id": "winners",
+   "name": "Winners",
+   "cat": "bigbox",
+   "straight_m": 137,
+   "street_m": 146
+  },
+  {
+   "id": "winners-homesense-combined",
+   "name": "Winners & HomeSense (combined)",
+   "cat": "bigbox",
+   "straight_m": 194,
+   "street_m": 338
+  },
+  {
+   "id": "glen-abbey-cc",
+   "name": "Glen Abbey Community Centre",
+   "cat": "communityCentre",
+   "straight_m": 106,
+   "street_m": 156
+  },
+  {
+   "id": "iroquois-ridge-cc",
+   "name": "Iroquois Ridge Community Centre",
+   "cat": "communityCentre",
+   "straight_m": 138,
+   "street_m": 178
+  },
+  {
+   "id": "otcc",
+   "name": "Oakville Trafalgar Community Centre",
+   "cat": "communityCentre",
+   "straight_m": 145,
+   "street_m": 963
+  },
+  {
+   "id": "qepccc",
+   "name": "Queen Elizabeth Park Community and Cultural Centre",
+   "cat": "communityCentre",
+   "straight_m": 295,
+   "street_m": 456
+  },
+  {
+   "id": "river-oaks-cc",
+   "name": "River Oaks Community Centre",
+   "cat": "communityCentre",
+   "straight_m": 284,
+   "street_m": 412
+  },
+  {
+   "id": "sixteen-mile-cc",
+   "name": "Sixteen Mile Community Centre",
+   "cat": "communityCentre",
+   "straight_m": 196,
+   "street_m": 389
+  },
+  {
+   "id": "trafalgar-park-cc",
+   "name": "Trafalgar Park Community Centre",
+   "cat": "communityCentre",
+   "straight_m": 69,
+   "street_m": 114
+  },
+  {
+   "id": "dynacare-laboratory-and-health-services-centre",
+   "name": "Dynacare Laboratory and Health Services Centre",
+   "cat": "hospitallab",
+   "straight_m": 93,
+   "street_m": 199
+  },
+  {
+   "id": "dynacare-laboratory-and-health-services-centre",
+   "name": "Dynacare Laboratory and Health Services Centre",
+   "cat": "hospitallab",
+   "straight_m": 45,
+   "street_m": 334
+  },
+  {
+   "id": "dynacare-laboratory-and-health-services-centre",
+   "name": "Dynacare Laboratory and Health Services Centre",
+   "cat": "hospitallab",
+   "straight_m": 114,
+   "street_m": 162
+  },
+  {
+   "id": "lifelabs",
+   "name": "LifeLabs",
+   "cat": "hospitallab",
+   "straight_m": 19,
+   "street_m": 74
+  },
+  {
+   "id": "lifelabs-medical-laboratory-services",
+   "name": "LifeLabs Medical Laboratory Services",
+   "cat": "hospitallab",
+   "straight_m": 32,
+   "street_m": 97
+  },
+  {
+   "id": "lifelabs-medical-laboratory-services",
+   "name": "LifeLabs Medical Laboratory Services",
+   "cat": "hospitallab",
+   "straight_m": 49,
+   "street_m": 57
+  },
+  {
+   "id": "lifelabs-medical-laboratory-services",
+   "name": "LifeLabs Medical Laboratory Services",
+   "cat": "hospitallab",
+   "straight_m": 37,
+   "street_m": 83
+  },
+  {
+   "id": "lifelabs-medical-laboratory-services",
+   "name": "LifeLabs Medical Laboratory Services",
+   "cat": "hospitallab",
+   "straight_m": 86,
+   "street_m": 86
+  },
+  {
+   "id": "oakville-trafalgar-memorial-hospital",
+   "name": "Oakville Trafalgar Memorial Hospital",
+   "cat": "hospitallab",
+   "straight_m": 3,
+   "street_m": 3
+  },
+  {
+   "id": "opl-central",
+   "name": "Oakville Public Library — Central Branch",
+   "cat": "library",
+   "straight_m": 106,
+   "street_m": 216
+  },
+  {
+   "id": "opl-clearview",
+   "name": "Oakville Public Library — Clearview Branch",
+   "cat": "library",
+   "straight_m": 70,
+   "street_m": 348
+  },
+  {
+   "id": "opl-glen-abbey",
+   "name": "Oakville Public Library — Glen Abbey Branch",
+   "cat": "library",
+   "straight_m": 126,
+   "street_m": 177
+  },
+  {
+   "id": "opl-iroquois-ridge",
+   "name": "Oakville Public Library — Iroquois Ridge Branch",
+   "cat": "library",
+   "straight_m": 138,
+   "street_m": 178
+  },
+  {
+   "id": "opl-sixteen-mile",
+   "name": "Oakville Public Library — Sixteen Mile Branch",
+   "cat": "library",
+   "straight_m": 196,
+   "street_m": 389
+  },
+  {
+   "id": "opl-white-oaks",
+   "name": "Oakville Public Library — White Oaks Branch",
+   "cat": "library",
+   "straight_m": 84,
+   "street_m": 115
+  },
+  {
+   "id": "opl-woodside",
+   "name": "Oakville Public Library — Woodside Branch",
+   "cat": "library",
+   "straight_m": 33,
+   "street_m": 48
+  },
+  {
+   "id": "bronte-creek-park",
+   "name": "Bronte Creek Provincial Park",
+   "cat": "park",
+   "straight_m": 154,
+   "street_m": 209
+  },
+  {
+   "id": "bronte-heritage-park",
+   "name": "Bronte Heritage Waterfront Park",
+   "cat": "park",
+   "straight_m": 111,
+   "street_m": 155
+  },
+  {
+   "id": "coronation-park",
+   "name": "Coronation Park",
+   "cat": "park",
+   "straight_m": 199,
+   "street_m": 569
+  },
+  {
+   "id": "lakeside-park",
+   "name": "Lakeside Park",
+   "cat": "park",
+   "straight_m": 102,
+   "street_m": 87
+  },
+  {
+   "id": "lions-valley-park",
+   "name": "Lions Valley Park",
+   "cat": "park",
+   "straight_m": 202,
+   "street_m": 223
+  },
+  {
+   "id": "north-park",
+   "name": "North Park",
+   "cat": "park",
+   "straight_m": 165,
+   "street_m": 209
+  },
+  {
+   "id": "shell-park",
+   "name": "Shell Park",
+   "cat": "park",
+   "straight_m": 0,
+   "street_m": 0
+  },
+  {
+   "id": "cims-guardian-pharmacy",
+   "name": "CIMS Guardian Pharmacy",
+   "cat": "pharmacy",
+   "straight_m": 49,
+   "street_m": 139
+  },
+  {
+   "id": "i-d-a-ford-drive-pharmacy",
+   "name": "I.D.A Ford Drive Pharmacy",
+   "cat": "pharmacy",
+   "straight_m": 63,
+   "street_m": 156
+  },
+  {
+   "id": "morelli-s-guardian-pharmacy",
+   "name": "Morelli's Guardian Pharmacy",
+   "cat": "pharmacy",
+   "straight_m": 87,
+   "street_m": 156
+  },
+  {
+   "id": "rexall",
+   "name": "Rexall",
+   "cat": "pharmacy",
+   "straight_m": 50,
+   "street_m": 165
+  },
+  {
+   "id": "rexall",
+   "name": "Rexall",
+   "cat": "pharmacy",
+   "straight_m": 84,
+   "street_m": 130
+  },
+  {
+   "id": "shoppers-drug-mart",
+   "name": "Shoppers Drug Mart",
+   "cat": "pharmacy",
+   "straight_m": 159,
+   "street_m": 216
+  },
+  {
+   "id": "shoppers-drug-mart",
+   "name": "Shoppers Drug Mart",
+   "cat": "pharmacy",
+   "straight_m": 52,
+   "street_m": 208
+  },
+  {
+   "id": "shoppers-drug-mart",
+   "name": "Shoppers Drug Mart",
+   "cat": "pharmacy",
+   "straight_m": 98,
+   "street_m": 106
+  },
+  {
+   "id": "shoppers-drug-mart",
+   "name": "Shoppers Drug Mart",
+   "cat": "pharmacy",
+   "straight_m": 103,
+   "street_m": 120
+  },
+  {
+   "id": "shoppers-drug-mart",
+   "name": "Shoppers Drug Mart",
+   "cat": "pharmacy",
+   "straight_m": 104,
+   "street_m": 151
+  },
+  {
+   "id": "shoppers-drug-mart",
+   "name": "Shoppers Drug Mart",
+   "cat": "pharmacy",
+   "straight_m": 80,
+   "street_m": 107
+  },
+  {
+   "id": "shoppers-drug-mart",
+   "name": "Shoppers Drug Mart",
+   "cat": "pharmacy",
+   "straight_m": 106,
+   "street_m": 154
+  },
+  {
+   "id": "shoppers-drug-mart",
+   "name": "Shoppers Drug Mart",
+   "cat": "pharmacy",
+   "straight_m": 123,
+   "street_m": 229
+  },
+  {
+   "id": "st-marks-pharmacy-ida",
+   "name": "St Marks Pharmacy (IDA)",
+   "cat": "pharmacy",
+   "straight_m": 177,
+   "street_m": 225
+  },
+  {
+   "id": "the-medicine-shoppe-pharmacy-209",
+   "name": "The Medicine Shoppe Pharmacy #209",
+   "cat": "pharmacy",
+   "straight_m": 75,
+   "street_m": 188
+  },
+  {
+   "id": "upper-middle-ida",
+   "name": "Upper Middle IDA",
+   "cat": "pharmacy",
+   "straight_m": 68,
+   "street_m": 108
+  },
+  {
+   "id": "al-falah-islamic-centre",
+   "name": "Al Falah Islamic Centre",
+   "cat": "religious",
+   "straight_m": 296,
+   "street_m": 352
+  },
+  {
+   "id": "church-of-the-epiphany",
+   "name": "Church of the Epiphany",
+   "cat": "religious",
+   "straight_m": 37,
+   "street_m": 94
+  },
+  {
+   "id": "church-of-the-incarnation",
+   "name": "Church of the Incarnation",
+   "cat": "religious",
+   "straight_m": 58,
+   "street_m": 156
+  },
+  {
+   "id": "glen-abbey-united-church",
+   "name": "Glen Abbey United Church",
+   "cat": "religious",
+   "straight_m": 93,
+   "street_m": 285
+  },
+  {
+   "id": "holy-trinity-croatian-catholic-parish",
+   "name": "Holy Trinity Croatian Catholic Parish",
+   "cat": "religious",
+   "straight_m": 61,
+   "street_m": 55
+  },
+  {
+   "id": "iskcon-oakville",
+   "name": "ISKCON Oakville",
+   "cat": "religious",
+   "straight_m": 138,
+   "street_m": 155
+  },
+  {
+   "id": "jame-masjid-oakville-world-islamic-mission-canada",
+   "name": "Jame Masjid Oakville (World Islamic Mission Canada)",
+   "cat": "religious",
+   "straight_m": 221,
+   "street_m": 314
+  },
+  {
+   "id": "knox-presbyterian-church-downtown",
+   "name": "Knox Presbyterian Church, Downtown",
+   "cat": "religious",
+   "straight_m": 139,
+   "street_m": 161
+  },
+  {
+   "id": "knox-presbyterian-church-sixteen",
+   "name": "Knox Presbyterian Church, Sixteen",
+   "cat": "religious",
+   "straight_m": 50,
+   "street_m": 87
+  },
+  {
+   "id": "maple-grove-united-church",
+   "name": "Maple Grove United Church",
+   "cat": "religious",
+   "straight_m": 173,
+   "street_m": 236
+  },
+  {
+   "id": "masjid-al-hsan-dar-foundation",
+   "name": "Masjid Al-Hsan – Dar Foundation",
+   "cat": "religious",
+   "straight_m": 210,
+   "street_m": 507
+  },
+  {
+   "id": "munn-s-united-church",
+   "name": "Munn's United Church",
+   "cat": "religious",
+   "straight_m": 95,
+   "street_m": 109
+  },
+  {
+   "id": "saint-volodymyr-cultural-centre-uocc-all-saints-of-ukraine-chapel",
+   "name": "Saint Volodymyr Cultural Centre (UOCC) / All Saints of Ukraine Chapel",
+   "cat": "religious",
+   "straight_m": 129,
+   "street_m": 239
+  },
+  {
+   "id": "sanatan-mandir-of-canada",
+   "name": "Sanatan Mandir of Canada",
+   "cat": "religious",
+   "straight_m": 109,
+   "street_m": 174
+  },
+  {
+   "id": "st-aidans-anglican-church",
+   "name": "St Aidans Anglican Church",
+   "cat": "religious",
+   "straight_m": 46,
+   "street_m": 84
+  },
+  {
+   "id": "st-peter-and-st-paul-coptic-orthodox-church",
+   "name": "St Peter and St Paul Coptic Orthodox Church",
+   "cat": "religious",
+   "straight_m": 295,
+   "street_m": 912
+  },
+  {
+   "id": "st-andrew-s-catholic-church",
+   "name": "St. Andrew's Catholic Church",
+   "cat": "religious",
+   "straight_m": 340,
+   "street_m": 340
+  },
+  {
+   "id": "st-james-roman-catholic-church",
+   "name": "St. James Roman Catholic Church",
+   "cat": "religious",
+   "straight_m": 228,
+   "street_m": 259
+  },
+  {
+   "id": "st-joseph-s-portuguese-roman-catholic-church",
+   "name": "St. Joseph's Portuguese Roman Catholic Church",
+   "cat": "religious",
+   "straight_m": 69,
+   "street_m": 126
+  },
+  {
+   "id": "st-joseph-s-ukrainian-catholic-church",
+   "name": "St. Joseph's Ukrainian Catholic Church",
+   "cat": "religious",
+   "straight_m": 35,
+   "street_m": 55
+  },
+  {
+   "id": "st-jude-s-anglican-church",
+   "name": "St. Jude's Anglican Church",
+   "cat": "religious",
+   "straight_m": 228,
+   "street_m": 321
+  },
+  {
+   "id": "st-luke-s-community-centre-anglican",
+   "name": "St. Luke's Community Centre (Anglican)",
+   "cat": "religious",
+   "straight_m": 46,
+   "street_m": 194
+  },
+  {
+   "id": "st-michael-s-roman-catholic-church",
+   "name": "St. Michael's Roman Catholic Church",
+   "cat": "religious",
+   "straight_m": 260,
+   "street_m": 337
+  },
+  {
+   "id": "st-simon-s-anglican-church",
+   "name": "St. Simon's Anglican Church",
+   "cat": "religious",
+   "straight_m": 70,
+   "street_m": 62
+  },
+  {
+   "id": "abbey-lane-ps",
+   "name": "Abbey Lane Public School",
+   "cat": "school",
+   "straight_m": 91,
+   "street_m": 134
+  },
+  {
+   "id": "abbey-park-hs",
+   "name": "Abbey Park High School",
+   "cat": "school",
+   "straight_m": 139,
+   "street_m": 222
+  },
+  {
+   "id": "appleby-college",
+   "name": "Appleby College",
+   "cat": "school",
+   "straight_m": 399,
+   "street_m": 573
+  },
+  {
+   "id": "brookdale-ps",
+   "name": "Brookdale Public School",
+   "cat": "school",
+   "straight_m": 42,
+   "street_m": 42
+  },
+  {
+   "id": "captain-r-wilson-ps",
+   "name": "Captain R. Wilson Public School",
+   "cat": "school",
+   "straight_m": 192,
+   "street_m": 212
+  },
+  {
+   "id": "chisholm-academy",
+   "name": "Chisholm Academy",
+   "cat": "school",
+   "straight_m": 56,
+   "street_m": 70
+  },
+  {
+   "id": "clanmore-montessori",
+   "name": "Clanmore Montessori School",
+   "cat": "school",
+   "straight_m": 225,
+   "street_m": 328
+  },
+  {
+   "id": "dearcroft-montessori",
+   "name": "Dearcroft Montessori School",
+   "cat": "school",
+   "straight_m": 1087,
+   "street_m": 1275
+  },
+  {
+   "id": "dr-david-r-williams-ps",
+   "name": "Dr. David R. Williams Public School",
+   "cat": "school",
+   "straight_m": 128,
+   "street_m": 323
+  },
+  {
+   "id": "e-j-james-ps",
+   "name": "E. J. James Public School",
+   "cat": "school",
+   "straight_m": 130,
+   "street_m": 270
+  },
+  {
+   "id": "eastview-ps",
+   "name": "Eastview Public School",
+   "cat": "school",
+   "straight_m": 332,
+   "street_m": 606
+  },
+  {
+   "id": "eec-sainte-marie",
+   "name": "École élémentaire catholique Sainte-Marie",
+   "cat": "school",
+   "straight_m": 30,
+   "street_m": 43
+  },
+  {
+   "id": "ecole-du-chene",
+   "name": "École élémentaire du Chêne",
+   "cat": "school",
+   "straight_m": 198,
+   "street_m": 767
+  },
+  {
+   "id": "ecole-patricia-picknell",
+   "name": "École élémentaire Patricia-Picknell",
+   "cat": "school",
+   "straight_m": 177,
+   "street_m": 547
+  },
+  {
+   "id": "esc-sainte-trinite",
+   "name": "École secondaire catholique Sainte-Trinité",
+   "cat": "school",
+   "straight_m": 141,
+   "street_m": 247
+  },
+  {
+   "id": "ecole-gaetan-gervais",
+   "name": "École secondaire Gaétan-Gervais",
+   "cat": "school",
+   "straight_m": 82,
+   "street_m": 214
+  },
+  {
+   "id": "emily-carr-ps",
+   "name": "Emily Carr Public School",
+   "cat": "school",
+   "straight_m": 104,
+   "street_m": 140
+  },
+  {
+   "id": "falgarwood-ps",
+   "name": "Falgarwood Public School",
+   "cat": "school",
+   "straight_m": 192,
+   "street_m": 226
+  },
+  {
+   "id": "fern-hill-oakville",
+   "name": "Fern Hill School, Oakville Campus",
+   "cat": "school",
+   "straight_m": 1117,
+   "street_m": 1225
+  },
+  {
+   "id": "forest-trail-ps",
+   "name": "Forest Trail Public School",
+   "cat": "school",
+   "straight_m": 161,
+   "street_m": 277
+  },
+  {
+   "id": "garth-webb-ss",
+   "name": "Garth Webb Secondary School",
+   "cat": "school",
+   "straight_m": 153,
+   "street_m": 285
+  },
+  {
+   "id": "gladys-speers-ps",
+   "name": "Gladys Speers Public School",
+   "cat": "school",
+   "straight_m": 264,
+   "street_m": 309
+  },
+  {
+   "id": "harvest-oak-ps",
+   "name": "Harvest Oak Public School",
+   "cat": "school",
+   "straight_m": 555,
+   "street_m": 741
+  },
+  {
+   "id": "heritage-glen-ps",
+   "name": "Heritage Glen Public School",
+   "cat": "school",
+   "straight_m": 131,
+   "street_m": 132
+  },
+  {
+   "id": "holy-family-ces",
+   "name": "Holy Family Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 69,
+   "street_m": 46
+  },
+  {
+   "id": "holy-trinity-css",
+   "name": "Holy Trinity Catholic Secondary School",
+   "cat": "school",
+   "straight_m": 131,
+   "street_m": 167
+  },
+  {
+   "id": "iroquois-ridge-hs",
+   "name": "Iroquois Ridge High School",
+   "cat": "school",
+   "straight_m": 92,
+   "street_m": 137
+  },
+  {
+   "id": "james-w-hill-ps",
+   "name": "James W. Hill Public School",
+   "cat": "school",
+   "straight_m": 85,
+   "street_m": 520
+  },
+  {
+   "id": "john-knox-christian",
+   "name": "John Knox Christian School",
+   "cat": "school",
+   "straight_m": 287,
+   "street_m": 309
+  },
+  {
+   "id": "joshua-creek-ps",
+   "name": "Joshua Creek Public School",
+   "cat": "school",
+   "straight_m": 530,
+   "street_m": 704
+  },
+  {
+   "id": "kings-christian-collegiate",
+   "name": "King's Christian Collegiate",
+   "cat": "school",
+   "straight_m": 140,
+   "street_m": 596
+  },
+  {
+   "id": "linbrook-school",
+   "name": "Linbrook School",
+   "cat": "school",
+   "straight_m": 86,
+   "street_m": 129
+  },
+  {
+   "id": "maclachlan-college",
+   "name": "MacLachlan College",
+   "cat": "school",
+   "straight_m": 112,
+   "street_m": 430
+  },
+  {
+   "id": "maple-grove-ps",
+   "name": "Maple Grove Public School",
+   "cat": "school",
+   "straight_m": 325,
+   "street_m": 405
+  },
+  {
+   "id": "montclair-ps",
+   "name": "Montclair Public School",
+   "cat": "school",
+   "straight_m": 197,
+   "street_m": 299
+  },
+  {
+   "id": "munns-ps",
+   "name": "Munn's Public School",
+   "cat": "school",
+   "straight_m": 117,
+   "street_m": 172
+  },
+  {
+   "id": "new-central-ps",
+   "name": "New Central Public School",
+   "cat": "school",
+   "straight_m": 703,
+   "street_m": 1003
+  },
+  {
+   "id": "oakville-christian-school",
+   "name": "Oakville Christian School",
+   "cat": "school",
+   "straight_m": 16,
+   "street_m": 15
+  },
+  {
+   "id": "oakville-trafalgar-hs",
+   "name": "Oakville Trafalgar High School",
+   "cat": "school",
+   "straight_m": 195,
+   "street_m": 353
+  },
+  {
+   "id": "oakwood-ps",
+   "name": "Oakwood Public School",
+   "cat": "school",
+   "straight_m": 108,
+   "street_m": 628
+  },
+  {
+   "id": "oodenawi-ps",
+   "name": "Oodenawi Public School",
+   "cat": "school",
+   "straight_m": 150,
+   "street_m": 175
+  },
+  {
+   "id": "our-lady-of-peace-ces",
+   "name": "Our Lady of Peace Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 110,
+   "street_m": 291
+  },
+  {
+   "id": "palermo-ps",
+   "name": "Palermo Public School",
+   "cat": "school",
+   "straight_m": 111,
+   "street_m": 120
+  },
+  {
+   "id": "pilgrim-wood-ps",
+   "name": "Pilgrim Wood Public School",
+   "cat": "school",
+   "straight_m": 402,
+   "street_m": 498
+  },
+  {
+   "id": "pine-grove-ps",
+   "name": "Pine Grove Public School",
+   "cat": "school",
+   "straight_m": 121,
+   "street_m": 128
+  },
+  {
+   "id": "posts-corners-ps",
+   "name": "Post's Corners Public School",
+   "cat": "school",
+   "straight_m": 136,
+   "street_m": 246
+  },
+  {
+   "id": "river-oaks-ps",
+   "name": "River Oaks Public School",
+   "cat": "school",
+   "straight_m": 112,
+   "street_m": 471
+  },
+  {
+   "id": "rotherglen-school",
+   "name": "Rotherglen School",
+   "cat": "school",
+   "straight_m": 58,
+   "street_m": 475
+  },
+  {
+   "id": "sheridan-ps",
+   "name": "Sheridan Public School",
+   "cat": "school",
+   "straight_m": 95,
+   "street_m": 373
+  },
+  {
+   "id": "st-andrew-ces",
+   "name": "St. Andrew Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 154,
+   "street_m": 143
+  },
+  {
+   "id": "st-bernadette-ces",
+   "name": "St. Bernadette Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 102,
+   "street_m": 199
+  },
+  {
+   "id": "st-cecilia-ces",
+   "name": "St. Cecilia Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 14,
+   "street_m": 17
+  },
+  {
+   "id": "st-dominic-ces",
+   "name": "St. Dominic Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 113,
+   "street_m": 976
+  },
+  {
+   "id": "st-gregory-the-great-ces",
+   "name": "St. Gregory the Great Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 159,
+   "street_m": 264
+  },
+  {
+   "id": "st-ignatius-of-loyola-css",
+   "name": "St. Ignatius of Loyola Catholic Secondary School",
+   "cat": "school",
+   "straight_m": 160,
+   "street_m": 740
+  },
+  {
+   "id": "st-joan-of-arc-ces",
+   "name": "St. Joan of Arc Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 140,
+   "street_m": 298
+  },
+  {
+   "id": "st-john-paul-ii-ces",
+   "name": "St. John Paul II Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 328,
+   "street_m": 498
+  },
+  {
+   "id": "st-luke-ces",
+   "name": "St. Luke Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 117,
+   "street_m": 119
+  },
+  {
+   "id": "st-marguerite-dyouville-ces",
+   "name": "St. Marguerite d'Youville Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 199,
+   "street_m": 202
+  },
+  {
+   "id": "st-mary-ces",
+   "name": "St. Mary Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 135,
+   "street_m": 263
+  },
+  {
+   "id": "st-matthew-ces",
+   "name": "St. Matthew Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 47,
+   "street_m": 24
+  },
+  {
+   "id": "st-michael-ces",
+   "name": "St. Michael Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 205,
+   "street_m": 598
+  },
+  {
+   "id": "st-mildreds-lightbourn",
+   "name": "St. Mildred's-Lightbourn School",
+   "cat": "school",
+   "straight_m": 33,
+   "street_m": 35
+  },
+  {
+   "id": "st-nicholas-ces",
+   "name": "St. Nicholas Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 139,
+   "street_m": 267
+  },
+  {
+   "id": "st-teresa-of-calcutta-ces",
+   "name": "St. Teresa of Calcutta Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 255,
+   "street_m": 348
+  },
+  {
+   "id": "st-thomas-aquinas-css",
+   "name": "St. Thomas Aquinas Catholic Secondary School",
+   "cat": "school",
+   "straight_m": 147,
+   "street_m": 257
+  },
+  {
+   "id": "st-vincent-ces",
+   "name": "St. Vincent Catholic Elementary School",
+   "cat": "school",
+   "straight_m": 446,
+   "street_m": 560
+  },
+  {
+   "id": "sunningdale-ps",
+   "name": "Sunningdale Public School",
+   "cat": "school",
+   "straight_m": 131,
+   "street_m": 116
+  },
+  {
+   "id": "t-a-blakelock-hs",
+   "name": "T. A. Blakelock High School",
+   "cat": "school",
+   "straight_m": 144,
+   "street_m": 226
+  },
+  {
+   "id": "w-h-morden-ps",
+   "name": "W. H. Morden Public School",
+   "cat": "school",
+   "straight_m": 76,
+   "street_m": 108
+  },
+  {
+   "id": "walden-international",
+   "name": "Walden International School",
+   "cat": "school",
+   "straight_m": 100,
+   "street_m": 62
+  },
+  {
+   "id": "west-oak-ps",
+   "name": "West Oak Public School",
+   "cat": "school",
+   "straight_m": 201,
+   "street_m": 344
+  },
+  {
+   "id": "white-oaks-ss",
+   "name": "White Oaks Secondary School",
+   "cat": "school",
+   "straight_m": 124,
+   "street_m": 253
+  },
+  {
+   "id": "wildwood-academy",
+   "name": "Wildwood Academy",
+   "cat": "school",
+   "straight_m": 235,
+   "street_m": 343
+  },
+  {
+   "id": "abbey-plaza",
+   "name": "Abbey Plaza",
+   "cat": "shoppingcentre",
+   "straight_m": 82,
+   "street_m": 214
+  },
+  {
+   "id": "dorval-crossing",
+   "name": "Dorval Crossing",
+   "cat": "shoppingcentre",
+   "straight_m": 47,
+   "street_m": 69
+  },
+  {
+   "id": "dorval-crossing-west",
+   "name": "Dorval Crossing West",
+   "cat": "shoppingcentre",
+   "straight_m": 104,
+   "street_m": 120
+  },
+  {
+   "id": "maple-grove-village",
+   "name": "Maple Grove Village",
+   "cat": "shoppingcentre",
+   "straight_m": 123,
+   "street_m": 172
+  },
+  {
+   "id": "oakville-entertainment-centrum",
+   "name": "Oakville Entertainment Centrum (Oakville Centrum)",
+   "cat": "shoppingcentre",
+   "straight_m": 125,
+   "street_m": 167
+  },
+  {
+   "id": "oakville-place",
+   "name": "Oakville Place",
+   "cat": "shoppingcentre",
+   "straight_m": 167,
+   "street_m": 197
+  },
+  {
+   "id": "oakwoods-centre",
+   "name": "Oakwoods Centre",
+   "cat": "shoppingcentre",
+   "straight_m": 149,
+   "street_m": 275
+  },
+  {
+   "id": "riocan-centre-burloak",
+   "name": "RioCan Centre Burloak",
+   "cat": "shoppingcentre",
+   "straight_m": 85,
+   "street_m": 184
+  },
+  {
+   "id": "riocentre",
+   "name": "RioCentre",
+   "cat": "shoppingcentre",
+   "straight_m": 140,
+   "street_m": 294
+  },
+  {
+   "id": "smartcentres-oakville",
+   "name": "SmartCentres Oakville",
+   "cat": "shoppingcentre",
+   "straight_m": 17,
+   "street_m": 30
+  },
+  {
+   "id": "smartcentres-south-oakville-centre",
+   "name": "South Oakville Centre",
+   "cat": "shoppingcentre",
+   "straight_m": 157,
+   "street_m": 158
+  },
+  {
+   "id": "trafalgar-village",
+   "name": "Trafalgar Village",
+   "cat": "shoppingcentre",
+   "straight_m": 190,
+   "street_m": 250
+  },
+  {
+   "id": "upper-oakville-shopping-centre",
+   "name": "Upper Oakville Shopping Centre",
+   "cat": "shoppingcentre",
+   "straight_m": 121,
+   "street_m": 152
+  },
+  {
+   "id": "bombay-grocers-oakville",
+   "name": "Bombay Grocers Oakville",
+   "cat": "specialtyasian",
+   "straight_m": 53,
+   "street_m": 116
+  },
+  {
+   "id": "east-indian-supermarket",
+   "name": "East Indian Supermarket",
+   "cat": "specialtyasian",
+   "straight_m": 161,
+   "street_m": 190
+  },
+  {
+   "id": "galleria-supermarket",
+   "name": "Galleria Supermarket",
+   "cat": "specialtyasian",
+   "straight_m": 173,
+   "street_m": 208
+  },
+  {
+   "id": "iqbal-foods-oakville",
+   "name": "Iqbal Foods Oakville",
+   "cat": "specialtyasian",
+   "straight_m": 168,
+   "street_m": 233
+  },
+  {
+   "id": "monastery-bakery-delicatessen",
+   "name": "Monastery Bakery & Delicatessen",
+   "cat": "specialtyasian",
+   "straight_m": 59,
+   "street_m": 77
+  },
+  {
+   "id": "organic-garage",
+   "name": "Organic Garage",
+   "cat": "specialtyasian",
+   "straight_m": 37,
+   "street_m": 33
+  },
+  {
+   "id": "spice-bazaar",
+   "name": "Spice Bazaar",
+   "cat": "specialtyasian",
+   "straight_m": 38,
+   "street_m": 66
+  },
+  {
+   "id": "t-t-supermarket-erin-mills",
+   "name": "T&T Supermarket Erin Mills",
+   "cat": "specialtyasian",
+   "straight_m": 62,
+   "street_m": 125
+  },
+  {
+   "id": "costco-wholesale-mississauga-south",
+   "name": "Costco Wholesale (Mississauga South)",
+   "cat": "supermarket",
+   "straight_m": 85,
+   "street_m": 175
+  },
+  {
+   "id": "farm-boy",
+   "name": "Farm Boy",
+   "cat": "supermarket",
+   "straight_m": 150,
+   "street_m": 208
+  },
+  {
+   "id": "farm-boy-bronte",
+   "name": "Farm Boy Bronte",
+   "cat": "supermarket",
+   "straight_m": 95,
+   "street_m": 125
+  },
+  {
+   "id": "farm-boy-walkers-line",
+   "name": "Farm Boy Walkers Line",
+   "cat": "supermarket",
+   "straight_m": 120,
+   "street_m": 195
+  },
+  {
+   "id": "food-basics",
+   "name": "Food Basics",
+   "cat": "supermarket",
+   "straight_m": 53,
+   "street_m": 103
+  },
+  {
+   "id": "food-basics-dundas",
+   "name": "Food Basics",
+   "cat": "supermarket",
+   "straight_m": 120,
+   "street_m": 151
+  },
+  {
+   "id": "food-basics-clarkson-village",
+   "name": "Food Basics Clarkson Village",
+   "cat": "supermarket",
+   "straight_m": 600,
+   "street_m": 868
+  },
+  {
+   "id": "fortinos",
+   "name": "Fortinos",
+   "cat": "supermarket",
+   "straight_m": 113,
+   "street_m": 106
+  },
+  {
+   "id": "fortinos-appleby-line",
+   "name": "Fortinos Appleby Line",
+   "cat": "supermarket",
+   "straight_m": 166,
+   "street_m": 222
+  },
+  {
+   "id": "fortinos-oakville-neyagawa",
+   "name": "Fortinos Oakville Neyagawa",
+   "cat": "supermarket",
+   "straight_m": 55,
+   "street_m": 68
+  },
+  {
+   "id": "freshco",
+   "name": "FreshCo",
+   "cat": "supermarket",
+   "straight_m": 69,
+   "street_m": 89
+  },
+  {
+   "id": "longo-s",
+   "name": "Longo's",
+   "cat": "supermarket",
+   "straight_m": 83,
+   "street_m": 156
+  },
+  {
+   "id": "longo-s",
+   "name": "Longo's",
+   "cat": "supermarket",
+   "straight_m": 118,
+   "street_m": 112
+  },
+  {
+   "id": "longos-dundas-east",
+   "name": "Longo's",
+   "cat": "supermarket",
+   "straight_m": 151,
+   "street_m": 336
+  },
+  {
+   "id": "longo-s-walkers-line",
+   "name": "Longo's Walkers Line",
+   "cat": "supermarket",
+   "straight_m": 189,
+   "street_m": 253
+  },
+  {
+   "id": "metro",
+   "name": "Metro",
+   "cat": "supermarket",
+   "straight_m": 106,
+   "street_m": 174
+  },
+  {
+   "id": "metro",
+   "name": "Metro",
+   "cat": "supermarket",
+   "straight_m": 140,
+   "street_m": 183
+  },
+  {
+   "id": "metro",
+   "name": "Metro",
+   "cat": "supermarket",
+   "straight_m": 70,
+   "street_m": 170
+  },
+  {
+   "id": "metro-clarkson-crossings",
+   "name": "Metro Clarkson Crossings",
+   "cat": "supermarket",
+   "straight_m": 336,
+   "street_m": 473
+  },
+  {
+   "id": "oleg-s-no-frills",
+   "name": "Oleg's No Frills",
+   "cat": "supermarket",
+   "straight_m": 67,
+   "street_m": 128
+  },
+  {
+   "id": "real-canadian-superstore",
+   "name": "Real Canadian Superstore",
+   "cat": "supermarket",
+   "straight_m": 220,
+   "street_m": 514
+  },
+  {
+   "id": "sobeys-glen-abbey",
+   "name": "Sobeys Glen Abbey",
+   "cat": "supermarket",
+   "straight_m": 131,
+   "street_m": 241
+  },
+  {
+   "id": "sobeys-maple-grove",
+   "name": "Sobeys Maple Grove",
+   "cat": "supermarket",
+   "straight_m": 108,
+   "street_m": 155
+  },
+  {
+   "id": "walmart-supercentre",
+   "name": "Walmart Supercentre",
+   "cat": "supermarket",
+   "straight_m": 65,
+   "street_m": 102
+  },
+  {
+   "id": "walmart-supercentre",
+   "name": "Walmart Supercentre",
+   "cat": "supermarket",
+   "straight_m": 194,
+   "street_m": 199
+  },
+  {
+   "id": "whole-foods-oakville",
+   "name": "Whole Foods Market",
+   "cat": "supermarket",
+   "straight_m": 71,
+   "street_m": 138
+  }
+ ]
+}

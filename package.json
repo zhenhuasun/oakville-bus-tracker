@@ -1,0 +1,8 @@
+{
+  "name": "oakville-bus-tracker",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/node/test_*.mjs",
+    "test:live": "node --test tests/node/live/test_*.mjs"
+  }
+}

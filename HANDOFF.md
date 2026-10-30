@@ -16,6 +16,10 @@ guard (`npm run check`) fails if old root files reappear. The CI workflow
 not pushed, and 51 stale root files still exist on GitHub because the
 assistant's push tool cannot delete remote files — sections 2 and 3 below
 are the complete human action list.
+Note: the default suite is green during daytime service hours.
+tests/node/test_google13.mjs has a pre-existing time-of-day
+dependence (a past-date input is clamped to today+now, so evening
+runs may find no departures); see §5.
 
 ## 2. Manual cleanup — delete 51 stale root files from GitHub
 
@@ -91,8 +95,20 @@ create `package-lock.json` since the repo has zero dependencies;
 committing it is optional — it only makes future CI runs take the
 `npm ci` branch.)
 
+If run in the evening, test_google13.mjs may fail with
+`opts: null` — this is a known pre-existing time-dependent test,
+not caused by the cleanup; see §5.
+
 ## 5. Known issues (non-blocking)
 
+- tests/node/test_google13.mjs: the fixed 2026-10-27 08:10
+  depart-mode case is time-of-day dependent. public/index.html
+  setTimeMode bumps past dates to today and clamps past depart
+  times to now, so evening runs can find no departures (opts null).
+  Passes in daytime service hours. Fixing it means a test-design
+  change (a future-date case plus a past-date-clamp case with
+  assertions adjusted), not a logic change; deferred and tracked
+  here, not fixed in this cleanup.
 - `tests/node/test_stage3.mjs` skips its raw-GTFS shapes cross-check
   when no static package is on disk (prints a SKIP line, suite still
   passes). Set `OAKVILLE_GTFS_STATIC` to a GTFS static dir to enable it.

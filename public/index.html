@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="manifest" href="/manifest.webmanifest">
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0b5cab">
-<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Oakville Bus — Next Bus</title>
@@ -695,12 +695,17 @@ function t(key) { return (I18N[lang] && I18N[lang][key]) || I18N.en[key] || key;
 function pairKey() { return home + "->" + dest; }
 function currentPair() { return DATA ? DATA.pairs[pairKey()] : null; }
 
+// API base for live data. Same-origin on the Cloudflare Worker; on GitHub
+// Pages (project subpath) the live API still comes from the Worker, whose
+// /api/* responses already carry Access-Control-Allow-Origin: * (worker.js).
+const API_BASE = (typeof location !== "undefined" && location.hostname && location.hostname.endsWith(".github.io")) ? "https://oakville-bus-tracker.zhenhuasun.workers.dev" : "";
+
 async function loadRT() {
   try {
     const [tr, ve, al] = await Promise.all([
-      fetch("/api/rt/trips").then(r => r.json()),
-      fetch("/api/rt/vehicles").then(r => r.json()),
-      fetch("/api/rt/alerts").then(r => r.json()),
+      fetch(API_BASE + "/api/rt/trips").then(r => r.json()),
+      fetch(API_BASE + "/api/rt/vehicles").then(r => r.json()),
+      fetch(API_BASE + "/api/rt/alerts").then(r => r.json()),
     ]);
     const trips = new Map(), vehicles = new Map();
     if (tr.ok) for (const x of tr.trips) trips.set(x.trip_id + "|" + x.route_id, x);

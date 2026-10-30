@@ -24,8 +24,8 @@ check("manifest parses as JSON", !!manifest);
 check("manifest name", manifest.name === "Oakville Bus", manifest.name);
 check("manifest short_name", manifest.short_name === "Oakville Bus", manifest.short_name);
 check("manifest display standalone", manifest.display === "standalone", manifest.display);
-check("manifest start_url /", manifest.start_url === "/", manifest.start_url);
-check("manifest scope /", manifest.scope === "/", manifest.scope);
+check("manifest start_url . (dual-origin: Worker / and Pages subpath)", manifest.start_url === ".", manifest.start_url);
+check("manifest scope . (dual-origin: Worker / and Pages subpath)", manifest.scope === ".", manifest.scope);
 check("manifest theme_color is site blue", manifest.theme_color === "#0b5cab", manifest.theme_color);
 check("manifest background_color", !!manifest.background_color, manifest.background_color);
 check("manifest description English only (single string)", typeof manifest.description === "string" && manifest.description.length > 0);
@@ -55,9 +55,9 @@ for (const ic of icons) {
 }
 
 const head = html.split("</head>")[0];
-check("head links manifest", /<link rel="manifest" href="\/manifest\.webmanifest">/.test(head));
+check("head links manifest", /<link rel="manifest" href="manifest\.webmanifest">/.test(head));
 check("head theme-color meta", /<meta name="theme-color" content="#0b5cab">/.test(head));
-check("head apple-touch-icon link", /<link rel="apple-touch-icon" href="\/icons\/apple-touch-icon\.png">/.test(head));
+check("head apple-touch-icon link", /<link rel="apple-touch-icon" href="icons\/apple-touch-icon\.png">/.test(head));
 check("head iOS standalone capable meta", /<meta name="apple-mobile-web-app-capable" content="yes">/.test(head));
 check("head iOS status-bar-style meta", /<meta name="apple-mobile-web-app-status-bar-style" content="default">/.test(head));
 const apple = path.join(dir, "public", "icons", "apple-touch-icon.png");

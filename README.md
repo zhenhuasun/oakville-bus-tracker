@@ -1,27 +1,64 @@
-# Oakville Bus Tracker — standalone Cloudflare Worker website
+# Oakville Bus Tracker
 
 One screen for elderly newcomers in Oakville, Ontario: pick where you are
-going, and the screen answers — which route, which direction, which stop to
-wait at (English stop name + stop code, as on the sign), where the bus is
-now, how many minutes away (very large type), the next bus if this one is
-missed, and a one-tap return trip.
+and where you are going, and the screen answers — which route, which
+stop to wait at (English stop name + stop code, as on the sign), where
+the bus is now, and how many minutes away, in very large type — plus the
+next bus if this one is missed, and a one-tap return trip.
 
 Local Oakville Transit only. No cross-city planning, no full-city map, no
-ticketing, no ads, no popups, no login. A simplified route strip (three
-points only — bus, waiting stop, destination) sits below the countdown and
-never covers it.
+ticketing, no ads, no popups, no login.
 
-This is a real standalone website, not a Muse artifact. Stage 1 is live at
-https://oakville-bus-tracker.zhenhuasun.workers.dev
-(Worker `oakville-bus-tracker`). **The Stage 2 changes in this directory
-are not yet deployed** — deployment needs the user's Cloudflare API token
-+ account ID at deploy time (see below). Nothing is pushed to GitHub and
-no repo is created by this code.
+**Live:** https://oakville-bus-tracker.zhenhuasun.workers.dev
+(Cloudflare Worker `oakville-bus-tracker`).
 
-## Files
+## What it does
 
-Final layout (after the Commit 1–5 repo cleanup; the dated sections
-below are the development log and still use pre-cleanup paths):
+- **22 languages**, picked on first open (English and French first, then
+  2021 Census Oakville mother-tongue order). Place, street, and stop
+  names are never translated. Translations are drafts, not
+  human-reviewed.
+- **Symmetric origin / destination navigation**: each field accepts a
+  saved place, any of the 230 preset places, one of 9 hub stations, an
+  exact stop code, a map pin, a typed address, or your current location.
+  Swap is the only return-trip control. The homepage opens empty; saved
+  places (max 8, on your phone only) are the shortcut.
+- **Journey search up to 2 transfers**, with a time picker (Leave now /
+  Depart at / Arrive by) and four sort modes (shortest total time,
+  fewest transfers, least walking, earliest arrival). A direct option is
+  never hidden. Walking is measured on the street network
+  (OSRM foot routing), at a conservative 0.8 m/s; walking transfers are
+  capped at 300 m street distance.
+- **A route strip below the countdown** that shows the journey as
+  columns (bus, origin, each transfer, destination) with live bus
+  positions per leg. Times on the strip are scheduled times; live
+  predictions appear only in the countdown label and the
+  "(x stops away, est. ~y min)" note.
+- **A trip-only map** (one journey at a time, verbatim GTFS shapes),
+  opened from the board. It never loads on first render.
+- **Lightweight PWA**: home-screen icon + standalone display, no
+  offline cache (a cache could serve a timetable past its expiry).
+
+## Quick start
+
+```sh
+npx wrangler dev     # local dev: site + /api/rt/* proxy on localhost
+npm test             # default test suite (32 offline Node gates)
+npm run test:live    # live-network suite, separately (needs live GTFS-RT)
+npm run check        # local stale-root gate (not run in CI)
+npx wrangler deploy  # needs your Cloudflare API token + account ID;
+                     # never put a token in this repo
+```
+
+Local-dev note: in a restricted sandbox VM, local `wrangler dev` may
+return 502 for `/api/rt/*` (the local workerd runtime cannot complete
+TLS to outside hosts there) while the identical handler works under
+Node. That is a local-dev egress limitation, not a code bug — the site
+still loads and runs in Timetable mode. After a deploy, verify the live
+`/api/rt/vehicles` endpoint returns `ok: true` before announcing live
+data.
+
+## Layout
 
 | Path | What it is |
 |---|---|
@@ -30,1178 +67,119 @@ below are the development log and still use pre-cleanup paths):
 | `package.json` | `type: module` (all `.mjs` files and `worker.js` are ESM). Scripts: `test`, `test:live`, `check`. |
 | `.gitignore` | Python junk, `.wrangler/`, editor files. `public/` data is committed on purpose. |
 | `README.md` | This file. |
-| `build_lang22.py` | P3, stays at root by design: the 22-language draft generator. Its `/tmp/allpacks.json` input is gone, so it cannot rerun as-is. |
-| `public/` | Served frontend + data: `index.html`, `manifest.webmanifest`, `icons/`, `places.json`, `stops.json`, `timetable.json`, `pairs.json`, `shapes/`. |
+| `CHANGELOG.md` | Update history: dated changes and decisions, newest first. |
+| `HANDOFF.md` | Human action list from the repo cleanup (remote deletions, CI setup). |
+| `build_lang22.py` | Stays at root by design (P3): the 22-language draft generator. Its `/tmp/allpacks.json` input is gone, so it cannot rerun as-is. |
+| `public/` | Served frontend + data: `index.html`, `manifest.webmanifest`, `icons/`, `places.json` (230 places + 9 stations), `stops.json`, `timetable.json`, `pairs.json`, `shapes/` (35 routes). |
 | `data/` | Non-served data: `data/generated/` (regenerable intermediates: `schools-geocoded.json`, `street-audit.json`) and `data/schools-pending-decision.json` (curated decisions, not regenerable). |
 | `scripts/` | Manually run data generation / validation scripts (`.py`). See `scripts/README.md`. |
-| `tests/` | Automatable regression tests: `tests/node/` (default suite, run with `node --test`), `tests/node/live/` (live-network tests, excluded from the default suite), `tests/e2e/` (browser tests, none yet). |
+| `tests/` | Automatable regression tests: `tests/node/` (default suite), `tests/node/live/` (live-network tests, excluded from the default suite), `tests/e2e/` (browser tests, none yet). See `tests/README.md`. |
 | `archive/` | One-off scripts and historical verification (never run in CI or `npm test`): `archive/tests/`, `archive/scripts/`, `archive/stage2_block.txt`. |
 | `research/` | Research notes and preset-destination sources (`.md` only). |
 | `lang-drafts/` | Translation sources (outside `public/`, not served). |
 
-Tests: `npm test` runs the default suite only (`tests/node/test_*.mjs`,
-32 files). `npm run test:live` runs the live-network suite separately
-(`tests/node/live/test_*.mjs`) — it needs live GTFS-Realtime access and
-is excluded from the default suite by design. `npm run check` is a
-local gate (`scripts/check_stale_root.mjs`) that fails if stale root
-`.mjs` / `.py` / `.json` files reappear; it is not run in CI.
+## How it works
 
-## Why the Worker proxies the live feeds
+### Live data proxy
 
-The Oakville GTFS-Realtime endpoints return **no
-`Access-Control-Allow-Origin` header** (verified 2026-10-27), so a browser
-cannot fetch them directly. The Worker fetches them server-side, parses the
-protobuf, and returns JSON with `Access-Control-Allow-Origin: *`, cached
-~30 seconds (the feed's own refresh rate). The feeds need **no secret or
-API key** — none is in the code.
+The Oakville GTFS-Realtime endpoints return no
+`Access-Control-Allow-Origin` header, so a browser cannot fetch them
+directly. The Worker fetches them server-side, parses the protobuf,
+and returns JSON with `Access-Control-Allow-Origin: *`, cached
+~30 seconds (the feed's own refresh rate). The feeds need no secret or
+API key — none is in the code.
 
-Endpoints:
-
-- `GET /api/rt/vehicles` — in-service vehicles + position-only vehicles
-  (`has_trip` tells them apart; only `has_trip` vehicles are shown as buses)
+- `GET /api/rt/vehicles` — in-service vehicles + position-only
+  vehicles (`has_trip` tells them apart; only `has_trip` vehicles are
+  shown as buses)
 - `GET /api/rt/trips` — trip updates with per-stop predicted times
-- `GET /api/rt/alerts` — service alerts (English originals; the frontend
-  translates them by template and always offers the English original)
+- `GET /api/rt/alerts` — service alerts (English originals; the
+  frontend translates them by template and always offers the English
+  original)
 - `GET /api/health` — liveness check
 
-If any live endpoint fails, the frontend labels the board **Timetable**,
-never **LIVE**.
+If any live endpoint fails, the frontend labels the board
+**Timetable**, never **LIVE**. A bus is labelled LIVE only when a
+TripUpdate exists for that trip at the boarding stop.
 
-## Join rules (critical — implemented in both `derive_pairs.py` and `worker.js`)
+The static frontend is also published from `public/` via the GitHub
+Pages workflow (`.github/workflows/pages.yml`); on that origin the
+page calls the Worker as its API backend (cross-origin, CORS `*`).
+
+### Join rules (critical)
 
 - A static `trip_id` is plain, or `original_trip_id + "_merged_<n>"`.
-- A real-time `trip_id` equals the **original** trip id (or the plain id
-  for unmerged trips). Live trips are matched on
-  **(original_trip_id, route_id, current-date service)** — route_id is part
-  of the key because the same original appears under different routes in
-  the old and new signup.
+- A real-time `trip_id` equals the **original** trip id (or the plain
+  id for unmerged trips). Live trips match on
+  **(original_trip_id, route_id, current-date service)** — route_id is
+  part of the key because the same original appears under different
+  routes in the old and new signup.
 - Static `stop_id`s also carry `_merged_<n>` suffixes; the suffix is
   stripped before matching a real-time `stop_id`.
 - Only vehicles with a `trip_id` are shown as in-service buses.
+- Shape key is `(service_id, original_trip_id)`: exactly one shape for
+  every timetable trip. `(route, original)` alone is unsafe
+  (52 collisions) and is never used.
 
-## Prototype pairs (derived from the live static package)
+### Places and walking
 
-Origins: Oakville GO Station (stop 1212, code 3172), Bronte GO Station
-(645, code 2421), Uptown Core Terminal (1293, code 3233).
+- Every place maps to its true nearest GTFS stop. Place distances are
+  **street distances** (routed-foot), not straight-line: places over
+  400 m street are kept with an explicit street-distance note, never
+  dropped and never mapped to a fake closer stop.
+- Category browsing matches a place's category field exactly, never
+  stop-name substrings. Stations are the 9 hub stations only.
+- Walking uses the FOSSGIS OSRM foot service
+  (`routing.openstreetmap.de/routed-foot`), which sends coordinates
+  only. Never use `router.project-osrm.org`: that demo server serves
+  car routing only, regardless of the profile word in the path.
+- The 7 over-400 m schools keep their true nearest stops with an
+  explicit walking label; all 74 researched schools are included.
 
-Destinations: Iqbal Foods Oakville (125 Cross Ave Unit C2, Trafalgar
-Village), Oakville Place (240 Leighland Ave), Oakville Trafalgar Memorial
-Hospital (3001 Hospital Gate), Oakville GO Station, Uptown Core Terminal,
-Shoppers Drug Mart (351 Cornwall Rd), RBC (361 Cornwall Rd), Gladys
-Speers Public School (2150 Samway Rd), Oakville Trafalgar Community
-Centre, Glen Abbey Community Centre (1415 Third Line).
+### Data refresh
 
-**18 of 28 origin × destination pairs have a direct ride** (2 same-place
-pairs skipped). All 18 also have a return ride. Counts are departures in
-the current package across all its services; the board filters by the
-service active on the day you look.
-
-| From \ To | Iqbal | Oakville Pl. | Hospital | Oakville GO | Uptown | Shoppers | RBC | Gladys Speers | OTCC | Glen Abbey CC |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Oakville GO | 375 | 265 | — | — | 254 | 173 | 62 | 50 | 16 | 56 |
-| Bronte GO | 253 | 67 | 82 | 253 | — | 61 | 61 | — | — | 137 |
-| Uptown Core | 2 | — | 116 | 258 | — | — | — | — | — | — |
-
-Pairs with no direct ride are shown greyed/disabled in the UI, never
-fabricated.
-
-## Stage 1 (added 2026-10-28, not yet deployed)
-
-All client-side, all in `public/index.html` + `public/stops.json`. No new
-Worker secrets, no server storage, no login. Nothing that already worked
-was changed: the direct-pair board, countdown, strip, RT proxy, join
-rules, and timetable-vs-live labels are untouched.
-
-1. **Language onboarding.** On first open with no stored language — this
-   includes everyone who visited before Stage 1, because the language key
-   is new — a full-screen picker appears before the main screen, with 5
-   large buttons (English, French, Simplified Chinese, Arabic RTL, Hindi),
-   each labelled in its own language plus one example phrase ("Next bus
-   in 5 minutes"). Picking stores the language in `localStorage`.
-2. **Top language button.** A prominent sticky-top button labelled `A文`,
-   same position and size in all 5 languages, always visible on the main
-   screen. Tapping it re-opens the picker; the trip (origin, destination,
-   direction, boarding stop) is in-memory state and is preserved, and the
-   user returns to the same trip after re-picking.
-3. **Saved places + custom names (localStorage only, never sent to the
-   server).** Max 8. Add from a preset destination (button on the board),
-   from a search result, or from a nearby stop. Each card shows the user's
-   custom name large, with the English place/stop name and stop code
-   small. Rename is inline; delete is two-tap (tap Delete, then tap again
-   to confirm). Saved places appear as cards on the home screen: tap to go
-   there, or "Start here" to start there. Daily use still works with zero
-   search once places are saved.
-4. **Current location (browser only, never sent to the server).** The
-   location screen explains, in the user's language and BEFORE any
-   permission request, that location is used only on the phone to find the
-   nearest stop. On success it shows the nearest 3 stops as large buttons
-   (name, code, distance in metres) and the user taps one to confirm —
-   **nothing is auto-picked** (GPS drift). On denial, unavailability, or
-   timeout it falls back to the saved home board with a clear message,
-   never a dead end.
-5. **Search (Stage 1 scope only).** A large search button opens a search
-   screen with a large input and live suggestions as large buttons. The
-   index covers saved places (by custom name), the 10 prototype
-   destinations (by name, address, and category word in all 5 languages —
-   e.g. Chinese 超市 finds Iqbal Foods), and stops from `stops.json` (by
-   English name substring, or by stop-code digits). A result shows the
-   user-language name large and the English original + stop + routes
-   small; tapping sets it as destination, and a "Start here" action sets
-   it as origin. No results shows category shortcuts + saved places,
-   never a blank page. Search does NOT replace the preset big buttons on
-   the home screen.
-
-**Stage 1 search/origin limits (honest, by design — Stage 2 removes them).**
-A saved place or search result can be a starting point only if it is an
-origin terminal (Oakville GO / Bronte GO / Uptown Core) or a destination's
-boarding stop on its return trip; any other stop shows a clear message
-instead of a fabricated board. Likewise a stop result that is not a
-destination's candidate stop can be saved but cannot yet be a destination.
-Transfers, any-stop journey search, and the full preset-place search are
-Stage 2 (below); the trip-only map is Stage 3.
-
-## Stage 2 (added 2026-10-28, not yet deployed)
-
-All client-side, in `public/index.html` + two new data files. No new
-Worker secrets, no server storage, no login. The prototype pair board,
-countdown, Stage 1 onboarding / saved places / location, RT proxy, join
-rules, and timetable-vs-live labels are untouched for pairs that already
-had direct rides; Stage 2 only adds a second board path for everything
-else.
-
-**Static package first.** The ArcGIS package was re-downloaded on
-2026-10-28 and is **byte-identical to the existing package** (same MD5 as
-the 3.3 MB zip from 2026-10-27): calendar still ends **2026-10-31**.
-`pairs.json` and `stops.json` were therefore NOT re-derived. **Stage 2
-data expires on the same date** — the expiry warning stays prominent, and
-when Oakville publishes a new package, re-run `derive_pairs.py`,
-`derive_stops.py`, `derive_timetable.py`, and `derive_places.py`, then
-redeploy. Do not trust Stage 2 times after 2026-10-31 until that refresh
-happens.
-
-### New data files
-
-- `public/timetable.json` (2,827,725 bytes, generated by
-  `derive_timetable.py`) — the full timetable for the package's current
-  services only: weekday `1_merged_2779034` (1,535 trips), Saturday
-  `2_merged_2779036` (704), Sunday `3_merged_2779035` (540) =
-  **2,779 trips, 80,837 stop-times**. The old signup (ended 2026-09-05)
-  is dropped. Format is compact arrays:
-  `[route_id, service_id, original_trip_id, [[stop_id, arr_min, dep_min],
-  ...]]`; stop ids already have `_merged_` suffixes stripped, so they
-  match real-time stop ids directly. Direction is labelled by the trip's
-  terminal stop name (looked up in `stops.json`), never by the package's
-  meaningless "Auto Generated-05" headsigns.
-- `public/places.json` (46,700 bytes, generated by `derive_places.py`
-  from the verified research in
-  `~/workspace/oakville-gtfs-check/PRESET-DESTINATIONS.md`) —
-  **120 searchable places**, each mapped to its nearest GTFS stop
-  (≤ 400 m) with that stop's routes. By category: supermarket 20,
-  religious 24, bank 21, big-box 18, pharmacy 16, lab 8, mall 8, Asian
-  supermarket 4, hospital 1. **6 are cross-boundary
-  Oakville-Transit-direct** (Mississauga Costco Laird Rd, T&T Erin Mills,
-  Metro Clarkson Crossings; Burlington Farm Boy, Longo's, Fortinos via
-  Route 5) and are flagged `cross: true` — the UI labels them as such,
-  never mixed into the town list.
-- `derive_places.py` extraction rules: only places with a name, an
-  address, AND tool-returned coordinates in the research file are
-  extracted. Places without coordinates are never geocoded by guesswork.
-  That is why the 74 schools are NOT in Stage 2 search: the school
-  research lists addresses but no coordinates — adding schools needs a
-  separate geocoding pass first, not a parser change. Likewise Home Depot
-  Bristol Cir and RONA Speers Rd (no tool coordinates) are absent.
-  Excluded with reasons (also stored in `places.json`'s `meta.excluded`):
-  TD 2059 Cornwall Rd (flagged branch, status not re-verified); St.
-  Cuthbert's Anglican Church (nearest stop 579 m); Halton Islamic
-  Community Centre (2,996 m); Vaishno Devi Temple (988 m); Shiva Temple
-  (1,021 m) — all four over the 400 m mapping limit, so they must not
-  appear as searchable destinations. South Common, Famijoy / United
-  Supermarket at 125 Cross Ave, Costco Oakville, and Nations Experience
-  are never included (see Known limits). The CIBC Client Advice Centre
-  at 511 Maple Grove Dr is labelled as advice-only (ATM cash), not as a
-  full-service branch.
-
-### Journey search (client-side, in `index.html`)
-
-Given any origin stop and any destination stop, the engine finds direct
-rides first, then rides with **at most one transfer**. Rules, all
-enforced and tested:
-
-- **Minimum transfer time 5 minutes** — never a tighter connection for
-  elderly users. For a walking transfer the required gap is
-  `max(5 minutes, walking time)`.
-- **Transfer candidates are the same stop (0 m walk) or a nearby stop
-  within 300 m** (straight-line distance from stop coordinates, stated
-  in the UI as metres + walking minutes). Walking time uses a
-  **conservative elderly walking speed of 0.8 m/s (48 m/min)** — not a
-  commuter speed. A transfer to a stop that IS the destination is not a
-  bus transfer and is excluded.
-- **Sort: fewest transfers first, then earliest arrival, then least
-  walking.** The best option is shown prominently; up to 2 alternatives
-  sit below the countdown, never competing with it. If no direct or
-  one-transfer ride exists on today or the next 6 days, the board says
-  so honestly — **2+ transfers are never suggested in Stage 2**.
-- **Place destinations try several stops.** A place is searched at its
-  nearest stop plus other stops within 300 m of the place (nearest
-  first), and a prototype destination tries all its candidate stops;
-  the best journey across those stops wins. This matters because a trip
-  may serve a place's second-nearest stop in a direction the nearest
-  stop does not serve.
-- **Real-time is per-leg.** A leg's boarding stop gets its TripUpdate
-  predicted time when that trip is in the RT feed; a leg whose trip is
-  not in the feed is labelled Timetable for that leg even if other legs
-  are live. Leg 1's vehicle position comes from the same vehicle match
-  as the existing "bus is on its way" text. Future-day legs are always
-  timetable (no live data exists for them yet).
-- **Return trip works for transfer journeys too** — it swaps origin and
-  destination and re-runs the search.
-
-### Segmented board + strip
-
-For a transfer journey the board shows, per leg: route, boarding stop
-(English name + code), alighting stop, departure/arrival times, and the
-transfer (same-stop "no walking", or walk metres/minutes to the transfer
-stop), plus total journey time. The simplified route strip becomes two
-legs with a **large transfer marker** between boarding stop and
-destination (bus, boarding stop, transfer stop, destination — still
-below the countdown, never covering it; dashed "bus position not live
-yet" when no live position, as before). Prototype destinations that had
-no direct ride are no longer greyed out: tapping one now runs the
-journey search from the home terminal to that destination's candidate
-stops.
-
-### Hub clusters (measured from the static GTFS, not asserted)
-
-A "same-terminal" transfer in this build means **the exact same stop
-id** (0 m). Stops near each terminal that fall inside the 300 m walking
-rule — and therefore count as walking transfers, not same-terminal
-transfers — include: around Oakville GO (1212): Cross Ave + Argus Rd
-(1300, 124 m), Cross Ave west of Argus Rd (487, 195 m), Cornwall Rd +
-Reynolds St (1058, 262 m); around Bronte GO (645): Speers Rd at Bronte
-GO (866, 267 m; 561, 283 m), Wyecroft Rd + South Service Rd West (1278,
-270 m); around Uptown Core (1293): Hays Blvd + Taunton Rd (977, 199 m),
-Trafalgar + Dundas (1657, 213 m), Taunton Rd + Hays Blvd (945, 225 m).
-These are straight-line distances, not walking routes.
-
-### Stage 2 limits (honest, by design)
-
-- Journey state is **in-memory only** (not persisted across reloads);
-  the persisted trip is still the prototype pair board. Reloading a
-  transfer journey falls back to the pair board.
-- First journey search on a page load can take ~1–2 seconds (building
-  the stop index and the ≤ 300 m neighbour lists); later searches on
-  the same page are tens of milliseconds. This is a one-time cost, not
-  a per-search cost.
-- Walking distances are straight-line, not sidewalk routes; the UI
-  shows metres so the rider can judge.
-- The trip-only map and map tap-to-pick are Stage 3, not Stage 2.
-
-## Test locally
+When Oakville publishes a new static package, in order:
 
 ```sh
-node test_stage1.mjs   # 25 checks: onboarding, re-pick preservation, saved places, nearest stops, search, pairs
-node test_stage2.mjs   # journey engine (direct + 1-transfer rules), expanded search, RT per-leg, Stage 1 regressions
-node test_rt.mjs       # live RT parser test (see note: at night, with no service running, trip updates are legitimately 0)
-npx wrangler dev       # serves index.html + pairs.json + stops.json + timetable.json + places.json + /api/rt/* on localhost
+python3 scripts/derive_pairs.py       # downloads the ArcGIS zip fresh
+python3 scripts/derive_stops.py       # regenerates public/stops.json
+python3 scripts/derive_timetable.py   # regenerates public/timetable.json
+python3 scripts/derive_places.py      # regenerates public/places.json
+python3 scripts/build_stage21.py      # preset additions (idempotent)
+python3 scripts/build_schools.py      # merge schools into places.json
+python3 scripts/derive_shapes.py      # regenerates public/shapes/
 ```
 
-Note, verified 2026-10-27 and still true: in a restricted sandbox VM,
-local `wrangler dev` may return 502 for `/api/rt/*` because the local
-workerd runtime cannot complete TLS to outside hosts there (even a
-trivial workerd fetch to example.com fails the same way), while the
-identical handler code works when run under Node. That is a local-dev
-egress limitation, not a code bug — the site still loads and runs in
-Timetable mode. After deploy, verify the live `/api/rt/vehicles` endpoint
-returns `ok: true` before announcing live data.
+Then re-measure street distances (`scripts/measure_street.py`,
+`archive/scripts/apply_street_rule.py`), check the new package's end
+date moved past the old one, and redeploy. Full script notes live in
+`scripts/README.md`. The site footer shows the timetable's
+valid-through date and warns when it is past.
 
-## Known limits — read before using or deploying
+## Known limits
 
-1. **Static package ends 2026-10-31.** The current package's calendar
-   (`calendar.txt` max end date) is 2026-10-31. The footer shows this date
-   and warns when it is past. After Oakville publishes a new package,
-   re-run `python3 derive_pairs.py` (it downloads the ArcGIS zip fresh)
-   and redeploy. The daily expiry-check cron from the earlier prototype
-   work still watches for a new package.
-2. **Timetable label when live data is unavailable.** A bus is labelled
-   LIVE only when a TripUpdate event exists for that trip at the boarding
-   stop. A next bus whose trip is not yet in the RT feed is labelled
-   Timetable even while the feed itself is live — that is honest, not a
-   bug.
-3. **Bronte GO → Hospital DOES have a direct return trip (correction).**
-   An earlier assumption — repeated in the superseded Muse artifact —
-   said it had none. Verified against the static GTFS: **82 return
-   departures, route 3, from OTMH West Entrance (2245) to Bronte GO**,
-   e.g. trip 727020 departing 05:51, arriving 06:06. The return button is
-   therefore shown for this pair. The artifact's missing return button was
-   a limitation of its narrower return lookup, not a data fact.
-4. **Uptown Core → Iqbal Foods has only 2 departures in total**
-   (route 1). The board shows the next one with its date (it may be
-   tomorrow) rather than pretending there is a frequent service.
-5. **Oakville GO → Oakville Place destination stop is Trafalgar Rd +
-   Iroquois Shore Rd (1213, code 3143)** — the closest stop served by
-   routes 1/13/19 — not the mall's own stop (1050). Bronte GO →
-   Oakville Place does use the mall's own stop 1050. The board always
-   shows the actual stop name + code, so riders wait at the right sign.
-6. **The route strip does not show a stops-away number for the bus leg.**
-   The VehiclePosition feed carries no `current_stop_sequence` and no
-   stop id, so the bus's exact stop position cannot be derived honestly.
-   The strip shows the bus point (or a dashed "Bus position not live yet"
-   point) and the ride-leg stops count only — it never invents a bus
-   position.
-7. **Translations are drafts.** All five-language UI strings and all
-   alert translations are draft translations, not human-reviewed — stated
-   in the footer. Alert translation is template-based (detour/closure
-   patterns); street and stop names stay in English, and the English
-   original is always one tap away. The static headsigns in this package
-   are auto-generated labels (e.g. "Auto Generated-05"), so the board
-   shows the destination place name as the direction instead.
-8. **South Common is excluded entirely** (user decision 2026-10-27, too
-   far) and **Famijoy / United Supermarket are not listed** at
-   125 Cross Ave — that unit is now **Iqbal Foods Oakville** (grand
-   opening October 15, 2026).
-
-## Run locally
-
-```sh
-npx wrangler dev
-```
-
-This serves `index.html` + `pairs.json` and the `/api/rt/*` proxy on
-localhost. (Requires Node + wrangler; no Cloudflare login is needed for
-local dev.)
-
-Note, verified 2026-10-27: in a restricted sandbox VM, local
-`wrangler dev` may return 502 for `/api/rt/*` because the local workerd
-runtime cannot complete TLS to outside hosts there (even a trivial
-workerd fetch to example.com fails the same way), while the identical
-handler code works when run under Node. That is a local-dev egress
-limitation, not a code bug — the site still loads and runs in Timetable
-mode. After deploy, verify the live `/api/rt/vehicles` endpoint returns
-`ok: true` before announcing live data.
-
-## Deploy
-
-```sh
-npx wrangler deploy
-```
-
-Needs a Cloudflare API token + account ID supplied by the user at deploy
-time. **Do not put any token in this repo, and do not commit one.**
-The deployer runs `wrangler deploy` with their own credentials; the
-Worker name will be `oakville-bus-tracker`.
-
-## Refresh static data
-
-```sh
-python3 derive_pairs.py          # downloads the ArcGIS zip fresh
-python3 derive_pairs.py --zip path/to/gtfs.zip   # use a local zip instead
-python3 derive_stops.py          # regenerates public/stops.json from an unzipped GTFS dir
-python3 derive_timetable.py      # regenerates public/timetable.json (current services only)
-python3 derive_places.py         # regenerates public/places.json from the preset research
-```
-
-Then redeploy. The scripts print their counts; check that the new
-package's end date moved past 2026-10-31 before trusting the new
-timetable.
+- **Timetable vs live.** A next bus whose trip is not yet in the RT
+  feed is labelled Timetable even while the feed itself is live —
+  honest, not a bug.
+- **Translations are drafts.** All UI strings and alert translations
+  are draft translations, not human-reviewed — stated in the footer.
+  Street and stop names stay in English; the English original is
+  always one tap away.
+- **The strip shows no stops-away number for the bus leg.** The
+  VehiclePosition feed carries no `current_stop_sequence` and no stop
+  id, so the bus's exact stop position cannot be derived honestly.
+- **Deliberately excluded, never listed:** South Common (too far);
+  Gairloch Gardens (nearest stop 1,055 m); Famijoy / United
+  Supermarket at 125 Cross Ave (that unit is now Iqbal Foods
+  Oakville, opened October 15, 2026); Costco Oakville (not open,
+  expected fall 2027); Nations Experience at Oakville Place
+  (planned 2027). Full exclusion reasons live in
+  `places.json`'s `meta.excluded`.
 
 ## Data attribution
 
 Data: Oakville Transit, under the Town of Oakville Open Government
 Licence. This is an independent project, not official. Static GTFS via
 the Town of Oakville Open Data Portal; GTFS-Realtime via
-busfinder.oakvilletransit.ca.
-
-## Schools geocoding (2026-10-28, NOT deployed)
-
-- All 74 schools from `~/workspace/oakville-gtfs-check/schools-oakville.md`
-  were geocoded via OSM Nominatim (1 req/s, project User-Agent; source
-  file `schools-geocoded.json`, research file untouched). Every returned
-  coordinate was checked inside Oakville (lat 43.35–43.52, lon
-  −79.85–−79.65) with town + street number matching the research
-  address; nothing was guessed. One entry (Clanmore Montessori) needed
-  a re-query; its name query and address query (2463 Lakeshore Rd E)
-  agree within ~40 m. Note: 11 verified entries carry a Nominatim
-  postcode that differs from the research postcode while street
-  number + street + town match — the coordinates trace to the
-  research address, not to a different school.
-- 67 schools map to a GTFS stop ≤400 m and are School places in
-  places.json; the other 7 are also included (see below), so total
-  places 153 → 227 and School places 67 → 74 (per board: HDSB 35,
-  HCDSB 20, Private 14, Viamonde 3, MonAvenir 2 — all 74 research
-  schools searchable). The old Gladys Speers prototype
-  destination is replaced by the real geocoded entry (2150 Samway Rd,
-  stop Bridge Rd + Stanfield Dr code 2619, 264 m) — no duplicate.
-- USER DECISION 2026-10-28 — all schools included: the 7 verified
-  schools >400 m from their nearest stop are School places with an
-  explicit walking-distance label in all 5 languages
-  (`longWalk=True`, `walkFromStop_m` = true straight-line distance,
-  shown via `longWalkLabel` in search/browse results), using their
-  true nearest stops — never a closer fake stop. They are removed
-  from `meta.excluded`; `schools-pending-decision.json` now records
-  them under `included_with_walking_label` (its `over_400m` list is
-  empty). The 7: Harvest Oak 555 m (stop 393 / code 3424),
-  Joshua Creek 530 m (710 / 3043), New Central 703 m (1006 / 2285),
-  Pilgrim Wood 402 m (652 / 2726), St. Vincent 446 m (662 / 2607),
-  Dearcroft Montessori 1,087 m (1028 / 2605), Fern Hill Oakville
-  1,117 m (468 / 2212). 0 schools unresolved.
-- School search obeys the Stage 2.1 rule: category results come only
-  from the place category field; "school" / "学校" / "école" return
-  only school places, never school-named stops. Label restored in all
-  5 languages (draft translations). Build order matters:
-  `build_schools.py` then `build_stage21.py` (both idempotent in
-  sequence; build_stage21 previously deleted school places and was
-  fixed to preserve them). Re-run sequence
-  build_schools → build_stage21 → build_schools → build_stage21
-  holds steady at 227 places with the 7 long-walk schools intact and
-  no re-added excluded entries. Tests: `node test_schools.mjs`
-  (updated checks) plus Stages 1/2/2.1/3 harnesses, all passing.
-
-## Stage 2.1 follow-up (2026-10-28, NOT deployed)
-- Asian Supermarket + Specialty Grocery merged into ONE category `specialtyasian`, label "Asian & Specialty Grocery / 亚洲及特色食品" (all 5 languages, draft translations): 7 places — Bombay Grocers, East Indian Supermarket, Galleria Supermarket, Iqbal Foods Oakville, Spice Bazaar (ex-Asian), Organic Garage (ex-Supermarket, was the only `subcat: specialty` place), T&T Supermarket Erin Mills (ex-Supermarket, cross-boundary Asian supermarket). Supermarket drops 26 → 24. Old `asian` / `specialty` category labels no longer exist.
-- School category DELETED for now: the single school entry was the Gladys Speers prototype destination (pairs.json + index.html DEST maps; places.json never held a school place). Removed from pairs.json destinations (10 → 9) and its 3 pair keys, from derive_pairs.py, and from index.html (DEST_LABEL/DEST_ICON/DEST_CAT_ID + CAT_LABEL `school`); recorded in places.json meta.excluded with the reason "single school entry; schools stay out of search until the separate geocoding pass for the 74-school research list". Searching "school" / "学校" now returns nothing (no place, no stop). Research files under ~/workspace/oakville-gtfs-check/ untouched.
-- Total places.json count UNCHANGED at 153 (the merge only moves places between categories; the school entry was never in places.json). Re-running build_stage21.py is idempotent (verified).
-
-## Stage 2.1 (search/category data correction, not yet deployed)
-
-Run `python3 build_stage21.py` to regenerate `public/places.json` from the
-Stage 2 file (idempotent: re-running adds nothing twice). Test with
-`node test_stage2_1.mjs`; Stage 1 (`test_stage1.mjs`) and Stage 2
-(`test_stage2.mjs`) harnesses still pass.
-
-### What changed and why
-
-**The Bank/School bug.** The old search built a place's haystack from
-name + address + *stop name* + category, and matched stops by name
-substring — so "bank" returned MILLBANK DR and "school" returned
-school-named stops. Fixed in `searchResultsFor` in `public/index.html`:
-category browsing matches a category label *exactly* and returns only
-places/destinations whose category field equals it; free-text place
-results use name + address + category label only, never the stop name;
-hub stations are a separate result kind matched by name; small stops
-appear only on an *exact* stop-code match (digits, `code === query` —
-"317" no longer returns anything, "3172" returns Oakville GO).
-Search-result priority: (1) saved places, (2) listed verified places,
-(3) hub stations, (4) stops by exact stop code. Small stops stay usable
-via current-location nearest stops, saved places, and exact stop codes.
-
-**Hub stations (`places.json` `stations`, exactly 9, verified against
-`stops.json`).** Oakville GO 1212/code 3172, Uptown Core Terminal
-1293/3233, Clarkson GO 358/2318 (cross-boundary), Bronte GO 645/2421,
-Appleby GO 1543/2189 (cross-boundary), Trafalgar Rd + Highway 407 GO
-Carpool 1665/2129 (north Oakville, route 1), Dundas St. @ Hwy. 407 Park
-& Ride 1575/2206 (west Burlington, route 5, cross-boundary), Laird Rd +
-Ridgeway Dr 1550/3174, Sheridan College 905/3236. The two 407 stops are
-distinct GTFS stops and are labelled north/west so users do not confuse
-them. Station browsing never returns small stops such as "Speers Rd at
-Bronte GO Station".
-
-**Category counts after Stage 2.1 (153 places + 9 stations).**
-Supermarket 26, religious 24, bank 21, big-box 18, pharmacy 16,
-shoppingcentre 13, hospitallab 9 (1 hospital + 8 labs), communityCentre
-7, library 7, park 7, Asian 5. `mall` → `shoppingcentre` and
-`hospital`/`lab` → `hospitallab` everywhere, including all 5 languages
-(draft translations).
-
-**Shopping Centre (13).** Oakville Place (240 Leighland Ave, the ONLY
-enclosed mall — labelled "indoor" in the UI), SmartCentres Oakville
-(234 Hays Blvd, L6H 6M4) and South Oakville Centre (1515 Rebecca St,
-L6L 5G8) as TWO separate centres, RioCan Centre Burloak (3527 Wyecroft
-Rd), RioCentre (478-502 Dundas St W, distinct from RioCan Centre
-Burloak), Dorval Crossing (240 North Service Rd W), Dorval Crossing
-West (270-320 North Service Rd W), Abbey Plaza (1500 Upper Middle Rd),
-Oakwoods Centre (1915 Ironoak Wy), Maple Grove Village (511 Maple Grove
-Dr), Upper Oakville Shopping Centre (1011 Upper Middle Rd E), Trafalgar
-Village (125 Cross Ave), Oakville Entertainment Centrum (Oakville
-Centrum) listed ONCE under that combined name. Oakville Centrum is NOT
-a separate entry.
-
-**Community Centre (7, Town of Oakville municipal centres only).**
-Oakville Trafalgar (Reynolds St former-hospital site, mapped to Oakville
-GO stop 1212 at 145 m), Glen Abbey (1415 Third Line), Iroquois Ridge
-(1051 Glenashton Dr), River Oaks (2400 6th Line — mapped to Munn's Ave +
-6th Line stop 707 at 284 m, overriding nearer 80/80N-only stops),
-Queen Elizabeth Park Community and Cultural Centre (2302 Bridge Rd),
-Trafalgar Park (133 Rebecca St), Sixteen Mile (3070 Neyagawa Blvd,
-opened Mar 31, 2026). Excluded: St. Luke's Community Centre (Anglican,
-religious), YMCA (410 Rebecca St, charity), Oak Park Neighbourhood
-Centre (2200 Sawgrass Dr, charity).
-
-**Library (7, OPL full branches only).** Central (120 Navy St),
-Clearview (2860 Kingsway Dr), Glen Abbey (1415 Third Line), Iroquois
-Ridge (1051 Glenashton Dr), White Oaks (1070 McCraney St E), Woodside
-(1274 Rebecca St), Sixteen Mile (3070 Neyagawa Blvd, opened Mar 31,
-2026, replacing the old 3250 Neyagawa Blvd branch — the old address is
-NOT listed). OPL Express pickup points (Queen Elizabeth Park, St.
-Luke's) are NOT branches and are excluded. Glen Abbey and Iroquois
-Ridge branches share addresses with their community centres — the same
-place appearing in both categories is correct, not a duplicate error.
-
-**Large Parks (7 mappable of the 8 named; main entrance, not centroid).**
-Bronte Creek Provincial Park (1219 Burloak Dr entrance → Harvester Rd +
-Syscon Rd 1524, 154 m; labelled provincial, day-use fee may apply — it
-is NOT a Town park), Coronation Park (1426 Lakeshore Rd W → Rebecca St +
-Sable St 83, 115 m), Shell Park (3307 Lakeshore Rd W → its own stop 309,
-0 m; listed once, South Shell Waterfront is its lakeside section, not a
-separate entry), Lakeside Park (144 Front St → Lakeshore Rd W +
-Forsythe St 1812, 102 m), Bronte Heritage Waterfront Park (2340 Ontario
-St → Bronte GO 645, ~74 m), Lions Valley Park (1227 Lions Valley Park
-Rd → Dundas St West + Valleyridge Dr 94, 202 m; slope/steep-trail caution
-note in the UI), North Park (3250 Neyagawa Blvd → Neyagawa Blvd + North
-Park Blvd 1777, ~165 m, overriding nearer 80N-only stops). Golf courses
-are excluded in this stage.
-
-**Supermarket merge (adds + fixes, never a replacement).** Added:
-Whole Foods Market (301 Cornwall Rd), Food Basics (478 Dundas St W),
-Sobeys Maple Grove (511 Maple Grove Dr), East Indian Supermarket
-(2427 Trafalgar Rd, Asian category), Organic Garage (579 Kerr St,
-Specialty sub-category, not Major), Real Canadian Superstore (201 Oak
-Walk Dr — address corrected from Oak Park Blvd, same store), Longo's
-(338 Dundas St E), Sobeys Glen Abbey (1500 Upper Middle Rd W; already
-present in Stage 2 data, kept). Kept: Metro (280 North Service Rd W),
-Longo's (3455 Wyecroft Rd), Metro Clarkson Crossings (cross-boundary).
-No Frills Abbeywood is 1395 Abbeywood Dr (not 1396, same Oleg's store).
-
-**Every place maps to a GTFS stop ≤ 400 m (straight-line, haversine,
-from `stops.json`); the build script refuses anything farther.**
-Coordinates are search-verified where available; a few are
-intersection-area coordinates validated by the ≤ 400 m nearest-stop
-distance (Real Canadian Superstore, Sobeys Glen Abbey, Food Basics
-478 Dundas St W, Abbey Plaza, SmartCentres Oakville, Dorval Crossing,
-Oakwoods Centre, RioCentre, Sixteen Mile, Oakville Trafalgar
-Community Centre, Trafalgar Park, Queen Elizabeth Park, Coronation
-Park, Lakeside Park, Bronte Heritage, Lions Valley). Longo's 338
-Dundas St E was removed from this approximations list 2026-10-29
-when its coordinates were Nominatim-verified (see street-rule
-section).
-These are labelled as approximations in this README, not presented as
-tool-returned coordinates.
-
-### Excluded in Stage 2.1 (also in `places.json` `meta.excluded`)
-
-- **Gairloch Gardens (1308 Lakeshore Rd E) — OPEN DECISION.** Its
-  tool-verified coordinates (43.462029, −79.650081) put the nearest
-  Oakville Transit stop (Devon Rd + Cairncroft Rd, route 11) at
-  **1,055 m**, well over the 400 m mapping rule, so it is excluded, not
-  mapped to a fabricated closer stop. Large-parks browsing therefore
-  returns 7 parks, not 8. The parent/user may relax the rule (include it
-  with an explicit ~1 km walk label) or keep it excluded.
-- Sobeys at 2441 Lakeshore Rd W — that address is Farm Boy Bronte, not
-  Sobeys (user-confirmed; AGCO licence list agrees). Farm Boy (Ironoak)
-  stays listed.
-- **Farm Boy Bronte (2441 Lakeshore Rd W) itself — pending, not added.**
-  Its address is confirmed (user + AGCO licence list) but no
-  tool-verified coordinates were returned for that address in this pass,
-  so it is not mapped to a stop yet. Adding it needs a coordinate check,
-  not a guess.
-- No Frills at 125 Cross Ave — that unit is Iqbal Foods Oakville.
-- Desi Mandi at 579 Kerr St — unconfirmed in Oakville (verified Desi
-  Mandi is in Burlington; 579 Kerr St is Organic Garage).
-- Denninger's (2400 Lakeshore Rd W) — conflicting open/permanently-closed
-  sources.
-- Azores Market / Nostalgia Latin Market / Jubilee / Halton African
-  West Indian — single-source or no verified Oakville address.
-- Food Basics at 3535 Rebecca St — one flyer list only; needs a second
-  check against the Shoppers at the same address.
-- M&M Food Market / Monastery Bakery — frozen-food/bakery specialty,
-  not Major supermarkets; Monastery Bakery's Oakville address is
-  unverified in this pass.
-- St. Luke's Community Centre, YMCA, Oak Park Neighbourhood Centre —
-  see Community Centre above. OPL Express points and the old 3250
-  Neyagawa library address — see Library above. Golf courses — excluded
-  from Large Parks in this stage.
-
-### Still NOT in this stage (intentionally)
-
-- **Schools geocoding.** The 74-school research has addresses but no
-  coordinates, so schools stay out of search. School-category browsing
-  returns only the prototype Gladys Speers destination and never a stop
-  (verified in `test_stage2_1.mjs`).
-- **External geocoder address search.** Discussed, not approved — no
-  address search was added.
-- **Stage 3 trip-only map.** Built 2026-10-28, NOT deployed — see
-  "## Stage 3" below.
-- **Static package still ends 2026-10-31.** Stage 2.1 data expires on
-  the same date; when Oakville publishes a new package, re-run
-  `derive_pairs.py`, `derive_stops.py`, `derive_timetable.py`,
-  `derive_places.py`, then `build_stage21.py`, then `derive_shapes.py`,
-  then redeploy. (Checked 2026-10-28: the ArcGIS package still ends
-  20261031 — no new package, so Stage 3 reuses the existing timetable
-  and shapes; nothing was re-derived.)
-
-## Stage 3 (trip-only map, built 2026-10-28, NOT deployed)
-
-Trip-only, not a city browse map. The board countdown is the hero: the
-map is an overlay like the search/location screens, so it never covers
-or shrinks the countdown, and it never loads on first render.
-
-### Files
-
-- `public/index.html` — Stage 3 block before `init()`: pure map-data
-  builders (`buildJourneyMapData`, `buildPairMapData`), lazy Leaflet
-  loading, journey/pair map openers, tap-to-pick, map My-location.
-  One "🗺 Map" button on the journey board and on the pair board;
-  one "🗺 Pick a place on the map" button in the main action bar.
-- `derive_shapes.py` — builds `public/shapes/<route>.json` from the
-  on-disk static GTFS (`~/workspace/oakville-gtfs-check/static/`).
-  Format per route: `{"route", "shapes": {shape_id: [[lat, lon], …]},
-  "trips": {"<service_id>|<original_trip_id>": shape_id}}`.
-- `test_stage3.mjs` — 50 checks, same stub-DOM harness pattern as
-  Stages 1/2. Run: `node test_stage3.mjs` (Stages 1/2/2.1 still pass
-  unchanged).
-- No worker change: `wrangler.toml` already serves all of `public/`
-  as static assets, so `public/shapes/*.json` is fetchable as-is.
-
-### Shapes coverage (verified by derive_shapes.py)
-
-- All 35 timetable routes, 111 shapes, 89,510 points, 1,966,278 bytes
-  total (per-route files 15–199 KB; a map open loads only its 1–2 leg
-  routes). 121 shapes exist in shapes.txt; the other 10 belong only to
-  dropped old-signup trips, so they are correctly absent.
-- Shape key is `(service_id, original_trip_id)`: it maps to exactly
-  one shape for all 2,779 timetable trips (0 missing, 0 ambiguous).
-  `(route, original)` alone is NOT safe — 52 collisions across
-  services — so the frontend never uses it.
-- Pair-departure coverage is also 0 uncovered: every pair board ride
-  can be mapped. No journey in the current data is unmappable; if a
-  shape fetch ever fails at open time, the button degrades to an
-  honest "map unavailable" note on the map screen and the board keeps
-  working — a fake line is never drawn.
-- Geometry fidelity: every shapes.txt point for the shape, in sequence
-  order, none dropped, no simplification. Coordinates are rounded to
-  5 decimals (~1 m) only for file size; the point list is untouched
-  (the harness cross-checks one leg's shape file against raw
-  shapes.txt point-for-point).
-
-### What the map shows (and nothing else)
-
-- Journey map: the verbatim shape polyline per leg; origin marker,
-  large labelled transfer marker for 1-transfer journeys, destination
-  marker; a dashed red walking segment for a walking transfer
-  (≤300 m); live bus dots from RT.vehicles matched on
-  original_trip_id + route_id with `_merged_` suffix stripping; a leg
-  with no live vehicle is labelled Timetable, never faked; auto-fit
-  to the whole journey bounds with a margin.
-- Exactly three big controls: Back to board, Zoom (+/− as one group),
-  My location. No search box, no layers menu, no POI layer, no route
-  browsing. The Confirm button appears only on the pick screen.
-- My location: explanation-first (first tap shows the Stage 1
-  explanation, second tap requests geolocation), browser-only, never
-  sent to the server, and only a dot — never auto-picked as origin
-  or destination.
-- Tap-to-pick: from the main action bar, the map opens centred on
-  Oakville; one tap drops a pin, one big Confirm button saves it
-  (localStorage only, max 8 like all saved places, custom name
-  "Pinned place" until renamed). The journey engine uses the nearest
-  stop to the pin (≤400 m rule, same as places); a farther pin still
-  stores its true coordinates and shows the true walking distance.
-  A saved pin works as journey origin and destination like any saved
-  place. Tapping needs no typed address.
-
-### Performance and compatibility
-
-- `init()` fetches no shape file and no Leaflet (asserted in
-  `test_stage3.mjs` by recording init-time fetches). Leaflet 1.9.4
-  (unpkg) + OpenStreetMap tiles load only when a map opens; if either
-  fails, the map screen shows the honest note and the board is
-  untouched. The map refreshes live dots on the same ~30 s cadence
-  via a map-local interval that stops when the map closes.
-- Language: all map strings in the 5-language packs (draft, same
-  style); Arabic RTL mirroring holds via `documentElement.dir` plus
-  `row-reverse` CSS for the map controls; markers are 20 px bold.
-- Backward compatibility: board, search, saved places, and the
-  journey engine are unchanged when the map is not opened (Stages 1,
-  2, 2.1 harnesses pass unmodified).
-
-### Eye-check list (what this machine cannot screenshot — check on a real phone)
-
-1. Open a direct journey, tap Map: the line follows real streets
-   (not a straight line), origin/destination markers are legible at
-   large type, and the countdown is intact behind the map screen.
-2. Open the Oakville GO → Hospital 1-transfer journey, tap Map: both
-   legs drawn, the large red transfer marker, and the dashed walk
-   segment between the two transfer stops.
-3. With a bus actually in service on that leg, confirm the green live
-   dot sits on the route line; with no bus in service, confirm the
-   leg reads Timetable (no invented dot).
-4. Switch the language to Arabic: Back button and control order
-   mirror (RTL), and marker labels still read left-to-right names
-   correctly.
-5. Tap-to-pick: tap the map, confirm, then use the pin as origin and
-   as destination; confirm nothing was typed and the pin survives a
-   reload (localStorage).
-6. With the phone offline / tiles blocked, confirm the board still
-   works and the map screen shows the honest unavailable note.
-
-### NEVER INCLUDE (re-stated)
-
-South Common; Famijoy or United Supermarket at 125 Cross Ave (Iqbal
-Foods only); Costco Oakville (under construction, expected fall 2027);
-Nations Experience (planned 2027).
-
-## P0b (2026-10-28, NOT deployed — user decisions)
-
-1. **Quick-fill removed entirely.** The P0 12-button common-trips
-   quick-fill row, its handlers, and its tests are gone; there is no
-   hidden or collapsed quick-fill. Saved places (max 8, localStorage)
-   are the shortcut mechanism.
-2. **Address search in the picker AND the main search screen.**
-   Typing in the Origin/Destination picker, and now also in the main
-   search screen (`searchScreen`), searches addresses via the SAME
-   shared `nominatimSearch` (no second geocoder implementation; no key,
-   max 1 req/s, debounced 400 ms):
-   `GET https://nominatim.openstreetmap.org/search?format=jsonv2&limit=8&addressdetails=1&countrycodes=ca&q=<query>, Oakville, Ontario, Canada`,
-   filtered to Oakville bounds (lat 43.35–43.52, lon −79.85–−79.65).
-   Address results appear as a separate group AFTER verified places /
-   stations / stop codes, labelled "Address results" (all 5 languages),
-   with the full address shown. Picking one sets that field to an
-   `address` endpoint (lat/lon stored in `obt_nav`); the journey uses
-   its true nearest stop, with a `longWalk` label when >400 m — never
-   a fake close stop. A picker privacy note (all 5 languages) states
-   address queries go to Nominatim. On Nominatim failure the picker
-   shows "address search unavailable" and place/station search keeps
-   working. Exact stop codes and category words do not trigger a
-   lookup. Main-screen pick behaviour (chosen to match the existing
-   main-screen pick behaviour for places, i.e. `applyResultPrimary`):
-   the main button on an address row fills the DESTINATION by default;
-   the "Start here" button fills the origin; a save button saves the
-   address as a saved place. The main screen also shows the same
-   Nominatim privacy note (`#searchAddrNote`) and defers its "no
-   results" note until the address lookup resolves, so a pure address
-   query is never wrongly reported as no results while loading.
-3. **Map pin = last tap only.** `pickMapPin` clears the previous
-   marker before adding the new one (`pickMarker` holds the single
-   marker); the stored pin is overwritten, not appended. Confirm
-   confirms only the last tap and then clears pin state.
-4. **My location returns an address, not a stop list.** Both the main
-   location screen and the picker location button now reverse-geocode
-   via `GET https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&lat=<lat>&lon=<lon>`
-   and show ONE detected street address as the field value; the
-   nearest stop is internal only (walking distance shown honestly,
-   `longWalk` when >400 m). If reverse geocoding fails or returns no
-   street, the row shows a coordinates label and says the address
-   could not be detected — never an invented address. The old
-   `locExplain` wording ("never sent to any server") was corrected:
-   coordinates are sent to Nominatim only for the address lookup,
-   never to us. The journey-map "My location" dot is unchanged (dot
-   only, never an origin/destination).
-5. **Harness:** new `test_p0b.mjs` (stubbed Nominatim responses — no
-   live network in tests) covers all four changes; Stage 1/2 and P0
-   harnesses were updated only where they encoded the removed
-   quick-fill or the old stop-list location behaviour (see those
-   files' comments). `test_p0b.mjs` also asserts the picker debounce
-   and the 5-language address labels. Run: `node test_p0b.mjs`.
-
-## Boarding-stop choice (2026-10-28, NOT deployed — user-reported bug)
-
-Root cause: the origin used only the endpoint's primary (nearest) stop, while the destination already tried all candidate stops. A home address whose nearest stop is served by one infrequent route therefore got a bad journey even when a slightly farther stop had frequent service.
-
-Fix (`public/index.html`, `test_boarding.mjs`):
-- Origin endpoints with coordinates (address, map pin, My-location address, saved place, verified place) now try ALL GTFS stops within 500 m, capped at the 5 nearest (straight-line haversine, same as placeStopIds). Hub-station and exact-stop-code origins stay single-stop — the user chose that stop.
-- Candidates are ranked by door-to-door outcome: earliest arrival (dayOffset folded in), then fewest transfers, then least total walking (origin walk + transfer walk). Within one boarding stop, the existing best option (direct first, then earliest arrival) is that stop's representative.
-- Departures you cannot walk to in time are excluded: for today, a candidate's departures must be at or after now + origin walk time (0.8 m/s, rounded up). The origin walk time is included in the displayed total journey time, so a farther stop never looks free.
-- The board shows the chosen boarding stop explicitly (name + stop code + walk distance/minutes from the origin) on the "Board at" line, and a "Try another boarding stop" list below the countdown: one row per other candidate with stop name, walk distance/minutes, and its next departure / earliest arrival from real timetable/RT data. The nearest stop is always in the list, marked "Nearest stop"; the chosen row is marked "Chosen". Tapping a row re-runs the journey from that stop and persists the choice in `obt_nav` (endpoints + direction + boardStop, never departures), so a reload does not silently revert to the nearest stop. A new endpoint or a swap clears the choice (a swap boards at exactly where the outbound journey alighted).
-- Labels in all 5 languages (draft): "Walk X m (Y min) from your address", "Try another boarding stop", "Nearest stop", "Chosen".
-
-Proof case (test_boarding.mjs, pinned Tue 2026-10-27 08:10 EDT): a home address at stop 228 (Oak Park Blvd + Parkhaven Blvd, route 20 only) — its direct arrival at Oakville GO is 09:00, while stop 750 (Taunton Rd + Hays Blvd, 330 m away) arrives 08:38. The board now chooses the earlier arrival and shows the walk; the nearest stop remains listed with its later departure, and tapping it re-runs from 228.
-
-## Phase 1+3-ONLY deploy build (2026-10-29, user decision option A) — Phase 2 dormant
-
-The deployable build contains Google-parity Phase 1 (multi-transfer, up to 2 transfers) + Phase 3 (time picker, total-time ranking) with Phase 2 (OSM street walking) DISABLED but its code preserved dormant for later re-enablement. The single flag is `STREET_WALK_ENABLED = false` at the top of the walking module in `public/index.html`. When false: `resolveWalk()` always returns the straight-line value (source `"straight"`, never `"estimate"`, and never a cached street value), `upgradeDisplayedWalks()` is a no-op (zero OSRM requests — verified by `test_phase13only.mjs`), map dashed walking segments use straight lines, and neither the walk-estimate note nor the OSRM footer attribution is shown (straight-line is the operative rule in this build, not a fallback). The OSRM code, cache, and geometry handling are untouched except for being gated by the flag.
-
-**Blocker (why Phase 2 is held):** OSRM routes stop 986 (Merchants Gate + 3rd Line) → 327 (Third Line + Glen Abbey Gate) as 822 m vs 83 m straight-line, which under the 300 m street cap would reject the Oakville GO → Hospital proof journey (Route 28 → walk 83 m → Route 3). A human check of the Third Line crossing is needed first: either that detour is real (no lawful crossing there) or OSM's foot network is missing a crossing. **Re-enabling is a one-line flag flip to `true` PLUS re-running `test_osmwalk.mjs` (which auto-skips while the flag is false and re-activates when it is true) and re-verifying the GO → Hospital proof journey — never flip the flag without that verification.** With the flag off, the GO → Hospital proof journey is stable: Route 28 → walk 83 m → Route 3, stops 986 → 327, identical before and after any simulated upgrade pass.
-
-Tests: `test_phase13only.mjs` (flag-once check, OSRM-gating grep checks, zero-OSRM-fetch proof, GO → Hospital stability, Phase 1+3 spot checks). SUPERSEDED 2026-10-29 (routed-foot fix): Phase 2 is re-enabled (`STREET_WALK_ENABLED = true`), so `test_phase13only.mjs` now exits 0 with a SKIPPED note and `test_osmwalk.mjs` is the live Phase 2 harness (stub distances updated to the live routed-foot values: 986 -> 327 = 113 m, 162 -> 1071 = 457 m).
-
-## Google-parity Phase 2: OSM street-network walking (2026-10-28, NOT deployed)
-
-Straight-line walking is replaced by street-network walking, consistently, in all four places: (a) transfer walks, (b) origin walks from address/pin/place to the boarding stop, (c) destination walks from the alighting stop to the place/address (in total-time ranking), (d) map dashed walking segments (now drawn along the street path, not a straight dashed line).
-
-Router (one service, documented choice): FOSSGIS OSRM foot service (`https://routing.openstreetmap.de/routed-foot/route/v1/foot/{lon},{lat};{lon},{lat}?overview=full&geometries=geojson`). Chosen over Valhalla because it needs no key, answers a plain GET with distance + full GeoJSON geometry in one response, and is documented for small-scale, non-bulk use — which matches this design exactly. No Google Maps APIs are used anywhere; no Google data is scraped. Attribution ("© OpenStreetMap contributors, routing by OSRM foot") is in the footer, same style as the Town Open Government Licence attribution.
-
-CORRECTION (2026-10-29, user-caught): the first Phase 2 build used `https://router.project-osrm.org/route/v1/foot/...`, but that demo server ONLY serves car routing — the profile word in the path is ignored, so foot/walking/bike/driving all returned the same 822 m car detour for stops 986 → 327 (the screenshot showed a driving-mode route). The OSRM software has a foot profile, but that server does not serve it. The fix switches the base to `routing.openstreetmap.de/routed-foot`, whose foot profile returns 112.9 m for 986 → 327 (vs 83 m straight-line, plausible). The old 822 m "Third Line crossing blocker" was a car-routing artifact, not a missing crossing — do NOT reintroduce `router.project-osrm.org`.
-
-Architecture (lazy + cached, board never blocks): the synchronous engine never waits on the network. `resolveWalk()` returns a cached street value when present and the straight-line estimate otherwise. The board renders with estimates first (labelled with the walkEstimate note in all 5 languages, draft translations) and `upgradeDisplayedWalks()` then fetches only the segments actually shown in the result (displayed option + boarding alternatives), sequentially, at most 1 request/second, cached in-memory per session by (fromLat,fromLon,toLat,toLon) rounded to 5 decimals. A re-render or boarding-stop switch does not re-fetch. If OSRM fails, times out, or returns no route, the board keeps the straight-line estimate (labelled as an estimate) and never invents a street path. If a fetched street value changes a displayed walk — or proves a shown transfer over the cap — the board re-runs the search with street values cached; departure/arrival times of a given trip never change in an upgrade, only which option is best, and only when the estimate was wrong.
-
-Cap (not widened): a walking transfer is valid only if its STREET distance is <= 300 m (MAX_WALK_M). Time is always derived from street distance at the elderly 0.8 m/s (300 m = 6.25 min, ceil 7 min — the same gap rule as before, max(5, walkMin)). Candidate generation still uses straight-line distance, which is sound: street distance >= straight-line distance, so every street-valid transfer is inside the straight-line <= 300 m candidate set and none is missed. Origin boarding candidates stay within 500 m straight-line for candidate generation; their displayed walk distance/time is the street route when available. Elderly walking speed stays 0.8 m/s.
-
-Privacy: OSRM queries send coordinates only — no names, addresses, or user identifiers (stated in the footer and in the picker privacy note alongside the Nominatim note).
-
-Live foot values (measured 2026-10-29 via one-off routed-foot calls, not from tests): 986 -> 327 measures 112.9 m on foot (vs 83 m straight-line) — well under the 300 m cap, so the Oakville GO -> Hospital proof journey (Route 28 -> walk -> Route 3) SURVIVES the street upgrade; the old 822 m figure was the car-only demo server, not a foot route. One transfer still exceeds the cap on foot: 162 -> 1071 measures 456.5 m on foot (vs 293 m straight-line, vs 526 m car) — so the Uptown Core -> Bristol Circle 2-transfer proof journey changes under Phase 2: the 162 -> 1071 transfer is correctly rejected and the board falls through to the next-best option (it does not vanish into a dead end). The legacy (pre-Phase-1) engine keeps straight-line walks; the board always uses the ranked path, so every user-visible walk goes through this module.
-
-Tests: `test_osmwalk.mjs` (stubbed OSRM, no live network) covers street > straight display, over-cap rejection, router-failure fallback, per-pair caching (2 fetches = 1 request), map street geometry vs straight fallback, and street values in origin/destination walk totals. All Stage 1/2/2.1/3/schools/P0/P0b/boarding/google13 harnesses still pass.
-
-Eye-check list (real phone, not yet done): type a home address and confirm the board first shows estimate-labelled walks, then upgrades to street distances; confirm a transfer that becomes over-cap disappears with the next-best option shown (not a dead end); confirm the map dashed walk follows streets; confirm the footer OSM/OSRM attribution.
-
-## Save-UI rework (2026-10-29, user decisions — NOT yet deployed)
-- Main "Search a place or stop" screen: the search box updates live as you
-  type (local results immediately; Nominatim addresses debounced 400 ms,
-  never one request per keystroke). The Address results group renders in a
-  dedicated container created FIRST, directly below the search input, so
-  it appears before verified places / stations / stop codes. (The
-  Origin/Destination picker keeps its previous order: verified first,
-  addresses after — it has a separate renderer.)
-- Privacy sentences live ONLY in the footer, in small font, as the last
-  line (`footerPrivacy`, all 5 languages): Nominatim address lookups,
-  saved places stay on the phone, OSRM foot lookups send coordinates
-  only. The inline `searchAddrNote` / `pickerAddrNote` elements and the
-  old `addressSearchNote` / `walkPrivacy` keys are removed; the footer
-  keeps the OSM/OSRM attribution line (attribution, not the privacy
-  sentence).
-- Address rows have NO "Start here" button (main search and picker):
-  primary action (fills the destination / the open picker field) + Save
-  only. Free-text place/station rows keep their Start button; saved
-  rows do not.
-- Category browsing is pick-to-save: a `catSaveHint` line above the
-  category keywords tells the user to tap a keyword to pick common
-  addresses to save. Category result rows have ONLY a Save button; the
-  row label is plain text with no click handler, so tapping a category
-  row never navigates and never sets an origin/destination. Navigation
-  still happens from the Origin/Destination fields and from a free-text
-  row's primary action. (Picker category results are NOT changed: the
-  picker is itself a field selector, so its category rows keep filling
-  the open field.)
-- Saved places sync + actions: `addSavedPlace` now re-renders the
-  same-page saved grid (and the search/picker saved lists) in the same
-  pass, so a save from search or category appears immediately with no
-  reload. Homepage saved rows have exactly Rename + Delete — no
-  "Go here", no "Start here", no navigation button. Delete is two-tap:
-  first tap arms "Tap again to confirm delete", second tap deletes.
-  Disarm rule: arming another row re-arms to that row, Rename/Cancel/
-  confirm clears the arm, and the arm expires after 5 seconds
-  (guarded: stub DOMs without setTimeout keep the arm until the next
-  saved action). Rename and Delete update the homepage grid in place.
-  Cap stays 8, localStorage only, custom names.
-- Tests: new `test_saveui.mjs` (dynamic list + address-first, footer-only
-  privacy, no Start on address rows, category pick-to-save, immediate
-  saved sync, Rename + two-tap Delete, cap 8). Updated assertions:
-  `test_p0b.mjs` (privacy now footer-only; address group now first via
-  the addrgroup container; address rows have no Start button; far-address
-  row found by label, not by "last row") and `test_osmwalk.mjs`
-  (`walkPrivacy` key replaced by `footerPrivacy` in the i18n-key check).
-
-## Homepage fix batch (2026-10-29, user decisions — NOT yet deployed)
-- DEFAULT EMPTY (reverses the old restore behaviour): on load, Origin and
-  Destination are empty — obt_nav is NOT restored and the fields are NOT
-  derived from the legacy home/dest pair on init (init baselines the
-  legacy signature so render() cannot re-derive them). Field value areas
-  are blank (never "Tap to choose"). The board shows the choose-origin
-  prompt, never a fallback pair trip. Swap stays disabled until both
-  fields are set. Within-session picks, swap, and obt_nav writes still work.
-- persistNav NEVER DERIVES: a real bug this batch exposed — persistNav()
-  used to derive missing fields from the legacy pair on a partial pick,
-  silently overwriting the pick (a home-address origin was overwritten by
-  the GO terminal, which broke the boarding test and picker "only this
-  field" tests). It now persists exactly what is set (the other side
-  null), inventing nothing. Reload still never restores obt_nav.
-- DEPART/ARRIVE FREE SWITCHING (bug fix): renderTimeControls() used to
-  overwrite the date/time inputs with the APPLIED mode's values on every
-  render, clobbering pickDraft()'s prefill for the newly tapped mode. It
-  now fills from the applied mode ONLY when draft == applied; otherwise
-  the draft prefill (applied values if that mode is already applied,
-  else today + current Toronto time) wins. Input changes still apply
-  immediately, no Apply button.
-- HOMEPAGE SAVED ROWS (reverses the Save-UI rule for the homepage grid
-  only): Start here, Go here, Rename, Delete, in that order, using
-  setSavedAsOrigin / setSavedAsDestination. Search-screen and picker
-  saved lists are separate renderers and are unchanged.
-- DELETED: the "Saved." success note (addSavedPlace no longer sets the
-  saved note on success; savedNote is only for genuine errors — already
-  saved, max 8, cannot start; the savedAdded i18n keys are removed too);
-  the actionNote sentences, element, and keys in all 5 languages (no
-  replacement sentence); the journey-card "Save this place" button
-  (#saveDestBtn, both boards) and the Return trip button (#returnBtn,
-  both boards). The top Swap button is the SOLE return-trip control.
-  The addSaved key and search/picker Save buttons are kept (not the
-  journey-card button). swapJourney() is kept as a function (harness
-  use) but has no button wiring anymore.
-- MAP BUTTON ORDER: #mapBtn now sits in the board DOM BEFORE #journeyAlts
-  (Other options), so the order is countdown/route info, Map, Other
-  options, then boarding-stop alternatives. setBoardMapBtn behaviour is
-  unchanged (hidden when no journey map exists).
-- Harness: test_homefix.mjs proves (a)–(g) above. Updated old assertions
-  that encoded the reversed behaviour: test_p0 (initial empty, reload
-  starts empty), test_p0b (saved/address persistence via partial-store),
-  test_boarding (reload starts empty; boarding choice still persists in
-  obt_nav), test_stage2/test_stage3 (set the journey origin explicitly
-  instead of assuming legacy derivation), test_saveui (f) (homepage rows
-  now Start+Go+Rename+Delete).
-
-## Search/time fix batch (2026-10-29, user decisions — NOT yet deployed)
-- RESULTS DIRECTLY BELOW THE INPUT (root cause: the category button rows
-  sat between the input and the results, pushing results off-screen so
-  typing looked dead). New DOM order, both screens: searchScreen =
-  input, searchResults, category note + buttons, saved list; pickerScreen
-  = location/map buttons, location results, input, pickerResults,
-  category buttons, saved list. Nothing else in those screens moves.
-- PICKER TYPING FEEDBACK: the picker used to wait a full 400 ms debounce
-  before rendering ANYTHING. Now local results render SYNCHRONOUSLY on
-  every input event; only the Nominatim address lookup stays debounced
-  (400 ms, token-guarded against stale responses, never one request per
-  keystroke). Address rows stay direct children of pickerResults (the
-  debounced refresh removes only previously appended address elements,
-  tracked in pickerAddrEls, never local rows). The main search screen
-  already rendered local results immediately — only its order changed.
-- SEARCH-SCREEN SAVED ROWS: Rename + two-tap Delete, reusing the
-  homepage editingId/deleteArmedId mechanism (rename input id is
-  searchRenameInput, so it never collides with the homepage renameInput).
-  Tapping the saved name still fills the destination and closes the
-  screen. Rename/delete refresh the homepage grid, the search list, and
-  the picker saved list in the same pass (refreshSavedLists()).
-- PICKER LOCATION-EXPLAIN DELETED (scope: picker screens only): the
-  #pickerLocExplain element and its assignment in openPicker are removed.
-  The locExplain key itself is KEPT for the standalone My-location
-  screen, the map-pin notes, and the footer privacy text.
-- DEPART <-> ARRIVE CARRY-OVER: when a Depart/Arrive time is already
-  APPLIED, tapping the other mode switches DIRECTLY to that mode at the
-  SAME date+time and applies immediately, panel stays open for
-  adjustment. When Leave now is applied (no time set), tapping
-  Depart/Arrive keeps the old behaviour (inputs prefilled with today +
-  current Toronto time, applying only on input change). Edge: Arrive ->
-  Depart with a past time today clamps Depart to now via the existing
-  past-departure rule. The draft/applied overwrite bug from the homepage
-  batch does not return: a mode switch shows the carried-over date+time.
-- Harness: test_searchtime.mjs proves (a)–(e) above. Updated old
-  assertions that encoded the replaced behaviour: test_homefix (b)
-  (Depart -> Arrive now carries over instead of prefilling today + now),
-  test_p0b (picker debounce assertion now covers local-immediate +
-  address-debounced instead of whole-render debounced). test_timepicker
-  (c) now passes via the carry-over path and was left unchanged.
-
-## Languages: 15 (2026-10-29, user-approved, DRAFT — NOT yet deployed)
-- Was 5 (en, fr, zh, ar, hi). Added 10 as draft translations: es, pt, pa
-  (Gurmukhi), ur (Urdu script, RTL like ar), pl, it, uk (Cyrillic),
-  ru (Cyrillic), ko, ja. Total 15.
-- Coverage verified by test_languages.mjs: 147 t() keys x 15 languages =
-  2,205 values, all non-empty; 13 category labels, 9 destination labels,
-  LANG_NAMES + LANG_EXAMPLE, and 4 alert templates in all 15. Place/street/
-  stop names stay in English; only generic category words are translated.
-- Wiring: onboarding picker + buttons list all 15; document direction is
-  RTL for ar and ur only, LTR for the other 13. Footer draft note is
-  unchanged in wording (it names no count) and still covers all languages.
-- Existing 5 languages' strings are byte-identical to before (verified by
-  parser diff). Translation sources live in lang-drafts/ (en_source.json +
-  one JSON per new language) for future edits; they are outside public/
-  and are not served.
-- Size: index.html 253,361 -> 368,310 bytes (+114,949); gzipped 73,123 ->
-  111,738 bytes (+38,615). Still far below timetable.json (2.7 MB).
-- Not human-reviewed: all 10 new languages carry the same draft marking
-  as the original 5; native-speaker review is still outstanding.
-
-## Lightweight PWA (2026-10-29, user-approved, NOT yet deployed)
-- Manifest: public/manifest.webmanifest — name/short_name "Oakville Bus",
-  display "standalone", start_url "/", scope "/", theme_color #0b5cab
-  (the site's existing swap-button blue, not a new brand colour),
-  background #ffffff, description in English only (manifest text is not UI
-  text; no per-language manifests).
-- Icons: public/icons/icon-192.png, icon-512.png (any + maskable),
-  apple-touch-icon.png (180x180). High-contrast flat design: site-blue
-  full-bleed background, white bus glyph (body, windows, stripe, wheels)
-  kept inside the central 80% maskable safe zone, NO text — legible at
-  48 px. Head wires manifest, theme-color, apple-touch-icon, and iOS
-  standalone metas (apple-mobile-web-app-capable + status-bar-style).
-- EXPLICITLY NO SERVICE WORKER: none added, registered, or referenced.
-  Timetable and GTFS-RT data always come from the network. An offline
-  cache of timetable data was rejected by the user: the static package
-  expires 2026-10-31 and a stale cache could serve expired times.
-  PWA value here is the home-screen icon + fullscreen standalone display
-  only (iOS still needs Share -> Add to Home Screen; Android may prompt).
-- Serving: worker.js serves everything under public/ via ASSETS, so the
-  manifest and icons need no worker change; /api/health and /api/rt/*
-  routes are untouched.
-- Harness: test_pwa.mjs (manifest parses, display standalone, icons
-  192+512 exist at manifest paths with correct pixel sizes, head links/
-  metas present, no service-worker registration string anywhere).
-
-## Category + 1 km street-walk batch (2026-10-29, user decisions — NOT yet deployed)
-- Origin boarding walk: 1000 m STREET distance (routed-foot), max 5 nearest
-  by street distance (was 500 m straight-line). Candidate generation
-  pre-filters straight-line <= 1000 m (sound: street >= straight-line);
-  stops with a cached street distance > 1000 m are rejected even if
-  straight-line < 1000 m; uncached stops render as straight-line
-  estimates and upgradeDisplayedWalks fetches street values — including
-  5 probes beyond the first 5 — then re-runs the boarding choice if the
-  candidate set or a displayed walk changes. Hub-station and exact-stop-
-  code origins stay single-stop. Transfer walks stay capped at 300 m
-  street; destination walks have no hard cap (longWalk label over 400 m).
-- Category places sorted A-Z by English name (case-insensitive, accents
-  folded: École -> Ecole) in places.json and in the build scripts
-  (build_stage21.py + build_schools.py sort key (cat, name-folded));
-  category browsing follows file order. Counts unchanged: 227 + 9.
-- Labels: specialtyasian is now "Specialty Grocery" in all 15 languages
-  (code unchanged); station is now "Transit Terminal" in all 15, and
-  stationGroup is now "Transit Terminals" (code `station` unchanged;
-  stationGroup is defined but not rendered as a heading anywhere).
-- Iqbal Foods Oakville: DEST_CAT_ID moved supermarket -> specialtyasian,
-  so it no longer appears in Supermarket. Category browsing dedupes a
-  legacy prototype row when a places.json entry in the same category
-  list has the same English name (DATA destination name) or the same
-  street address (text before the first comma); the places.json entry
-  wins. Place-vs-place rows are never deduped, so chain branches at
-  different addresses survive (e.g. all Shoppers Drug Mart branches).
-  Dedupe applies to category browsing only, not free-text search.
-  DEST_LABEL iqbal now reads "Iqbal Foods Oakville · specialty grocery"
-  (all 15 languages) so its name matches the places.json entry.
-- Sixteen Mile library note deleted (places.json + build_stage21.py);
-  Sixteen Mile Community Centre note ("Opened Mar 31, 2026, Sixteen
-  Mile Sports Complex") untouched. Bronte Creek note is now
-  "Provincial park; day-use fee may apply" (places.json +
-  build_stage21.py); the provincialLabel I18N string never contained
-  "not a Town park" and is unchanged.
-- Category button order (single CAT_ORDER array, search screen + picker):
-  supermarket, specialtyasian, shoppingcentre, bigbox, hospitallab,
-  pharmacy, station, communityCentre, library, religious, park, school,
-  bank.
-- Harness: test_catwalk.mjs (boarding street proof both directions,
-  sort, labels x15, Iqbal/dedupe, notes, CAT_ORDER on both pages, plus
-  street-distance audit assertions).
-
-## Street-distance audit (2026-10-29, user requirement: ALL walking
-distances must be street-network, never straight-line as final value)
-- Already street (via resolveWalk/routed-foot, estimate-first + upgrade):
-  transfer walks (enrichAndRank substitutes cached street, rejects
-  street > 300 m; upgradeDisplayedWalks re-runs), destination walks
-  (destWalkFor -> resolveWalk; upgrade re-runs), origin walks (item
-  above), boarding-stop alternatives (computeBoardingJourneys uses
-  cached street, upgrade fetches boarding-alt segments), map dashed
-  transfer walks (street geometry when cached; openJourneyMap now
-  fetches missing geometries and redraws once, plus the 30 s refresh).
-- Newly fixed to street (estimate-first + upgradeWalkEl /
-  upgradeSearchWalks, which fetch once and rewrite/re-render only when
-  a new street value arrives, never looping): saved-pin "m away",
-  address-result "m away" (main search + picker), My-location "m away"
-  (both screens), map-pin note (also updates within400), search-result
-  longWalk labels (placeTags now uses resolveWalk for the place's stop).
-- Straight-line remains ONLY as: (1) a pre-filter (neighboursWithin
-  <= 300 m, destination candidates <= 300 m, origin <= 1000 m, place
-  candidates <= 300 m — all sound since street >= straight-line), and
-  (2) a labelled estimate before the street value arrives (board
-  walkEstimate note; search rows re-render on arrival). It is never
-  the final displayed or ranking distance on the board.
-- Legacy engine (searchJourneysLegacy) still uses straight-line walks,
-  but it is NOT reachable from the board (board always passes
-  rank:"total"); it survives only for backward-compatible callers.
-- places.json stop.distance_m: STILL straight-line, by decision in this
-  batch — it is the preset place-to-stop mapping (400 m rule), not a
-  displayed journey walk. It was NOT silently changed. The full
-  stop->place routed-foot measurement for all 227 places is in
-  street-audit.json (script: measure_street.py, 1 req/s, coordinates
-  only; stations need no measurement — a station IS its mapped stop,
-  distance_m 0 by construction). Places whose street distance exceeds
-  400 m are listed in the audit summary below; the user decides whether
-  the mapping rule itself changes. NOTE: search-result longWalk labels
-  no longer read distance_m directly (they use resolveWalk, above), so
-  a street/straight discrepancy does NOT make a displayed label wrong
-  on the board — but the 400 m mapping rule itself is still straight-
-  line until the user decides otherwise.
-- AUDIT RESULT (measured 2026-10-29, routed-foot, stop->place, 1 req/s,
-  coordinates only; full table in street-audit.json, script
-  measure_street.py): 227/227 places measured, 0 failures. Street
-  <= 400 m for 194 places; street > 400 m for 32 places, of which 25
-  were <= 400 m straight-line — i.e. 25 places would FAIL a
-  street-based 400 m rule while passing the current straight-line
-  rule (as measured at audit time; 24 after the Longo's correction
-  below, which fixed a wrong placeholder coordinate, not a real
-  walking distance). Median street/straight ratio 1.47. The 24 newly-over-400 m
-  places (25 before the 2026-10-29 Longo's correction, see below):
-  Sport Chek 221->488; Oakville Trafalgar CC 145->963; Queen
-  Elizabeth Park CCC 295->456; River Oaks CC 284->412; Coronation Park
-  199->569; Masjid Al-Hsan 210->507; St Peter and St Paul Coptic
-  295->912; Appleby College 399->573; Eastview PS 332->606; Ecole du
-  Chene 198->767; Ecole Patricia-Picknell 177->547; James W. Hill PS
-  85->520; King's Christian Collegiate 140->596; MacLachlan College
-  112->430; Maple Grove PS 325->405; Oakwood PS 108->628; River Oaks PS
-  112->471; Rotherglen 58->475; St. Dominic CES 113->976; St. Ignatius
-  of Loyola CSS 160->740; St. John Paul II CES 328->498; St. Michael
-  CES 205->598; Metro Clarkson Crossings 336->473; Real Canadian
-  Superstore 220->514.
-  The other 7
-  street->400 m places were already over 400 m straight-line (the 7
-  longWalk schools). FORMER OUTLIER, RESOLVED 2026-10-29:
-  Longo's 338 Dundas St E (longos-dundas-east) had shown 230 m
-  straight vs 2,891 m street to Kerr St at Canadian Tire stop 870.
-  Root cause: its places.json coordinates (43.453, -79.696) were a
-  rounded placeholder — the research file itself marked this entry
-  "坐标未由工具返回". Nominatim-verified coordinates 43.4883376,
-  -79.7175689 (OSM way 27500951, "Longo's, 338, Dundas Street East,
-  Trafalgar, Oakville, L6H 6Z9") remap it to Trafalgar + Dundas
-  stop 1657 (code 2109, routes 1/37): 151 m straight, 336 m street
-  (alternative stop 1656, 202 m straight, is 409 m street — over
-  the 400 m threshold, so 1657 is the correct nearest stop).
-  Longo's is therefore no longer in the over-400 m list.
-
-## Header weather (2026-10-29, user-approved — NOT yet deployed)
-- The header row (next to "Oakville Bus", before the language button)
-  shows a small weather slot: [emoji icon] [rounded temperature °C],
-  e.g. "☀️ 7°C". The slot reserves 76 px so the header never resizes
-  when the value arrives or refreshes; when data is unavailable the
-  slot is empty — never a fake temperature.
-- Data: Open-Meteo, no API key, fixed Oakville coordinates
-  (latitude 43.45, longitude -79.68), timezone America/Toronto,
-  current temperature_2m (°C) + weather_code + is_day. Privacy: the
-  request sends only those fixed coordinates — never the user's
-  location, no identifiers.
-- Icon mapping (WMO weather_code, emoji, no new assets): 0 clear
-  (☀️ day / 🌙 night via is_day), 1/2 partly cloudy, 3 overcast,
-  45/48 fog, 51/53/55 drizzle, 56/57 freezing drizzle, 61/63/65 rain,
-  66/67 freezing rain, 71/73/75/77 snow, 80/81/82 rain showers,
-  85/86 snow showers, 95 thunderstorm, 96/99 thunderstorm with hail;
-  unknown codes fall back to a neutral cloud, never an error text.
-- Refresh: on page load and every 30 minutes (NOT every 30 s like RT).
-  On failure the previous value stays, or the slot stays empty; the
-  board is never blocked on weather, and no stale timestamp is shown.
-- Accessibility: the slot carries an aria-label with the condition
-  and temperature. The condition word is English by design (the
-  visible slot is icon + numeric °C, which needs no translation);
-  full 15-language weather words were deliberately not invented.
-- Harness: test_weather.mjs (header placement, full WMO mapping,
-  day/night clear, failure-empty, exact URL with fixed coordinates).
-
-## Street-based mapping rule (2026-10-29, user decision — NOT yet deployed)
-- User decision: "按街道算 但是备注里把距离写上" — the preset-place
-  mapping rule is now STREET (routed-foot) distance, and the distance
-  is written in the note. This is measurement + honesty, NOT
-  exclusion: no place is excluded, no category/stop/coordinate/name
-  changes, counts stay 227 places + 9 stations, threshold stays 400 m.
-- Applied by apply_street_rule.py from street-audit.json (routed-foot,
-  stop -> place, 227/227 measured, coordinates only). Every place's
-  stop.distance_m is now its measured STREET distance (positional
-  match on id + name + old straight distance for all 227 rows, which
-  disambiguates duplicate ids such as the two Canadian Tire rows).
-  A few routed-foot values are marginally below haversine (14 places,
-  max 38 m — road-network snapping); they are used as measured, not
-  clamped up to straight-line.
-- The 24 places with street >400 m and straight <=400 m are KEPT and
-  carry the distance in their NOTE field, exactly once per row:
-  "Street walk {m} m from nearest stop". They deliberately do NOT get
-  longWalk=True, because placeTags renders longWalk label + note in
-  the same row and setting both would show the same distance twice.
-  (25 before the 2026-10-29 Longo's correction.) The 7 longWalk
-  schools keep longWalk=True with walkFromStop_m
-  updated from straight-line to street values (1275/1225/741/704/
-  1003/498/560 m). meta.note and meta.street_rule record the rule.
-- Re-run order (required): build_stage21.py -> build_schools.py ->
-  apply_street_rule.py. Both build scripts document this: stage21
-  skips existing places by id (distance_m preserved) but any NEW
-  place gets a straight-line distance_m and a straight-line >400 m
-  refusal; build_schools.py rewrites school distance_m /
-  walkFromStop_m from straight-line on every run. A new place must be
-  measured with measure_street.py and passed through
-  apply_street_rule.py before it counts as street-rule compliant.
-- Longo's 338 Dundas St E (longos-dundas-east) CORRECTED 2026-10-29:
-  placeholder coordinates 43.453, -79.696 replaced with
-  Nominatim-verified 43.4883376, -79.7175689 (OSM way 27500951),
-  remapped from Kerr St stop 870 to Trafalgar + Dundas stop 1657
-  (code 2109, routes 1/37), 151 m straight / 336 m street — under
-  400 m, so it carries no Street-walk note and leaves the
-  over-400 m list (24, not 25). build_stage21.py, places.json,
-  street-audit.json, apply_street_rule.py, and both research files
-  updated together so a re-run does not revert to the placeholder.
-- Harness: test_streetrule.mjs (distance_m == street audit for all
-  227, 24 note-bearing with exact street value and no longWalk, 7
-  longWalk schools on street values, counts, meta rule, Longo's
-  corrected + remapped to stop 1657). Old assertions updated for the new rule only:
-  test_stage2_1.mjs (over-400 m street kept with label/note),
-  test_schools.mjs (longWalk distances now street values; non-longWalk
-  schools over 400 m street are note-bearing; Gladys Speers 264 m
-  straight -> 309 m street; longWalk label check seeds the street
-  cache, as the real browser's upgradeSearchWalks does).
+busfinder.oakvilletransit.ca. Walking: © OpenStreetMap contributors,
+OSRM foot routing.

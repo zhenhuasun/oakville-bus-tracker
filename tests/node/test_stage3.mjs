@@ -94,7 +94,7 @@ check("init fetched no shape files and no Leaflet",
   !initUrls.some(u => /shapes\//i.test(u) || /leaflet/i.test(u)), initUrls.join(", "));
 
 // (a) Direct journey map data: verbatim shape, origin+destination only.
-const direct = T.fns.searchJourneys("1212", "789", new Date("2026-10-27T12:10:00Z"));
+const direct = T.fns.searchJourneys("1212", "789", new Date("2026-11-17T13:10:00Z"));
 const directOpt = direct && direct.options.find(o => o.transfers === 0);
 check("direct journey option exists", !!directOpt);
 check("map data is null before any shape file loads (no fake line)",
@@ -156,7 +156,7 @@ check("pair map data is null for an unknown route (button must hide, not fake)",
   T.fns.buildPairMapData({ route_id: "999", service_id: "x", original_trip_id: "y", origin_stop: "1212", destination_stop: "789" }) === null);
 
 // (b) PROOF 1-transfer journey map: both legs, transfer marker, dashed walk <=300 m.
-const morning = T.fns.searchJourneys("1212", "1397", new Date("2026-10-27T12:10:00Z"));
+const morning = T.fns.searchJourneys("1212", "1397", new Date("2026-11-17T13:10:00Z"));
 const proof = morning && morning.options.find(o => o.transfers === 1);
 check("proof 1-transfer option exists (R28 then R3)", !!proof && proof.legs[0].route === "28" && proof.legs[1].route === "3");
 for (const r of ["28", "3"]) T.fns.setShapeData(r, shapeFile(r));

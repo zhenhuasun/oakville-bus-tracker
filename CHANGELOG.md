@@ -16,7 +16,52 @@ user-visible changes.
   footer button on a real phone (this machine cannot screenshot).
 - Timetable expiry decision: what the site does if no new static
   package arrives — warning-only vs disabling timetable use. The
-  footer already warns past the valid-through date.
+  footer already warns past the valid-through date. (The 2026-11-05
+  refresh below moved the valid-through date to 2026-12-26; the
+  decision is next due before that date.)
+
+## 2026-11-05 — Oakville GTFS refresh (new static package)
+
+- **New package: 2026-11-01 → 2026-12-26** (was 2026-09-06 →
+  2026-10-31). 35 routes, 1,151 stops, 2,779 trips, 81,202
+  stop-times; shapes rebuilt, 111 shapes / 89,534 points, 0 missing
+  and 0 uncovered. Footer valid-through date updates automatically
+  from the timetable metadata — no code change needed.
+- **Places unchanged at 230 + 9 stations** (same category counts).
+  Three places remapped because their stops were removed from the
+  new package: TD Canada Trust 282 Lakeshore Rd E (1253 →
+  Church + Dunn WB 1801), The Medicine Shoppe #209 (1253 →
+  Church + Dunn EB 518), Trafalgar Park Community Centre (801 →
+  Rebecca + Brock 605). Street distances re-measured for all 230
+  places (routed-foot); the over-400 m set is identical to before
+  (32 places, same street values), 25 places carry a street-walk
+  note, 7 longWalk schools keep street values.
+- **Duplicate Longo's 338 Dundas St E removed.** The store appeared
+  twice after the fresh derive: once from the research doc (id
+  `longo-s`, straight 150 m) and once from the leftover stage21
+  workaround (id `longos-dundas-east`, straight 151 m). The
+  workaround `add()` was removed from `scripts/build_stage21.py`;
+  the derive row is now the single canonical entry.
+- **Two script fixes found by the refresh.** `archive/scripts/
+  apply_street_rule.py` pointed its root at `archive/` instead of
+  the repo root after the cleanup move, so it looked for
+  `archive/public/places.json` — fixed (`DIR.parent.parent`). The
+  street re-measurement was interrupted once by a runtime restart
+  (141/230 rows kept, resumed safely — no chain id straddles the
+  cutoff); one transient null (Linbrook School) was re-measured
+  at 129 m, matching the old audit.
+- **Test fixtures re-pinned to the new package.** The 32-file suite
+  went 18/32 after the refresh because proof journeys and the
+  package end date were pinned to the old October signup. Fixtures
+  moved to Tue 2026-11-17 / Wed 2026-11-18 (same weekdays; the
+  weekday schedule is identical — R28→R3 proof, 2-transfer proof
+  and ranking numbers all verified unchanged from the new
+  timetable) and the package end to 20261226. Suite is 32/32 again
+  in daytime; the known `test_google13` evening-only failure
+  (past-date clamp) still applies in principle, but the fixtures
+  are now future-dated to Nov 17, so it should not fire before
+  then. Test logic unchanged — only dates, ids and the package
+  end date.
 - Step-by-step mode (one-action cards for a journey): approved to build
   only after the board was accepted. Not built; three open questions
   (manual paging vs GPS auto-advance, card count for 2-transfer

@@ -57,7 +57,7 @@ import json, sys
 from pathlib import Path
 
 DIR = Path(__file__).resolve().parent
-ROOT = DIR.parent
+ROOT = DIR.parent.parent  # archive/scripts/ -> repo root (not archive/)
 PLACES = ROOT / "public" / "places.json"
 AUDIT = ROOT / "data" / "generated" / "street-audit.json"
 

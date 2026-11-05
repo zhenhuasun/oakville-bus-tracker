@@ -21,7 +21,7 @@
 //   (f) Longo's 338 Dundas St E is CORRECTED and remapped:
 //       Nominatim-verified 43.4883376, -79.7175689 (OSM way 27500951),
 //       Trafalgar + Dundas stop 1657 code 2109 routes 1/37,
-//       151 m straight / 336 m street, no Street-walk note
+//       150 m straight / 336 m street, no Street-walk note
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -86,14 +86,14 @@ for (const p of schools) {
 check("(e) longWalk schools' walkFromStop_m and distance_m are street values", schOk);
 
 // (f) Longo's CORRECTED + remapped (2026-10-29, Nominatim OSM way 27500951)
-const longo = places.find((p) => p.id === "longos-dundas-east");
+const longo = places.find((p) => p.id === "longo-s" && p.address.startsWith("338 Dundas"));
 const longoAudit = audit[places.indexOf(longo)];
 check("(f) Longo's 338 Dundas St E remapped to Trafalgar + Dundas stop 1657, 336 m street, no note",
   !!longo && longo.lat === 43.4883376 && longo.lon === -79.7175689 &&
   longo.stop.id === "1657" && longo.stop.code === "2109" && longo.stop.distance_m === 336 &&
   JSON.stringify(longo.routes) === JSON.stringify(["1", "37"]) &&
   !(longo.note || "").includes("Street walk") &&
-  longoAudit && longoAudit.straight_m === 151 && longoAudit.street_m === 336,
+  longoAudit && longoAudit.straight_m === 150 && longoAudit.street_m === 336,
   longo ? `${longo.lat},${longo.lon} stop ${longo.stop.id} ${longo.stop.distance_m}m routes ${longo.routes} note=${JSON.stringify(longo.note)} audit ${longoAudit.straight_m}->${longoAudit.street_m}` : "missing");
 
 // (d) meta states the street rule

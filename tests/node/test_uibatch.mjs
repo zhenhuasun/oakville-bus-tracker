@@ -161,7 +161,7 @@ const paras = (fh.match(/<p>/g) || []).length;
 check("(b) footer renders exactly 4 paragraphs, no <br> chain, no <small>",
   paras === 4 && !fh.includes("<br>") && !fh.includes("<small>"), fh.slice(0, 200));
 check("(b) footer paragraph 1 is the timetable validity line",
-  fh.includes("Timetable valid to 2026-10-31"));
+  fh.includes("Timetable valid to 2026-12-26"));
 check("(b) footer keeps the draft-translation disclosure",
   fh.includes("drafts, not yet reviewed by a human translator"));
 check("(b) footer keeps the privacy promise, Nominatim disclosure, and coordinates-only walking",

@@ -113,11 +113,11 @@ check("origin candidates include the nearest stop 228 and the 330 m stop 750, ca
   cands.some(c => c.id === "750" && c.dist >= 300 && c.dist <= 1000),
   JSON.stringify(cands));
 
-// (2) The fix, pinned to Tuesday 2026-10-27 08:10 EDT (12:10Z): from
+// (2) The fix, pinned to Tuesday 2026-11-17 08:10 EST (13:10Z): from
 // stop 228 the direct route 20 arrives Oakville GO at 09:00, while
 // stop 750 (330 m away, walk 7 min) has a departure at 08:20 arriving
 // 08:38. The board must choose the earlier arrival, not the nearest stop.
-const fixed = new Date("2026-10-27T12:10:00Z");
+const fixed = new Date("2026-11-17T13:10:00Z");
 const state = T.fns.computeBoardingJourneys(cands, ["1212"], "Test Home", "Oakville GO", fixed);
 const chosen = state && state.boarding && state.boarding.candidates.find(c => c.stopId === state.boarding.chosen);
 const nearest = state && state.boarding && state.boarding.candidates.find(c => c.stopId === "228");

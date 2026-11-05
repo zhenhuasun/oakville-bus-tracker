@@ -107,7 +107,7 @@ function refBearing(p1, p2) {
 check("no circleMarker call remains in index.html", !html.includes("circleMarker("));
 
 // Fixture: direct journey, then its map data.
-const direct = T.fns.searchJourneys("1212", "789", new Date("2026-10-27T12:10:00Z"));
+const direct = T.fns.searchJourneys("1212", "789", new Date("2026-11-17T13:10:00Z"));
 const directOpt = direct && direct.options.find(o => o.transfers === 0);
 check("direct journey option exists", !!directOpt);
 for (const r of [...new Set(directOpt.legs.map(l => l.route))]) T.fns.setShapeData(r, shapeFile(r));
@@ -209,7 +209,7 @@ check("fallback render draws the full shape solid",
 // (d) Unchanged: markers, transfer walk dashes, bounds, pair map.
 check("direct map keeps origin + destination markers, no transfer marker",
   dmap.markers.some(m => m.kind === "origin") && dmap.markers.some(m => m.kind === "destination") && !dmap.markers.some(m => m.kind === "transfer"));
-const morning = T.fns.searchJourneys("1212", "1397", new Date("2026-10-27T12:10:00Z"));
+const morning = T.fns.searchJourneys("1212", "1397", new Date("2026-11-17T13:10:00Z"));
 const proof = morning && morning.options.find(o => o.transfers === 1);
 for (const r of ["28", "3"]) T.fns.setShapeData(r, shapeFile(r));
 const pmap2 = T.fns.buildJourneyMapData(proof);

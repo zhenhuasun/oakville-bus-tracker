@@ -78,7 +78,7 @@ function check(name, cond, extra = "") {
 }
 const fmt = (m) => String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(Math.floor(m % 60)).padStart(2, "0");
 const stopCoord = (id) => { const s = stops.stops.find(x => x.id === String(id)); return s ? [s.lat, s.lon] : null; };
-const tueMorning = new Date("2026-10-27T12:10:00Z"); // Tue 2026-10-27 08:10 EDT
+const tueMorning = new Date("2026-11-17T13:10:00Z"); // Tue 2026-11-17 08:10 EST
 
 // Fixtures: a direct journey and the 2-transfer proof journey (ranked
 // search, as in test_google13 — the bare call does not rank by total).
@@ -123,7 +123,7 @@ const tripUpdateAt = (leg, minutesFromNow) => [[vehKey(leg),
   { stops: [{ stop_id: leg.boardStop, time: Math.floor(Date.now() / 1000) + minutesFromNow * 60 }] }]];
 const render = (opt, extra = {}) => {
   T.setJourneyState(Object.assign({ o: "x", d: "y", labelO: "Origin", labelD: "Dest",
-    options: [opt], selected: 0, dayOffset: 0, dayDate: "2026-10-27",
+    options: [opt], selected: 0, dayOffset: 0, dayDate: "2026-11-17",
     timeMode: { mode: "now" }, isToday: true, originWalkM: 0, originWalkMin: 0,
     boarding: null }, extra));
   T.fns.renderJourneyBoard();
@@ -134,10 +134,10 @@ T.clearRT();
 render(directOpt);
 check("(a) Leave-now + timetable label is 'Next bus leaving in'",
   el("countdownLabel").textContent === "Next bus leaving in", el("countdownLabel").textContent);
-render(directOpt, { timeMode: { mode: "depart", display: "2026-10-27", timeMin: 490 } });
+render(directOpt, { timeMode: { mode: "depart", display: "2026-11-17", timeMin: 490 } });
 check("(a) Depart-at label is 'Departs at' (not a countdown label)",
   el("countdownLabel").textContent === "Departs at", el("countdownLabel").textContent);
-render(directOpt, { timeMode: { mode: "arrive", display: "2026-10-27", timeMin: 600 } });
+render(directOpt, { timeMode: { mode: "arrive", display: "2026-11-17", timeMin: 600 } });
 check("(a) Arrive-by label is 'Boarding at'",
   el("countdownLabel").textContent === "Boarding at", el("countdownLabel").textContent);
 // Live: trip update 5 min out for the boarding stop.

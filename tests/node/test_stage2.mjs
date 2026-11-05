@@ -102,7 +102,7 @@ function validateOptions(label, res) {
 }
 
 // 0. Data sanity.
-check("timetable meta package ends 20261031", tt.meta.package_end_date === "20261031");
+check("timetable meta package ends 20261226", tt.meta.package_end_date === "20261226");
 check("timetable has 2779 trips", tt.meta.trips === 2779, "trips=" + tt.meta.trips);
 check("places has 230 entries (153 + 74 schools + 1 specialty + 2 supermarket), 7 cross-boundary",
   places.places.length === 230 && places.places.filter(p => p.cross).length === 7,
@@ -127,7 +127,7 @@ check("Hospital -> Bronte GO return direct", hospBr && hospBr.options[0].transfe
 // the pair matrix; it must come back as R28 -> walk -> R3.
 const ogHosp = T.fns.searchJourneys("1212", "1397", new Date());
 check("Oakville GO -> Hospital returns a journey", !!ogHosp && ogHosp.options.length > 0);
-const ogHospMorning = T.fns.searchJourneys("1212", "1397", new Date("2026-10-27T12:10:00Z"));
+const ogHospMorning = T.fns.searchJourneys("1212", "1397", new Date("2026-11-17T13:10:00Z"));
 const proof = ogHospMorning && ogHospMorning.options.find(o => o.transfers === 1);
 check("Oakville GO -> Hospital proof is 1 transfer", !!proof, JSON.stringify(ogHosp && ogHosp.options.map(o => o.transfers)));
 if (proof) {

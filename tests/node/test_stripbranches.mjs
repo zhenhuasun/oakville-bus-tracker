@@ -76,7 +76,7 @@ function check(name, cond, extra = "") {
 }
 const fmt = (m) => String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(Math.floor(m % 60)).padStart(2, "0");
 const stopCoord = (id) => { const s = stops.stops.find(x => x.id === String(id)); return s ? [s.lat, s.lon] : null; };
-const tueMorning = new Date("2026-10-27T12:10:00Z"); // Tue 2026-10-27 08:10 EDT
+const tueMorning = new Date("2026-11-17T13:10:00Z"); // Tue 2026-11-17 08:10 EST
 const ranked = (o, d) => T.fns.searchJourneys(o, d, tueMorning, null,
   { rank: "total", timeMode: { mode: "now" }, originWalkMin: 0, destEndpoint: null });
 const direct = ranked("1212", "789");
@@ -110,7 +110,7 @@ const vehKey = (leg) => leg.original + "|" + leg.route;
 const render = (opt, extra = {}) => {
   trackStub.children = [];
   T.setJourneyState(Object.assign({ o: "x", d: "y", labelO: "Origin", labelD: "Dest",
-    options: [opt], selected: 0, dayOffset: 0, dayDate: "2026-10-27",
+    options: [opt], selected: 0, dayOffset: 0, dayDate: "2026-11-17",
     timeMode: { mode: "now" }, isToday: true, originWalkM: 0, originWalkMin: 0,
     boarding: null }, extra));
   T.fns.renderJourneyBoard();

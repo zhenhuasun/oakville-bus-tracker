@@ -250,14 +250,11 @@ def main():
     add("real-canadian-superstore", "Real Canadian Superstore",
         "201 Oak Walk Dr, Oakville, ON L6H 6M3", "supermarket",
         43.475, -79.715)
-    # Coordinates verified 2026-10-29 via Nominatim (OSM way 27500951).
-    # The old 43.453, -79.696 was a rounded placeholder that wrongly
-    # mapped this store to Kerr St (stop 870, 2,891 m street). True
-    # nearest stop from the verified point is Trafalgar + Dundas
-    # (stop 1657, 151 m straight / 336 m street).
-    add("longos-dundas-east", "Longo's",
-        "338 Dundas St E, Oakville, ON L6H 6Z9", "supermarket",
-        43.4883376, -79.7175689)
+    # Longo's 338 Dundas St E: NO add() here. derive_places.py already
+    # emits this store from the research doc's Nominatim-verified
+    # coordinates (43.4883376, -79.7175689; stop 1657, 151 m straight).
+    # An add() under a second id ("longos-dundas-east") duplicated the
+    # store in places.json (found on the 2026-11-05 GTFS refresh).
     add("sobeys-glen-abbey", "Sobeys Glen Abbey",
         "1500 Upper Middle Rd W, Oakville, ON L6M 3G3", "supermarket",
         43.438, -79.742)
@@ -394,7 +391,7 @@ def main():
                        "abbey-plaza", "oakwoods-centre", "otcc",
                        "river-oaks-cc", "bronte-creek-park", "shell-park",
                        "north-park", "whole-foods-oakville",
-                       "real-canadian-superstore", "longos-dundas-east",
+                       "real-canadian-superstore",
                        "sobeys-glen-abbey"):
             print(f"  {p['name']} | {p['address']} | stop {p['stop']['id']} "
                   f"{p['stop']['name']} code {p['stop']['code']} {p['stop']['distance_m']}m")

@@ -105,13 +105,13 @@ function validateRanked(label, res) {
   }
 }
 
-const tueMorning = new Date("2026-10-27T12:10:00Z"); // Tue 2026-10-27 08:10 EDT
-const tueEvening = new Date("2026-10-27T22:00:00Z"); // Tue 2026-10-27 18:00 EDT
+const tueMorning = new Date("2026-11-17T13:10:00Z"); // Tue 2026-11-17 08:10 EST
+const tueEvening = new Date("2026-11-17T23:00:00Z"); // Tue 2026-11-17 18:00 EST
 
 // (a) PROOF: a journey that requires 2 transfers and was previously
 // "no ride". Uptown Core Terminal (1293) -> Bristol Circle + 2872
 // Bristol Circle (562), Tue 08:10: R1 08:10 -> stop 162, walk 293 m to
-// 1071, R120 08:39 -> 150, walk 50 m to 620, R12 09:16 -> 562 arr 09:18.
+// 1071, R120 08:39 -> 150, walk 50 m to 620, R12 09:17 -> 562 arr 09:18.
 // The legacy (max-1-transfer) engine returns null for the same pair.
 const proof = ranked("1293", "562", tueMorning);
 check("(a) 2-transfer proof pair returns a valid 3-leg journey",
@@ -133,19 +133,19 @@ check("(a) legacy max-1 engine returns no ride for the proof pair",
   T.fns.searchJourneysLegacy("1293", "562", tueMorning) === null);
 
 // (b) Depart at: fixed time, same pair — every option departs at/after
-// the chosen time; and a future-day depart (Wed 2026-10-28 08:00,
+// the chosen time; and a future-day depart (Wed 2026-11-18 08:00,
 // Oakville GO -> Iqbal stop 789) lands on that date, not today.
 const depart = ranked("1293", "562", tueMorning,
-  { mode: "depart", dateStr: "20261027", display: "2026-10-27", timeMin: 490 });
+  { mode: "depart", dateStr: "20261117", display: "2026-11-17", timeMin: 490 });
 check("(b) Depart-at returns journeys departing at/after the chosen time",
   !!depart && depart.options.every(o => o.legs[0].boardDep >= 490),
   JSON.stringify(depart && depart.options.map(o => fmt(o.legs[0].boardDep))));
 check("(b) Depart-at top option boards at the chosen time (R1 08:10)",
   !!depart && Math.round(depart.options[0].legs[0].boardDep) === 490);
 const departFuture = ranked("1212", "789", tueMorning,
-  { mode: "depart", dateStr: "20261028", display: "2026-10-28", timeMin: 480 });
-check("(b) Depart-at future day lands on 2026-10-28, not today, timetable (isToday false)",
-  !!departFuture && departFuture.dayDate === "2026-10-28" && departFuture.isToday === false &&
+  { mode: "depart", dateStr: "20261118", display: "2026-11-18", timeMin: 480 });
+check("(b) Depart-at future day lands on 2026-11-18, not today, timetable (isToday false)",
+  !!departFuture && departFuture.dayDate === "2026-11-18" && departFuture.isToday === false &&
   departFuture.options.every(o => o.legs[0].boardDep >= 480),
   JSON.stringify(departFuture && { dayDate: departFuture.dayDate, isToday: departFuture.isToday }));
 // UI-level: setTimeMode + nav endpoints re-run the board in depart mode.
@@ -154,7 +154,7 @@ check("(b) Depart-at future day lands on 2026-10-28, not today, timetable (isTod
   const s562 = stops.stops.find(s => s.id === "562");
   T.fns.setNavEndpoint("origin", T.fns.endpointFromStop(s1293));
   T.fns.setNavEndpoint("dest", T.fns.endpointFromStop(s562));
-  const ok = T.fns.setTimeMode("depart", "2026-10-27", "08:10");
+  const ok = T.fns.setTimeMode("depart", "2026-11-17", "08:10");
   const j = T.journey();
   check("(b) setTimeMode(depart) re-runs the board in depart mode",
     ok === true && j && j.timeMode && j.timeMode.mode === "depart" &&
@@ -166,7 +166,7 @@ check("(b) Depart-at future day lands on 2026-10-28, not today, timetable (isTod
 // (c) Arrive by: deadline Tue 09:30 — every option arrives by it, and
 // the top option arrives by it (09:18, the same 3-leg journey).
 const arrive = ranked("1293", "562", tueMorning,
-  { mode: "arrive", dateStr: "20261027", display: "2026-10-27", timeMin: 570 });
+  { mode: "arrive", dateStr: "20261117", display: "2026-11-17", timeMin: 570 });
 check("(c) Arrive-by returns journeys arriving by the deadline (all options)",
   !!arrive && arrive.options.every(o => o.legs[o.legs.length - 1].alightArr <= 570),
   JSON.stringify(arrive && arrive.options.map(o => fmt(o.legs[o.legs.length - 1].alightArr))));
@@ -256,7 +256,7 @@ check("(f) Leave-now note and pairNote are deleted entirely",
   !html.includes("Common trips (shortcuts only)") &&
   !html.includes('id="pairNote"') && !html.includes("pairNote"));
 T.fns.pickLanguage("en");
-T.fns.setTimeMode("depart", "2026-10-27", "08:10");
+T.fns.setTimeMode("depart", "2026-11-17", "08:10");
 check("(f) time mode is depart after setTimeMode",
   T.timeMode().mode === "depart");
 T.fns.resetTimeMode();
@@ -272,7 +272,7 @@ check("(f) Time button shows Leave now after reset",
   const top = proof.options[0];
   T.setJourneyState({ o: "1293", d: "562", labelO: "Uptown Core Terminal",
     labelD: "Bristol Circle", options: proof.options, selected: 0,
-    dayOffset: 0, dayDate: "2026-10-27", timeMode: { mode: "now" },
+    dayOffset: 0, dayDate: "2026-11-17", timeMode: { mode: "now" },
     isToday: true, originWalkM: 0, originWalkMin: 0, boarding: null });
   T.fns.renderJourneyBoard();
   const stripText = el("stripLegs").textContent || "";

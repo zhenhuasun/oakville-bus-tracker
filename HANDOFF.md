@@ -6,6 +6,13 @@ verify the result. Nothing else in the repo needs your action.
 
 ## 1. Current state
 
+**2026-11-05 GTFS refresh (pushed).** New static package Nov 1–Dec 26,
+2026: timetable/pairs/stops/places/shapes rebuilt, street audit
+re-measured (230/230), test fixtures re-pinned to Tue Nov 17 / Wed
+Nov 18 (weekday schedule verified identical). Suite 32/32 daytime.
+The `test_google13` evening note below now applies only after
+Nov 17 (fixtures are future-dated to then).
+
 Repo cleanup Commits 1–5 are done and the local tree is final: tests live
 in `tests/node/` (32-file default suite, green) plus `tests/node/live/`
 (live-network, excluded from the default suite), scripts live in

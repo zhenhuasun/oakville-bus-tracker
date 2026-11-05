@@ -107,7 +107,7 @@ function check(name, cond, extra = "") {
   console.log((cond ? "PASS" : "FAIL") + " " + name + (cond ? "" : " " + extra));
   if (!cond) failures++;
 }
-const tueMorning = new Date("2026-10-27T12:10:00Z"); // Tue 2026-10-27 08:10 EDT
+const tueMorning = new Date("2026-11-17T13:10:00Z"); // Tue 2026-11-17 08:10 EST
 const ranked = (o, d, now, destEndpoint) =>
   T.fns.searchJourneys(o, d, now, null,
     { rank: "total", timeMode: { mode: "now" }, originWalkMin: 0, destEndpoint: destEndpoint || null });

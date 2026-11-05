@@ -320,7 +320,7 @@ const ogIqbal = T.fns.searchJourneys("1212", "789", new Date());
 check("REGRESSION Oakville GO -> Iqbal direct first", ogIqbal && ogIqbal.options[0].transfers === 0);
 validateOptions("Oakville GO -> Iqbal", ogIqbal);
 const ogHosp = T.fns.searchJourneys("1212", "1397", new Date());
-const ogHospMorning = T.fns.searchJourneys("1212", "1397", new Date("2026-10-27T12:10:00Z"));
+const ogHospMorning = T.fns.searchJourneys("1212", "1397", new Date("2026-11-17T13:10:00Z"));
 const proof = ogHospMorning && ogHospMorning.options.find(o => o.transfers === 1);
 check("REGRESSION Oakville GO -> Hospital 1-transfer proof exists", !!proof,
   JSON.stringify(ogHosp && ogHosp.options.map(o => o.transfers)));

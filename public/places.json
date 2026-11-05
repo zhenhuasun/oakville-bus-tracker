@@ -99,9 +99,9 @@
         "reason": "Excluded from Large Parks in Stage 2.1"
       }
     ],
-    "stage21_note": "Stage 2.1: category results come from the place category field only, never from substring-matching stop names. Station browsing is the 9 hub stations only. Shopping Centre is 13 entries (SmartCentres Oakville and South Oakville Centre separate; Entertainment Centrum = Centrum, listed once). Community Centre is Town centres only. Library is OPL full branches only. Schools are in search since the 2026-10-28 geocoding pass (74 places; the 7 verified schools >400 m are included with a walking-distance label per user decision 2026-10-28). Large Parks are main-entrance mapped; Gairloch Gardens is excluded (nearest OT stop 1,055 m). Static package still ends 2026-10-31 (ArcGIS zip MD5 unchanged 2026-10-28).",
-    "stage21_followup": "2026-10-28 follow-up: Asian Supermarket and Specialty Grocery merged into one category 'specialtyasian' (Asian & Specialty Grocery). School category was deleted for now at that time (the single Gladys Speers prototype destination was removed; prototype list 10 -> 9), then RESTORED by the 2026-10-28 Nominatim geocoding pass (build_schools.py): all 74 geocoded schools are School places. User decision 2026-10-28: the 7 verified schools >400 m from a stop are INCLUDED with an explicit walking-distance label (longWalk=True, walkFromStop_m = true distance) and must never be dropped by a re-run; 0 unresolved.",
     "schools_note": "Schools geocoded via OSM Nominatim (see schools-geocoded.json): 74 School places in total (all 74 research schools; 7 with nearest stop >400 m are included with an explicit walking-distance label per user decision 2026-10-28; 0 added by this run), 0 unresolved (not added, never guessed).",
+    "stage21_followup": "2026-10-28 follow-up: Asian Supermarket and Specialty Grocery merged into one category 'specialtyasian' (Asian & Specialty Grocery). School category was deleted for now at that time (the single Gladys Speers prototype destination was removed; prototype list 10 -> 9), then RESTORED by the 2026-10-28 Nominatim geocoding pass (build_schools.py): all 74 geocoded schools are School places. User decision 2026-10-28: the 7 verified schools >400 m from a stop are INCLUDED with an explicit walking-distance label (longWalk=True, walkFromStop_m = true distance) and must never be dropped by a re-run; 0 unresolved.",
+    "stage21_note": "Stage 2.1: category results come from the place category field only, never from substring-matching stop names. Station browsing is the 9 hub stations only. Shopping Centre is 13 entries (SmartCentres Oakville and South Oakville Centre separate; Entertainment Centrum = Centrum, listed once). Community Centre is Town centres only. Library is OPL full branches only. Schools are in search since the 2026-10-28 geocoding pass (74 places; the 7 verified schools >400 m are included with a walking-distance label per user decision 2026-10-28). Large Parks are main-entrance mapped; Gairloch Gardens is excluded (nearest OT stop 1,055 m). Static package still ends 2026-10-31 (ArcGIS zip MD5 unchanged 2026-10-28).",
     "street_rule": "User decision 2026-10-29: mapping rule is STREET (routed-foot) distance, not straight-line. stop.distance_m in places.json is the routed-foot street distance from street-audit.json (230/230 measured, coordinates only). Threshold stays 400 m, but over-400 m street places are NOT excluded: the 24 places with street >400 m and straight <=400 m carry the distance in their note field ('Street walk {m} m from nearest stop'), and the 7 longWalk schools carry it in walkFromStop_m (longWalk label). Longo's 338 Dundas St E was CORRECTED 2026-10-29: its old placeholder coordinates wrongly mapped it to Kerr St stop 870 (2,891 m street); Nominatim-verified coordinates 43.4883376, -79.7175689 (OSM way 27500951) remap it to Trafalgar + Dundas stop 1657, 151 m straight / 336 m street. Re-run order: build_stage21.py -> build_schools.py -> apply_street_rule.py (this script is idempotent)."
   },
   "places": [
@@ -282,10 +282,10 @@
       "lat": 43.447264,
       "lon": -79.666006,
       "stop": {
-        "id": "1253",
-        "name": "Church St + Dunn St",
-        "code": "2571",
-        "distance_m": 210
+        "id": "1801",
+        "name": "Church St. + Dunn St. (WB)",
+        "code": "3460",
+        "distance_m": 261
       },
       "routes": [
         "14",
@@ -751,11 +751,9 @@
         "1",
         "4",
         "10",
-        "14",
         "15",
         "18",
-        "28",
-        "14A"
+        "28"
       ]
     },
     {
@@ -991,14 +989,13 @@
       "lat": 43.439616,
       "lon": -79.678057,
       "stop": {
-        "id": "801",
-        "name": "Rebecca St + Brock St",
-        "code": "2538",
-        "distance_m": 114
+        "id": "605",
+        "name": "Rebecca St. + Brock St.",
+        "code": "2539",
+        "distance_m": 132
       },
       "routes": [
-        "14",
-        "14A"
+        "83"
       ]
     },
     {
@@ -1031,7 +1028,7 @@
         "id": "535",
         "name": "Oak Park Blvd + Sawgrass Dr",
         "code": "2583",
-        "distance_m": 334
+        "distance_m": 328
       },
       "routes": [
         "20"
@@ -1070,9 +1067,7 @@
         "distance_m": 74
       },
       "routes": [
-        "14",
-        "83",
-        "14A"
+        "83"
       ]
     },
     {
@@ -1179,7 +1174,7 @@
         "id": "1802",
         "name": "Navy St. + Lakeshore Rd. E",
         "code": "3461",
-        "distance_m": 216
+        "distance_m": 197
       },
       "routes": [
         "14",
@@ -1699,6 +1694,7 @@
         "1",
         "4",
         "10",
+        "11",
         "14",
         "15",
         "18",
@@ -1716,13 +1712,15 @@
       "lat": 43.447112,
       "lon": -79.666947,
       "stop": {
-        "id": "1253",
-        "name": "Church St + Dunn St",
-        "code": "2571",
-        "distance_m": 188
+        "id": "518",
+        "name": "Church St. + Dunn St. (EB)",
+        "code": "3119",
+        "distance_m": 160
       },
       "routes": [
+        "1",
         "14",
+        "83",
         "14A"
       ]
     },
@@ -2055,7 +2053,7 @@
         "id": "1800",
         "name": "Reynolds St. + Church St.",
         "code": "3459",
-        "distance_m": 340
+        "distance_m": 339
       },
       "routes": [
         "14",
@@ -2129,7 +2127,7 @@
         "id": "1802",
         "name": "Navy St. + Lakeshore Rd. E",
         "code": "3461",
-        "distance_m": 321
+        "distance_m": 340
       },
       "routes": [
         "14",
@@ -3370,7 +3368,7 @@
         "id": "184",
         "name": "Kingsway Dr + Guilford Cr",
         "code": "3261",
-        "distance_m": 119
+        "distance_m": 198
       },
       "routes": [
         "12"
@@ -3929,11 +3927,9 @@
         "1",
         "4",
         "10",
-        "14",
         "15",
         "18",
-        "28",
-        "14A"
+        "28"
       ]
     },
     {
@@ -4030,11 +4026,9 @@
         "1",
         "4",
         "10",
-        "14",
         "15",
         "18",
-        "28",
-        "14A"
+        "28"
       ]
     },
     {
@@ -4092,11 +4086,9 @@
         "1",
         "4",
         "10",
-        "14",
         "15",
         "18",
-        "28",
-        "14A"
+        "28"
       ]
     },
     {
@@ -4365,7 +4357,7 @@
       ]
     },
     {
-      "id": "longos-dundas-east",
+      "id": "longo-s",
       "name": "Longo's",
       "address": "338 Dundas St E, Oakville, ON L6H 6Z9",
       "cat": "supermarket",
@@ -4381,8 +4373,7 @@
       "routes": [
         "1",
         "37"
-      ],
-      "note": ""
+      ]
     },
     {
       "id": "longo-s-walkers-line",

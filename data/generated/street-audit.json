@@ -67,8 +67,8 @@
    "id": "td-canada-trust",
    "name": "TD Canada Trust",
    "cat": "bank",
-   "straight_m": 150,
-   "street_m": 210
+   "straight_m": 161,
+   "street_m": 261
   },
   {
    "id": "td-canada-trust",
@@ -319,8 +319,8 @@
    "id": "trafalgar-park-cc",
    "name": "Trafalgar Park Community Centre",
    "cat": "communityCentre",
-   "straight_m": 69,
-   "street_m": 114
+   "straight_m": 80,
+   "street_m": 132
   },
   {
    "id": "dynacare-laboratory-and-health-services-centre",
@@ -334,7 +334,7 @@
    "name": "Dynacare Laboratory and Health Services Centre",
    "cat": "hospitallab",
    "straight_m": 45,
-   "street_m": 334
+   "street_m": 328
   },
   {
    "id": "dynacare-laboratory-and-health-services-centre",
@@ -389,8 +389,8 @@
    "id": "opl-central",
    "name": "Oakville Public Library — Central Branch",
    "cat": "library",
-   "straight_m": 106,
-   "street_m": 216
+   "straight_m": 93,
+   "street_m": 197
   },
   {
    "id": "opl-clearview",
@@ -585,8 +585,8 @@
    "id": "the-medicine-shoppe-pharmacy-209",
    "name": "The Medicine Shoppe Pharmacy #209",
    "cat": "pharmacy",
-   "straight_m": 75,
-   "street_m": 188
+   "straight_m": 85,
+   "street_m": 160
   },
   {
    "id": "upper-middle-ida",
@@ -711,8 +711,8 @@
    "id": "st-andrew-s-catholic-church",
    "name": "St. Andrew's Catholic Church",
    "cat": "religious",
-   "straight_m": 340,
-   "street_m": 340
+   "straight_m": 338,
+   "street_m": 339
   },
   {
    "id": "st-james-roman-catholic-church",
@@ -739,8 +739,8 @@
    "id": "st-jude-s-anglican-church",
    "name": "St. Jude's Anglican Church",
    "cat": "religious",
-   "straight_m": 228,
-   "street_m": 321
+   "straight_m": 240,
+   "street_m": 340
   },
   {
    "id": "st-luke-s-community-centre-anglican",
@@ -1166,8 +1166,8 @@
    "id": "st-luke-ces",
    "name": "St. Luke Catholic Elementary School",
    "cat": "school",
-   "straight_m": 117,
-   "street_m": 119
+   "straight_m": 101,
+   "street_m": 198
   },
   {
    "id": "st-marguerite-dyouville-ces",
@@ -1520,10 +1520,10 @@
    "street_m": 112
   },
   {
-   "id": "longos-dundas-east",
+   "id": "longo-s",
    "name": "Longo's",
    "cat": "supermarket",
-   "straight_m": 151,
+   "straight_m": 150,
    "street_m": 336
   },
   {
